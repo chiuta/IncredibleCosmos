@@ -1,0 +1,1156 @@
+<!DOCTYPE html><html lang="ro"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Incredible Cosmos</title><style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;min-height:100%;background:#06060e;font-family:Georgia,serif;color:#e0e0e0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#root{width:100%;min-height:100vh}button{font-family:inherit;border:none}input{font-family:inherit}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:rgba(255,255,255,.02)}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+</style>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script></head><body><div id="root"></div>
+<script>window.storage=window.storage||{get:async k=>{try{var v=localStorage.getItem(k);return v?{value:v}:null}catch(e){return null}},set:async(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}return{value:v}}}</script>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useCallback } = React;
+
+var TAU = Math.PI * 2;
+var dst = function(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); };
+var hs = function(h, s, l, a) { return "hsla(" + (((h % 360) + 360) % 360) + "," + s + "%," + l + "%," + (a == null ? 1 : a) + ")"; };
+function mkSeed(n) { var s = n * 2654435761 >>> 0; return function() { s |= 0; s = s + 0x6D2B79F5 | 0; var t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function sR(seed, a, b) { return seed() * (b - a) + a; }
+
+var TYPES = {
+  planet:    { name: "Planetă",     mass: 80,   r: 14, hue: 210, grav: true, gravR: 75 },
+  star:      { name: "Stea",        mass: 400,  r: 22, hue: 45,  grav: true, gravR: 130 },
+  blackhole: { name: "Gaură neagră",mass: 1200, r: 18, hue: 280, grav: true, gravR: 170, absorb: true },
+  moon:      { name: "Lună",        mass: 20,   r: 8,  hue: 55,  grav: true, gravR: 45 },
+  booster:   { name: "Booster",     mass: 0,    r: 13, hue: 55,  boost: true },
+  bomb:      { name: "Bombă",       mass: 0,    r: 11, hue: 0,   explode: true },
+  shield:    { name: "Scut",        mass: 0,    r: 15, hue: 160, reflect: true },
+  vortex:    { name: "Vortex",      mass: 150,  r: 16, hue: 270, grav: true, gravR: 90, spin: true },
+  wormA:     { name: "Wormhole A",  mass: 0,    r: 14, hue: 190, worm: "A" },
+  wormB:     { name: "Wormhole B",  mass: 0,    r: 14, hue: 310, worm: "B" },
+};
+var ICONS = { planet: "🪐", star: "⭐", blackhole: "🕳️", moon: "🌙", booster: "⚡", bomb: "💥", shield: "🛡️", vortex: "🌀", wormA: "🔵", wormB: "🟣" };
+
+var CATS = [
+  {id:"lit",i:"📝",l:"Literare",c:"#e8c547"},{id:"fil",i:"🧠",l:"Filosofice",c:"#a78bfa"},
+  {id:"cri",i:"🔍",l:"Critice",c:"#f87171"},{id:"cit",i:"👤",l:"Cititori",c:"#34d399"},
+  {id:"ai",i:"🤖",l:"AI viitor",c:"#38bdf8"},{id:"nhi",i:"👽",l:"NHI",c:"#4ade80"},
+  {id:"mul",i:"◈",l:"Multi-D",c:"#c084fc"},{id:"ext",i:"∞",l:"Extra-U",c:"#f0abfc"},
+  {id:"ste",i:"⭐",l:"Stelare",c:"#fbbf24"},{id:"hip",i:"🏗",l:"Hiper-C",c:"#2dd4bf"},
+  {id:"met",i:"🌀",l:"Meta-C",c:"#fb923c"},{id:"int",i:"📖",l:"Interior",c:"#60a5fa"},
+];
+
+// ═══ PUZZLE GENERATOR ═══
+function mkPz(id, cat, name, sub, diff) {
+  var seed = mkSeed(id * 7919 + diff * 131);
+  var tA = sR(seed, 0, TAU), tD = 75 + diff * 30;
+  var tx = Math.cos(tA) * tD, ty = Math.sin(tA) * tD;
+  var cA = tA + Math.PI + sR(seed, -0.35, 0.35), cD = 55 + diff * 20;
+  var cx = Math.cos(cA) * cD, cy = Math.sin(cA) * cD;
+  var vA = Math.atan2(-cy, -cx) + sR(seed, -0.25, 0.25);
+  var spd = 0.7 + diff * 0.15;
+  var fixed = [
+    { type: "target", x: tx, y: ty },
+    { type: "comet", x: cx, y: cy, vx: Math.cos(vA) * spd, vy: Math.sin(vA) * spd },
+  ];
+  var tools = [], goal = "Ghidează cometa la țintă";
+  if (cat === "lit" || cat === "int" || cat === "cit") { tools = [{ t: "planet", c: 2 + diff }]; if (diff > 1) tools.push({ t: "booster", c: 1 }); }
+  else if (cat === "fil" || cat === "ext") { tools = [{ t: "wormA", c: 1 }, { t: "wormB", c: 1 }, { t: "planet", c: diff }]; goal = "Teleportează cometa prin wormhole"; }
+  else if (cat === "cri" || cat === "ste") { fixed.push({ type: "star", x: 0, y: 0 }); tools = [{ t: "planet", c: 1 + diff }, { t: "booster", c: 1 }]; goal = "Folosește steaua centrală"; }
+  else if (cat === "ai") { tools = [{ t: "planet", c: 3 + diff }, { t: "booster", c: 1 }]; goal = "Cât mai puține obiecte"; }
+  else if (cat === "nhi") { tools = [{ t: "vortex", c: 1 }, { t: "planet", c: diff }, { t: "wormA", c: 1 }, { t: "wormB", c: 1 }]; goal = "Vortex + wormhole"; }
+  else if (cat === "mul") { fixed.push({ type: "star", x: sR(seed, -25, 25), y: sR(seed, -25, 25) }); tools = [{ t: "planet", c: 2 + diff }, { t: "shield", c: 1 }]; }
+  else if (cat === "hip") { tools = [{ t: "star", c: 1 }, { t: "planet", c: 1 + diff }, { t: "booster", c: 1 }]; goal = "Construiește cale gravitațională"; }
+  else if (cat === "met") { tools = [{ t: "blackhole", c: 1 }, { t: "booster", c: 1 + diff }]; goal = "Gaură neagră + boostere"; }
+  else { tools = [{ t: "planet", c: 2 + diff }]; }
+  var mt = 0; tools.forEach(function(t) { mt += t.c; });
+  return { id: id, cat: cat, n: name, s: sub, goal: goal, diff: diff, fixed: fixed, tools: tools, stars: [mt, Math.ceil(mt * 0.6), Math.ceil(mt * 0.35)] };
+}
+
+var PZ = [
+  mkPz(1,"lit","Vector","SF speculativ",1),mkPz(2,"lit","Revista Orbital","Orbite",2),mkPz(3,"lit","Mind & Machine","Mintea",1),mkPz(4,"lit","Lunar Quarterly","Lunar",2),mkPz(5,"lit","Orbital Dispatch","Depeșe",1),mkPz(6,"lit","Distant Signals","Semnale",2),mkPz(7,"lit","Dilema Lunară","Lumină",3),mkPz(8,"lit","Constellation","Constelații",2),mkPz(9,"lit","Ficțiune Speculativă","Heliopolis",3),
+  mkPz(10,"fil","Caietele Minții","Filosofie",1),mkPz(11,"fil","Métaphysique","Postumanistă",2),mkPz(12,"fil","Etica Informației","Etică",1),mkPz(13,"fil","Episteme Lunaris","Cunoaștere",2),mkPz(14,"fil","Techné Astralis","Tehnică",2),mkPz(15,"fil","Conștiințe Multiple","Conștiințe",3),mkPz(16,"fil","Narrative Horizons","Orizonturi",2),mkPz(17,"fil","Filosofie Morală","Echilibru",3),mkPz(18,"fil","Synthesis Cosmica","Sinteză",3),
+  mkPz(19,"cri","Northern Review","Nordică",1),mkPz(20,"cri","Albion Review","Britanică",1),mkPz(21,"cri","Foundation","SF int.",2),mkPz(22,"cri","Revista Carpatică","Carpatică",2),mkPz(23,"cri","Cultura Astrală","Cultura Vie",2),mkPz(24,"cri","Quarterly Dialogue","Dialog",1),mkPz(25,"cri","Editorial","Perspective",3),mkPz(26,"cri","Cosmos & Culture","Carte",3),mkPz(27,"cri","Cahiers Imaginaire","Imaginar",2),
+  mkPz(28,"cit","Mircea T., 67","Timișoara",1),mkPz(29,"cit","Andreea M., 24","București",1),mkPz(30,"cit","Radu P., 22","Iași",2),mkPz(31,"cit","Carmen D., 45","Cluj",2),mkPz(32,"cit","Alex S., 17","Craiova",2),mkPz(33,"cit","Elena V., 71","Brașov",1),mkPz(34,"cit","Bogdan C., 38","București",2),mkPz(35,"cit","Ioana R., 33","Constanța",3),mkPz(36,"cit","Ion P., 73","Sibiu",3),
+  mkPz(37,"ai","CLAUDE-7","Anthropic 2030",1),mkPz(38,"ai","ARTEMIS-AI","NASA 2031",2),mkPz(39,"ai","MUSE-4","DeepMind 2035",2),mkPz(40,"ai","SENTINEL","Siguranță 2038",2),mkPz(41,"ai","ANIMA","Conștiință 2042",3),mkPz(42,"ai","ARCHIVE","Biblioteca 2047",1),mkPz(43,"ai","SOCRATES-9","Filosofie 2055",2),mkPz(44,"ai","MEMORIAL","Shackleton 2071",3),mkPz(45,"ai","Omega","2089",3),
+  mkPz(46,"nhi","CORALUL","Europa",1),mkPz(47,"nhi","STRUCTURA 7.7.1","Titan",2),mkPz(48,"nhi","FLUX","Temporal",2),mkPz(49,"nhi","ROIUL","Kepler-442b",2),mkPz(50,"nhi","CÂNTECUL DIN VID","Laniakea",3),mkPz(51,"nhi","MICELIUL","Amazonia",2),mkPz(52,"nhi","CORUL ADÂNCULUI","Balene",1),mkPz(53,"nhi","COLONIA 0","Shackleton",3),mkPz(54,"nhi","Textul","—",1),
+  mkPz(55,"mul","Tesseract","4D",2),mkPz(56,"mul","Probabilitate","Undă",1),mkPz(57,"mul","Calabi-Yau","6D",3),mkPz(58,"mul","Brana Vecină","Adiacentă",2),mkPz(59,"mul","Geometria Info","Info",2),mkPz(60,"mul","Bucla","Cauzalitate",1),mkPz(61,"mul","Materie Întunecată","Invizibilă",3),mkPz(62,"mul","Arhivar Multivers","Ramificații",2),mkPz(63,"mul","Interstițiul","Între D",3),
+  mkPz(64,"ext","Ecuația","Formula",1),mkPz(65,"ext","Cel de Dinainte","Pre-timp",1),mkPz(66,"ext","Operatorul","Legile",2),mkPz(67,"ext","Gradientul Final","Ultima",2),mkPz(68,"ext","Forma","Geometrie",2),mkPz(69,"ext","Cel Care Visează","Vis",3),mkPz(70,"ext","Paradoxul","Auto-ref",3),mkPz(71,"ext","Cititorul Total","Tot",2),mkPz(72,"ext","Tăcerea","Sfârșit",1),
+  mkPz(73,"ste","Proxima Centauri","Pitică roșie",1),mkPz(74,"ste","Betelgeuse","Supergigantă",2),mkPz(75,"ste","PSR B1919+21","Pulsar",2),mkPz(76,"ste","POLARIS","Polară",1),mkPz(77,"ste","Sagittarius A*","Gaura neagră",3),mkPz(78,"ste","KIC 8462852","Tabby",2),mkPz(79,"ste","Sirius B","Pitica albă",2),mkPz(80,"ste","PRIMA STEA","Pop. III",3),mkPz(81,"ste","Ultimul Foton","Ultima lumină",1),
+  mkPz(82,"hip","Constructorii","Kepler-442",2),mkPz(83,"hip","Consensul","NGC 4565",2),mkPz(84,"hip","Păzitorii","Gardieni",3),mkPz(85,"hip","Arhitecții","Galaxii",2),mkPz(86,"hip","Recoltatorii","Energie",1),mkPz(87,"hip","COLECTIVUL","Orion",2),mkPz(88,"hip","Cei Plecați","Absenți",3),mkPz(89,"hip","Grădinarii","Cultivatori",2),mkPz(90,"hip","Marea Tăcere","Fermi",1),
+  mkPz(91,"met","Interior GN","Dincolo",3),mkPz(92,"met","Preoții Entropiei","Dezordine",2),mkPz(93,"met","Civ. Inversă","Invers",2),mkPz(94,"met","Boltzmann","Fluctuații",1),mkPz(95,"met","Punctul Omega","Convergență",3),mkPz(96,"met","Ultimul Matematician","Teoremă",2),mkPz(97,"met","Arheologii","Săpături",2),mkPz(98,"met","Universul Amintește","Memorie",2),mkPz(99,"met","Următorul Început","Big Bang",3),
+  mkPz(100,"int","REID WISEMAN","Comandantul",1),mkPz(101,"int","CHRISTINA KOCH","LEO+",2),mkPz(102,"int","VICTOR GLOVER","Pilotul",2),mkPz(103,"int","JEREMY HANSEN","Canadianul",1),mkPz(104,"int","ARTEMIS-AI","Simulatorul",2),mkPz(105,"int","NARATORUL-AI","Stratul trei",3),mkPz(106,"int","Cartea","Se citește",2),mkPz(107,"int","Cititorul","Tu",1),mkPz(108,"int","ALEXIO","Autorul",3),
+];
+
+// ═══ PHYSICS ═══
+function stepPhys(objs) {
+  var evts = [];
+  for (var i = 0; i < objs.length; i++) {
+    var a = objs[i]; if (!a.alive || a.static || a.type === "target") continue;
+    var ax = 0, ay = 0;
+    for (var j = 0; j < objs.length; j++) {
+      if (i === j || !objs[j].alive || !objs[j].hasGrav) continue;
+      var b = objs[j], dx = b.x - a.x, dy = b.y - a.y, d = Math.max(6, Math.hypot(dx, dy));
+      if (b.hasSpin && d < 85) { ax += (-dy / d) * 0.12; ay += (dx / d) * 0.12; }
+      var f = 0.5 * a.mass * b.mass / (d * d);
+      ax += f * dx / (d * a.mass); ay += f * dy / (d * a.mass);
+    }
+    a.vx += ax; a.vy += ay;
+  }
+  for (var ii = 0; ii < objs.length; ii++) {
+    var o = objs[ii]; if (!o.alive || o.static || o.type === "target") continue;
+    o.x += o.vx; o.y += o.vy;
+    o.trail.push({ x: o.x, y: o.y }); if (o.trail.length > 100) o.trail.shift();
+    for (var jj = 0; jj < objs.length; jj++) {
+      if (ii === jj || !objs[jj].alive) continue;
+      var ot = objs[jj], dd = dst(o, ot);
+      if (ot.type === "target" && dd < ot.r + o.r) evts.push("win");
+      if (ot.canAbsorb && dd < ot.r + 3) { o.alive = false; evts.push("dead"); }
+      if (ot.wormId && dd < ot.r && !o.wcd) { var ex = objs.find(function(x) { return x.wormId && x.wormId !== ot.wormId && x.alive; }); if (ex) { o.x = ex.x + o.vx * 6; o.y = ex.y + o.vy * 6; o.wcd = 20; } }
+      if (ot.isBoost && dd < ot.r + 6) { var sp = Math.hypot(o.vx, o.vy) || 1; o.vx = (o.vx / sp) * (sp + 1.5); o.vy = (o.vy / sp) * (sp + 1.5); }
+      if (ot.isBomb && dd < ot.r + o.r) { var pa = Math.atan2(o.y - ot.y, o.x - ot.x); o.vx += Math.cos(pa) * 4.5; o.vy += Math.sin(pa) * 4.5; ot.alive = false; evts.push("boom"); }
+      if (ot.isShield && dd < ot.r + o.r + 3) { var nx = (o.x - ot.x) / dd, ny = (o.y - ot.y) / dd; var dot = o.vx * nx + o.vy * ny; o.vx -= 2 * dot * nx; o.vy -= 2 * dot * ny; o.x = ot.x + nx * (ot.r + o.r + 5); o.y = ot.y + ny * (ot.r + o.r + 5); }
+    }
+    if (o.wcd > 0) o.wcd--;
+    if (Math.abs(o.x) > 500 || Math.abs(o.y) > 500) { o.alive = false; evts.push("dead"); }
+  }
+  return evts;
+}
+
+// ═══ DRAW OBJECTS — VISUALLY CORRECT ═══
+function drawObj(ctx, o, ox, oy, z, t, buildMode) {
+  var x = ox + o.x * z, y = oy + o.y * z, rv = Math.max(3, o.r * z);
+
+  // ── COMET: Bright head + flame tail ──
+  if (o.type === "comet") {
+    // Tail (drawn from trail, getting thinner and fainter)
+    if (o.trail.length > 2) {
+      for (var ti = 1; ti < o.trail.length; ti++) {
+        var ta = ti / o.trail.length;
+        var tw = rv * 1.2 * (1 - ta);
+        ctx.strokeStyle = hs(30 + ta * 20, 90, 55 + ta * 25, (1 - ta) * 0.6);
+        ctx.lineWidth = Math.max(0.5, tw);
+        ctx.beginPath();
+        ctx.moveTo(ox + o.trail[ti - 1].x * z, oy + o.trail[ti - 1].y * z);
+        ctx.lineTo(ox + o.trail[ti].x * z, oy + o.trail[ti].y * z);
+        ctx.stroke();
+      }
+    }
+    // Coma glow
+    var cg = ctx.createRadialGradient(x, y, rv * 0.2, x, y, rv * 3);
+    cg.addColorStop(0, hs(40, 100, 85, 0.6));
+    cg.addColorStop(0.4, hs(30, 90, 60, 0.2));
+    cg.addColorStop(1, "transparent");
+    ctx.fillStyle = cg; ctx.beginPath(); ctx.arc(x, y, rv * 3, 0, TAU); ctx.fill();
+    // Bright nucleus
+    var cn = ctx.createRadialGradient(x, y, 0, x, y, rv);
+    cn.addColorStop(0, "#fff");
+    cn.addColorStop(0.5, hs(35, 100, 75));
+    cn.addColorStop(1, hs(25, 90, 50, 0.8));
+    ctx.fillStyle = cn; ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.fill();
+    // Velocity arrow in build mode
+    if (buildMode && o.vx !== undefined) {
+      var vl = Math.hypot(o.vx, o.vy) * 30 * z;
+      var va = Math.atan2(o.vy, o.vx);
+      ctx.strokeStyle = hs(40, 90, 70, 0.6); ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(va) * vl, y + Math.sin(va) * vl); ctx.stroke();
+      ctx.fillStyle = hs(40, 90, 70, 0.6); ctx.beginPath();
+      ctx.moveTo(x + Math.cos(va) * vl, y + Math.sin(va) * vl);
+      ctx.lineTo(x + Math.cos(va - 0.35) * (vl - 8), y + Math.sin(va - 0.35) * (vl - 8));
+      ctx.lineTo(x + Math.cos(va + 0.35) * (vl - 8), y + Math.sin(va + 0.35) * (vl - 8));
+      ctx.fill();
+    }
+    return;
+  }
+
+  // ── TARGET: Green bullseye with pulsing rings ──
+  if (o.type === "target") {
+    var tp = 0.5 + 0.4 * Math.sin(t * 3);
+    // Outer ring
+    ctx.strokeStyle = hs(120, 80, 55, tp * 0.6); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(x, y, rv + 8, 0, TAU); ctx.stroke();
+    // Middle ring
+    ctx.strokeStyle = hs(120, 70, 60, tp * 0.8); ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.stroke();
+    // Inner fill
+    ctx.fillStyle = hs(120, 60, 50, 0.12 + tp * 0.08);
+    ctx.beginPath(); ctx.arc(x, y, rv + 8, 0, TAU); ctx.fill();
+    // Center dot
+    ctx.fillStyle = hs(120, 80, 65, tp);
+    ctx.beginPath(); ctx.arc(x, y, 3, 0, TAU); ctx.fill();
+    // Label
+    ctx.fillStyle = hs(120, 60, 65, 0.7);
+    ctx.font = Math.max(9, 10 * z) + "px system-ui"; ctx.textAlign = "center";
+    ctx.fillText("ȚINTĂ", x, y + rv + 16);
+    return;
+  }
+
+  // Gravity radius indicator in build mode
+  if (buildMode && o.gravR && o.placed) {
+    ctx.save();
+    ctx.strokeStyle = hs(o.hue, 30, 50, 0.06 + 0.03 * Math.sin(t * 2));
+    ctx.lineWidth = 1; ctx.setLineDash([3, 6]);
+    ctx.beginPath(); ctx.arc(x, y, o.gravR * z, 0, TAU); ctx.stroke();
+    ctx.setLineDash([]); ctx.restore();
+  }
+
+  // ── STAR: Realistic with solar flares ──
+  if (o.type === "star" || (o.hasGrav && o.mass >= 300 && !o.canAbsorb)) {
+    var pulse = 0.85 + 0.15 * Math.sin(t * 2.5);
+    // Wide corona glow (multi-layer)
+    var sg = ctx.createRadialGradient(x, y, rv * 0.3, x, y, rv * 5);
+    sg.addColorStop(0, hs(o.hue, 100, 90, 0.6 * pulse));
+    sg.addColorStop(0.15, hs(o.hue, 95, 70, 0.35));
+    sg.addColorStop(0.4, hs(o.hue - 5, 85, 50, 0.15));
+    sg.addColorStop(1, "transparent");
+    ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(x, y, rv * 5, 0, TAU); ctx.fill();
+    // Solar flares (12 dynamic rays)
+    ctx.save();
+    for (var ri = 0; ri < 12; ri++) {
+      var ra = ri * TAU / 12 + t * 0.2;
+      var rl = rv * (2 + 0.8 * Math.sin(t * 3 + ri * 1.3));
+      var grd = ctx.createLinearGradient(x, y, x + Math.cos(ra) * rl, y + Math.sin(ra) * rl);
+      grd.addColorStop(0, hs(o.hue, 100, 85, 0.4 * pulse));
+      grd.addColorStop(1, "transparent");
+      ctx.strokeStyle = grd; ctx.lineWidth = 2 + Math.sin(ri + t) * 0.8;
+      ctx.beginPath(); ctx.moveTo(x + Math.cos(ra) * rv * 0.9, y + Math.sin(ra) * rv * 0.9);
+      ctx.lineTo(x + Math.cos(ra) * rl, y + Math.sin(ra) * rl); ctx.stroke();
+    }
+    ctx.restore();
+    // Core with granulation
+    ctx.save();
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.clip();
+    var sc = ctx.createRadialGradient(x - rv * 0.15, y - rv * 0.2, rv * 0.05, x, y, rv);
+    sc.addColorStop(0, "#fffef0");
+    sc.addColorStop(0.25, hs(o.hue + 5, 100, 85));
+    sc.addColorStop(0.6, hs(o.hue, 100, 60));
+    sc.addColorStop(0.9, hs(o.hue + 15, 90, 40));
+    sc.addColorStop(1, hs(o.hue + 25, 80, 25));
+    ctx.fillStyle = sc; ctx.fillRect(x - rv, y - rv, rv * 2, rv * 2);
+    // Sunspots
+    for (var ssi2 = 0; ssi2 < 4; ssi2++) {
+      var saa = ssi2 * 1.5 + t * 0.08;
+      var sspx = x + Math.cos(saa) * rv * 0.4;
+      var sspy = y + Math.sin(saa) * rv * 0.3;
+      ctx.fillStyle = hs(o.hue + 30, 70, 35, 0.6);
+      ctx.beginPath(); ctx.arc(sspx, sspy, rv * 0.08, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+    return;
+  }
+
+  // ── BLACK HOLE: Dark core + accretion disk + photon ring ──
+  if (o.canAbsorb) {
+    // Accretion disk (elliptical ring of hot particles)
+    ctx.save();
+    for (var ai = 0; ai < 120; ai++) {
+      var aa = t * 0.8 + ai * 0.15 + Math.sin(ai * 0.4) * 0.5;
+      var ar = rv * 1.8 + (ai % 25) * 0.8 + Math.sin(ai + t * 2) * 3;
+      var apx = x + Math.cos(aa) * ar;
+      var apy = y + Math.sin(aa) * ar * 0.35;
+      var abr = 0.4 + 0.3 * Math.sin(ai * 0.3 + t);
+      ctx.fillStyle = hs(280 + ai * 0.3, 80, 45 + abr * 25, abr * 0.5);
+      ctx.beginPath(); ctx.arc(apx, apy, 1.2, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+    // Gravitational lensing glow
+    var bg = ctx.createRadialGradient(x, y, rv, x, y, rv * 3);
+    bg.addColorStop(0, hs(280, 60, 20, 0.4));
+    bg.addColorStop(0.5, hs(280, 50, 30, 0.1));
+    bg.addColorStop(1, "transparent");
+    ctx.fillStyle = bg; ctx.beginPath(); ctx.arc(x, y, rv * 3, 0, TAU); ctx.fill();
+    // Photon ring
+    ctx.strokeStyle = hs(280, 90, 65, 0.5); ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(x, y, rv + 3, 0, TAU); ctx.stroke();
+    // Event horizon (pure black)
+    ctx.fillStyle = "#000"; ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.fill();
+    return;
+  }
+
+  // ── PLANET: Realistic 3D with atmospheric bands ──
+  if (o.hasGrav && o.mass >= 40 && o.mass < 300) {
+    // Outer atmosphere glow (blue rim)
+    var rimG = ctx.createRadialGradient(x, y, rv * 0.95, x, y, rv * 1.4);
+    rimG.addColorStop(0, hs(o.hue - 20, 70, 60, 0.35));
+    rimG.addColorStop(0.5, hs(o.hue, 50, 50, 0.12));
+    rimG.addColorStop(1, "transparent");
+    ctx.fillStyle = rimG; ctx.beginPath(); ctx.arc(x, y, rv * 1.4, 0, TAU); ctx.fill();
+    // Clip to sphere for surface details
+    ctx.save();
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.clip();
+    // Base 3D sphere gradient
+    var pg = ctx.createRadialGradient(x - rv * 0.35, y - rv * 0.4, rv * 0.05, x + rv * 0.2, y + rv * 0.3, rv * 1.1);
+    pg.addColorStop(0, hs(o.hue - 15, 55, 88));
+    pg.addColorStop(0.2, hs(o.hue - 5, 60, 70));
+    pg.addColorStop(0.5, hs(o.hue, 70, 50));
+    pg.addColorStop(0.85, hs(o.hue + 10, 65, 25));
+    pg.addColorStop(1, hs(o.hue + 15, 50, 8));
+    ctx.fillStyle = pg; ctx.fillRect(x - rv, y - rv, rv * 2, rv * 2);
+    // Atmospheric bands (horizontal stripes)
+    for (var bi = 0; bi < 6; bi++) {
+      var by = y - rv + (bi / 6) * rv * 2 + (bi % 2) * 2;
+      var bh = rv * 0.18 + (bi % 2) * 1.5;
+      ctx.fillStyle = hs(o.hue + (bi % 2 ? -8 : 8), 60, (bi % 2 ? 45 : 58), 0.25);
+      ctx.fillRect(x - rv, by, rv * 2, bh);
+    }
+    // Storm spot (seeded by object id to stay consistent)
+    var sid = (o.id || "x").charCodeAt(0) || 1;
+    var spAng = (sid * 0.37 + t * 0.05) % TAU;
+    var spx = x + Math.cos(spAng) * rv * 0.35;
+    var spy = y + Math.sin(spAng) * rv * 0.25 - rv * 0.1;
+    var spG = ctx.createRadialGradient(spx, spy, 0, spx, spy, rv * 0.3);
+    spG.addColorStop(0, hs(o.hue + 20, 80, 40, 0.7));
+    spG.addColorStop(1, "transparent");
+    ctx.fillStyle = spG; ctx.beginPath(); ctx.arc(spx, spy, rv * 0.3, 0, TAU); ctx.fill();
+    ctx.restore();
+    // Specular highlight (wet shine on top-left)
+    var hlG = ctx.createRadialGradient(x - rv * 0.4, y - rv * 0.45, 0, x - rv * 0.4, y - rv * 0.45, rv * 0.5);
+    hlG.addColorStop(0, "rgba(255,255,255,0.5)");
+    hlG.addColorStop(1, "transparent");
+    ctx.fillStyle = hlG; ctx.beginPath(); ctx.arc(x - rv * 0.4, y - rv * 0.45, rv * 0.5, 0, TAU); ctx.fill();
+    // Dark rim shadow
+    ctx.strokeStyle = "rgba(0,0,0,0.4)"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.stroke();
+    return;
+  }
+
+  // ── MOON: Cratered surface ──
+  if (o.hasGrav && o.mass < 40 && o.mass > 0) {
+    ctx.save();
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.clip();
+    var mg = ctx.createRadialGradient(x - rv * 0.3, y - rv * 0.35, rv * 0.05, x + rv * 0.2, y + rv * 0.2, rv * 1.1);
+    mg.addColorStop(0, hs(o.hue, 15, 88));
+    mg.addColorStop(0.4, hs(o.hue, 12, 60));
+    mg.addColorStop(0.85, hs(o.hue, 10, 28));
+    mg.addColorStop(1, hs(o.hue, 8, 10));
+    ctx.fillStyle = mg; ctx.fillRect(x - rv, y - rv, rv * 2, rv * 2);
+    // Crater impacts
+    var craters = [[0.2, -0.15, 0.22], [-0.35, 0.15, 0.18], [0.1, 0.35, 0.14], [-0.1, -0.35, 0.12]];
+    for (var ci = 0; ci < craters.length; ci++) {
+      var cr = craters[ci];
+      var cx2 = x + cr[0] * rv, cy2 = y + cr[1] * rv, crs = cr[2] * rv;
+      ctx.fillStyle = "rgba(0,0,0,0.35)";
+      ctx.beginPath(); ctx.arc(cx2, cy2, crs, 0, TAU); ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.15)";
+      ctx.beginPath(); ctx.arc(cx2 - crs * 0.2, cy2 - crs * 0.2, crs * 0.7, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+    ctx.strokeStyle = "rgba(0,0,0,0.4)"; ctx.lineWidth = 0.8;
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.stroke();
+    return;
+  }
+
+  // ── VORTEX: Spiral arms ──
+  if (o.hasSpin) {
+    ctx.save();
+    for (var vi = 0; vi < 3; vi++) {
+      ctx.strokeStyle = hs(270, 60, 50, 0.35); ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (var vs = 0; vs < 25; vs++) {
+        var va = vs * 0.35 + vi * TAU / 3 + t * 2;
+        var vr = 3 + vs * rv / 25;
+        vs === 0 ? ctx.moveTo(x + Math.cos(va) * vr, y + Math.sin(va) * vr) : ctx.lineTo(x + Math.cos(va) * vr, y + Math.sin(va) * vr);
+      }
+      ctx.stroke();
+    }
+    // Center
+    ctx.fillStyle = hs(270, 70, 55, 0.5);
+    ctx.beginPath(); ctx.arc(x, y, 3, 0, TAU); ctx.fill();
+    ctx.restore();
+    return;
+  }
+
+  // ── WORMHOLE: Swirling portal ──
+  if (o.wormId) {
+    var wp = 0.4 + 0.3 * Math.sin(t * 4 + (o.wormId === "A" ? 0 : Math.PI));
+    // Swirl effect
+    ctx.save();
+    for (var wi = 0; wi < 20; wi++) {
+      var wa = wi * 0.5 + t * 3 * (o.wormId === "A" ? 1 : -1);
+      var wr = rv * (wi / 20);
+      ctx.fillStyle = hs(o.hue, 70, 55, wp * (1 - wi / 20) * 0.4);
+      ctx.beginPath(); ctx.arc(x + Math.cos(wa) * wr, y + Math.sin(wa) * wr, 2, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+    // Ring
+    ctx.strokeStyle = hs(o.hue, 80, 60, wp); ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.stroke();
+    // Center
+    ctx.fillStyle = hs(o.hue, 40, 10, 0.5);
+    ctx.beginPath(); ctx.arc(x, y, rv * 0.5, 0, TAU); ctx.fill();
+    // Label
+    ctx.fillStyle = hs(o.hue, 60, 70, 0.7);
+    ctx.font = "bold " + Math.max(10, 12 * z) + "px system-ui"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(o.wormId, x, y);
+    return;
+  }
+
+  // ── BOOSTER: Energy field with lightning ──
+  if (o.isBoost) {
+    var bp = 0.5 + 0.3 * Math.sin(t * 6);
+    ctx.fillStyle = hs(55, 80, 50, 0.15 + bp * 0.1);
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.fill();
+    ctx.strokeStyle = hs(55, 90, 65, bp); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.stroke();
+    // Lightning bolts
+    for (var bi = 0; bi < 4; bi++) {
+      var ba = bi * TAU / 4 + t * 2;
+      ctx.strokeStyle = hs(55, 100, 75, bp * 0.7); ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x + Math.cos(ba) * rv * 0.3, y + Math.sin(ba) * rv * 0.3);
+      ctx.lineTo(x + Math.cos(ba + 0.2) * rv * 0.7, y + Math.sin(ba + 0.2) * rv * 0.7);
+      ctx.lineTo(x + Math.cos(ba - 0.1) * rv * 0.9, y + Math.sin(ba - 0.1) * rv * 0.9);
+      ctx.stroke();
+    }
+    return;
+  }
+
+  // ── BOMB: Red pulsing sphere with fuse ──
+  if (o.isBomb) {
+    var bpulse = 0.5 + 0.4 * Math.sin(t * 7);
+    ctx.fillStyle = hs(0, 70, 30, 0.7);
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.fill();
+    ctx.fillStyle = hs(0, 90, 50, bpulse);
+    ctx.beginPath(); ctx.arc(x, y, rv * 0.5, 0, TAU); ctx.fill();
+    // Fuse spark
+    ctx.fillStyle = hs(40, 100, 80, bpulse);
+    ctx.beginPath(); ctx.arc(x, y - rv - 3, 2, 0, TAU); ctx.fill();
+    return;
+  }
+
+  // ── SHIELD: Arc barrier with glow ──
+  if (o.isShield) {
+    ctx.strokeStyle = hs(160, 70, 55, 0.7); ctx.lineWidth = 3.5;
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.stroke();
+    ctx.strokeStyle = hs(160, 50, 65, 0.2); ctx.lineWidth = 8;
+    ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.stroke();
+    // Inner glow
+    var shg = ctx.createRadialGradient(x, y, rv * 0.5, x, y, rv);
+    shg.addColorStop(0, hs(160, 50, 60, 0.08));
+    shg.addColorStop(1, "transparent");
+    ctx.fillStyle = shg; ctx.beginPath(); ctx.arc(x, y, rv, 0, TAU); ctx.fill();
+    return;
+  }
+
+  // ── PLACED INDICATOR ──
+  if (o.placed) {
+    ctx.strokeStyle = hs(o.hue || 0, 40, 55, 0.2); ctx.lineWidth = 1;
+    ctx.setLineDash([2, 4]);
+    ctx.beginPath(); ctx.arc(x, y, rv + 5, 0, TAU); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+}
+
+// ═══ MAIN COMPONENT ═══
+function App() {
+  var cvRef = useRef(null);
+  var stRef = useRef({ objs: [], t: 0, running: false, won: false, lost: false, placed: 0, taps: [], confetti: [] });
+  var animRef = useRef(null);
+  var zRef = useRef(1.5);
+  var selTRef = useRef(null);
+  var tcRef = useRef({});
+  var undoStack = useRef([]);
+
+  var _aid = useState(null), aid = _aid[0], setAid = _aid[1];
+  var _ac = useState(null), aCat = _ac[0], setACat = _ac[1];
+  var _sr = useState(""), srch = _sr[0], setSrch = _sr[1];
+  var _mb = useState(false), mob = _mb[0], setMob = _mb[1];
+  var _ph = useState("build"), phase = _ph[0], setPhase = _ph[1];
+  var _tl = useState(null), selT = _tl[0], setSelT = _tl[1];
+  var _tc = useState({}), tc = _tc[0], setTc = _tc[1];
+  var _pl = useState(0), placed = _pl[0], setPlaced = _pl[1];
+  var _st = useState(0), stars = _st[0], setStars = _st[1];
+  var _pr = useState({}), prog = _pr[0], setProg = _pr[1];
+  var _tut = useState(false), showTut = _tut[0], setShowTut = _tut[1];
+  var _spd = useState(1), simSpeed = _spd[0], setSimSpeed = _spd[1];
+  var _drg = useState(null), dragId = _drg[0], setDragId = _drg[1];
+  var _v3d = useState(null), view3d = _v3d[0], setView3d = _v3d[1];
+  var mouseRef = useRef({ x: 0, y: 0, on: false });
+
+  selTRef.current = selT;
+  tcRef.current = tc;
+  var starsRef = useRef(0);
+  starsRef.current = stars;
+  useEffect(function() { var c = function() { setMob(window.innerWidth < 768); }; c(); window.addEventListener("resize", c); return function() { window.removeEventListener("resize", c); }; }, []);
+
+  // Load progress
+  useEffect(function() {
+    async function lp() { try { var r = await window.storage.get("cosmos108"); if (r && r.value) setProg(JSON.parse(r.value)); } catch(e) {} }
+    lp();
+  }, []);
+
+  var pz = PZ.find(function(p) { return p.id === aid; });
+  var catO = pz ? CATS.find(function(c) { return c.id === pz.cat; }) : null;
+
+  var setupPz = useCallback(function(p) {
+    var S = stRef.current;
+    S.t = 0; S.running = false; S.won = false; S.lost = false; S.placed = 0; S.taps = []; S.confetti = [];
+    S.objs = []; zRef.current = window.innerWidth < 500 ? 1.3 : 1.8;
+    undoStack.current = [];
+    p.fixed.forEach(function(f, idx) {
+      var tp = TYPES[f.type] || {};
+      S.objs.push({ id: "F" + idx, type: f.type, x: f.x, y: f.y, vx: f.vx || 0, vy: f.vy || 0,
+        mass: f.type === "comet" ? 5 : (tp.mass || 0), r: tp.r || 15, hue: tp.hue || 0,
+        static: f.type !== "comet", hasGrav: tp.grav || false, canAbsorb: tp.absorb || false,
+        wormId: tp.worm || null, isBoost: tp.boost || false, isBomb: tp.explode || false,
+        isShield: tp.reflect || false, hasSpin: tp.spin || false, gravR: tp.gravR || 0,
+        alive: true, trail: [], placed: false, wcd: 0 });
+    });
+    var counts = {}; p.tools.forEach(function(t) { counts[t.t] = t.c; });
+    setTc(counts); setPhase("build"); setSelT(null); setPlaced(0); setStars(0); setSimSpeed(1); setDragId(null);
+    if (p.id === 1) setShowTut(true);
+  }, []);
+
+  // Animation loop
+  useEffect(function() {
+    if (!aid || !pz) return;
+    var cv = cvRef.current; if (!cv) return;
+    var ctx = cv.getContext("2d");
+    var rsz = function() { var d = Math.min(window.devicePixelRatio || 1, 2); cv.width = cv.clientWidth * d; cv.height = cv.clientHeight * d; ctx.setTransform(d, 0, 0, d, 0, 0); };
+    rsz(); window.addEventListener("resize", rsz);
+    setupPz(pz);
+
+    var loop = function() {
+      var S = stRef.current, w = cv.clientWidth, h = cv.clientHeight, z = zRef.current;
+      var ox = w / 2, oy = h / 2;
+      S.t += 0.016;
+
+      ctx.clearRect(0, 0, w, h);
+      // 2D BG stars removed — Three.js bg provides them
+      // BG stars
+      // Stars provided by 3D background layer
+      // Build grid
+      if (!S.running) { ctx.globalAlpha = 0.025; ctx.strokeStyle = "#fff"; ctx.lineWidth = 0.5; var gs = 30 * z;
+        for (var gx = ox % gs; gx < w; gx += gs) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke(); }
+        for (var gy = oy % gs; gy < h; gy += gs) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke(); }
+        ctx.globalAlpha = 1; }
+
+      // Physics
+      if (S.running && !S.won && !S.lost) {
+        var steps = Math.max(1, Math.round(simSpeed));
+        for (var si2 = 0; si2 < steps && !S.won && !S.lost; si2++) {
+          var evts = stepPhys(S.objs);
+          for (var ei = 0; ei < evts.length; ei++) {
+            if (evts[ei] === "win" && !S.won) { S.won = true; S.running = false; setPhase("win");
+              var st2 = S.placed <= pz.stars[2] ? 3 : S.placed <= pz.stars[1] ? 2 : 1; setStars(st2);
+              S.confetti = []; for (var ci = 0; ci < 50; ci++) { var ca = ci * TAU / 50; S.confetti.push({ x: w / 2, y: h * 0.35, vx: Math.cos(ca) * (2 + Math.random() * 5), vy: Math.sin(ca) * (2 + Math.random() * 5) - 3, hue: ci * 7, life: 1 }); } }
+            if (evts[ei] === "dead" && !S.won) { var any = S.objs.some(function(o) { return o.type === "comet" && o.alive; }); if (!any) { S.lost = true; S.running = false; setPhase("lose"); } }
+          }
+        }
+      }
+
+      // Trajectory preview in build mode
+      if (!S.running && !S.won && !S.lost) {
+        var comet = S.objs.find(function(o) { return o.type === "comet" && o.alive; });
+        if (comet) {
+          var simO = S.objs.filter(function(o) { return o.alive; }).map(function(o) { return { x: o.x, y: o.y, vx: o.vx || 0, vy: o.vy || 0, mass: o.mass, r: o.r, hasGrav: o.hasGrav, hasSpin: o.hasSpin, static: o.static, type: o.type, canAbsorb: o.canAbsorb, wormId: o.wormId, isBoost: o.isBoost, isBomb: o.isBomb, isShield: o.isShield }; });
+          var simC = simO.find(function(o) { return o.type === "comet"; });
+          var pts = []; var done = false;
+          if (simC) { for (var ps = 0; ps < 200 && !done; ps++) {
+            var sax = 0, say = 0;
+            for (var sj = 0; sj < simO.length; sj++) { var sb = simO[sj]; if (sb === simC || !sb.hasGrav) continue;
+              var sdx = sb.x - simC.x, sdy = sb.y - simC.y, sd = Math.max(6, Math.hypot(sdx, sdy));
+              if (sb.hasSpin && sd < 85) { sax += (-sdy / sd) * 0.12; say += (sdx / sd) * 0.12; }
+              var sf = 0.5 * simC.mass * sb.mass / (sd * sd); sax += sf * sdx / (sd * simC.mass); say += sf * sdy / (sd * simC.mass);
+              if (sd < sb.r + simC.r && (sb.canAbsorb || sb.type === "target")) done = true;
+              if (sb.isBoost && sd < sb.r + 6) { var ssp = Math.hypot(simC.vx, simC.vy) || 1; simC.vx = (simC.vx / ssp) * (ssp + 1.5); simC.vy = (simC.vy / ssp) * (ssp + 1.5); }
+              if (sb.wormId && sd < sb.r) { var sex = simO.find(function(xx) { return xx.wormId && xx.wormId !== sb.wormId; }); if (sex) { simC.x = sex.x + simC.vx * 6; simC.y = sex.y + simC.vy * 6; } }
+            }
+            simC.vx += sax; simC.vy += say; simC.x += simC.vx; simC.y += simC.vy;
+            if (Math.abs(simC.x) > 500 || Math.abs(simC.y) > 500) done = true;
+            if (ps % 2 === 0) pts.push({ x: simC.x, y: simC.y });
+          }}
+          if (pts.length > 1) { ctx.save(); ctx.setLineDash([3, 5]);
+            for (var pi = 1; pi < pts.length; pi++) { ctx.strokeStyle = hs(35, 60, 55, 0.25 * (1 - pi / pts.length)); ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(ox + pts[pi - 1].x * z, oy + pts[pi - 1].y * z); ctx.lineTo(ox + pts[pi].x * z, oy + pts[pi].y * z); ctx.stroke(); }
+            ctx.setLineDash([]); ctx.restore(); }
+        }
+      }
+
+      // Draw all objects
+      S.objs.forEach(function(o) { if (o.alive) drawObj(ctx, o, ox, oy, z, S.t, !S.running); });
+
+      // Ghost preview at mouse position (read from refs)
+      var m = mouseRef.current;
+      var curSel = selTRef.current;
+      var curTc = tcRef.current;
+      if (!S.running && curSel && m.on && (curTc[curSel] || 0) > 0) {
+        var gt = TYPES[curSel];
+        if (gt) {
+          ctx.save(); ctx.globalAlpha = 0.5;
+          var gr = (gt.r || 12) * z;
+          ctx.strokeStyle = hs(gt.hue, 70, 60, 0.8); ctx.lineWidth = 2;
+          ctx.setLineDash([4, 4]);
+          ctx.beginPath(); ctx.arc(m.x, m.y, gr, 0, TAU); ctx.stroke();
+          if (gt.gravR) { ctx.strokeStyle = hs(gt.hue, 40, 50, 0.25);
+            ctx.beginPath(); ctx.arc(m.x, m.y, gt.gravR * z, 0, TAU); ctx.stroke(); }
+          ctx.setLineDash([]);
+          ctx.fillStyle = hs(gt.hue, 60, 50, 0.2);
+          ctx.beginPath(); ctx.arc(m.x, m.y, gr, 0, TAU); ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      // Tap ripples
+      S.taps = S.taps.filter(function(tap) { tap.life -= 0.03; if (tap.life <= 0) return false;
+        ctx.strokeStyle = hs(120, 70, 60, tap.life * 0.4); ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(tap.x, tap.y, (1 - tap.life) * 25, 0, TAU); ctx.stroke(); return true; });
+
+      // Win
+      if (S.won) {
+        S.confetti = S.confetti.filter(function(c) { c.x += c.vx; c.y += c.vy; c.vy += 0.08; c.life -= 0.006;
+          if (c.life <= 0) return false; ctx.fillStyle = hs(c.hue, 80, 60, c.life);
+          ctx.fillRect(c.x - 2, c.y - 2, 4, 4); return true; });
+        ctx.fillStyle = "rgba(0,25,0,0.35)"; ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = hs(120, 80, 65); ctx.font = "bold 26px Georgia, serif"; ctx.textAlign = "center";
+        ctx.fillText("REZOLVAT!", w / 2, h * 0.32);
+        var starS = ""; for (var ssi = 0; ssi < 3; ssi++) starS += ssi < starsRef.current ? "⭐" : "☆";
+        ctx.font = "22px serif"; ctx.fillText(starS, w / 2, h * 0.40);
+        ctx.fillStyle = "#999"; ctx.font = "12px system-ui"; ctx.fillText(S.placed + " obiecte folosite", w / 2, h * 0.47);
+      }
+      if (S.lost) { ctx.fillStyle = "rgba(25,0,0,0.35)"; ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = hs(0, 80, 60); ctx.font = "bold 22px Georgia, serif"; ctx.textAlign = "center";
+        ctx.fillText("Cometa pierdută!", w / 2, h * 0.38);
+        ctx.fillStyle = "#888"; ctx.font = "12px system-ui"; ctx.fillText("Apasă ↻ Reset", w / 2, h * 0.46); }
+
+      animRef.current = requestAnimationFrame(loop);
+    };
+    animRef.current = requestAnimationFrame(loop);
+    return function() { cancelAnimationFrame(animRef.current); window.removeEventListener("resize", rsz); };
+  }, [aid, pz, setupPz, simSpeed]);
+
+  var onPtrDown = useCallback(function(e) {
+    var cv = cvRef.current; if (!cv) return;
+    var S = stRef.current;
+    if (!S || S.running || S.won || S.lost) return;
+    var rect = cv.getBoundingClientRect();
+    var sx = e.clientX - rect.left, sy = e.clientY - rect.top;
+    var z = zRef.current, wx = (sx - cv.clientWidth / 2) / z, wy = (sy - cv.clientHeight / 2) / z;
+    // Drag check first
+    for (var i = S.objs.length - 1; i >= 0; i--) {
+      var o = S.objs[i];
+      if (o.placed && o.alive && dst({ x: wx, y: wy }, o) < o.r + 12) { setDragId(o.id); return; }
+    }
+    // Read fresh values from refs (always current)
+    var curSel = selTRef.current;
+    var curTc = tcRef.current;
+    if (curSel && (curTc[curSel] || 0) > 0) {
+      var tp = TYPES[curSel]; if (!tp) return;
+      var nid = "P" + Date.now() + "_" + Math.floor(Math.random() * 1000);
+      S.objs.push({ id: nid, type: curSel, x: wx, y: wy, vx: 0, vy: 0, mass: tp.mass, r: tp.r, hue: tp.hue,
+        static: true, hasGrav: tp.grav || false, canAbsorb: tp.absorb || false, wormId: tp.worm || null,
+        isBoost: tp.boost || false, isBomb: tp.explode || false, isShield: tp.reflect || false,
+        hasSpin: tp.spin || false, gravR: tp.gravR || 0, alive: true, trail: [], placed: true, wcd: 0 });
+      S.placed++;
+      S.taps.push({ x: sx, y: sy, life: 1 });
+      setPlaced(S.placed);
+      var nc = Object.assign({}, curTc);
+      nc[curSel] = nc[curSel] - 1;
+      setTc(nc);
+      undoStack.current.push({ id: nid, type: curSel });
+    }
+  }, []);
+
+  var onPtrMove = useCallback(function(e) {
+    var cv = cvRef.current; if (!cv) return;
+    var rect = cv.getBoundingClientRect();
+    var sx = e.clientX - rect.left, sy = e.clientY - rect.top;
+    mouseRef.current = { x: sx, y: sy, on: true };
+    if (dragId) {
+      var z = zRef.current; var S = stRef.current;
+      var obj = S.objs.find(function(o) { return o.id === dragId; });
+      if (obj) { obj.x = (sx - cv.clientWidth / 2) / z; obj.y = (sy - cv.clientHeight / 2) / z; }
+    }
+  }, [dragId]);
+
+  var onPtrUp = useCallback(function() { setDragId(null); }, []);
+  var onPtrLeave = useCallback(function() { setDragId(null); mouseRef.current.on = false; }, []);
+
+  var resetPz = function() { if (pz) setupPz(pz); };
+  var undoLast = function() { var s = undoStack.current; if (!s.length) return; var last = s.pop(); var S = stRef.current;
+    for (var i = S.objs.length - 1; i >= 0; i--) { if (S.objs[i].id === last.id) { S.objs.splice(i, 1); break; } }
+    S.placed = Math.max(0, S.placed - 1); setPlaced(S.placed);
+    var nc = Object.assign({}, tc); nc[last.type] = (nc[last.type] || 0) + 1; setTc(nc); };
+  var leavePz = function() { if (pz && stRef.current.won) { var p = Object.assign({}, prog);
+    if (!p[pz.id] || stars > (p[pz.id].st || 0)) { p[pz.id] = { st: stars }; setProg(p);
+      try { window.storage.set("cosmos108", JSON.stringify(p)); } catch(e) {} } }
+    setAid(null); setPhase("build"); setSimSpeed(1); };
+
+  var btnS = function(a, d) { return { background: a ? "rgba(255,200,0,0.2)" : "rgba(255,255,255,0.07)", border: a ? "1px solid rgba(255,200,0,0.3)" : "1px solid rgba(255,255,255,0.08)", color: d ? "#333" : a ? "#ffd54f" : "#ccc", borderRadius: 8, padding: "6px 12px", fontSize: 11, cursor: d ? "default" : "pointer", fontFamily: "system-ui", fontWeight: a ? 700 : 400 }; };
+
+  // ═══ 3D UNIVERSE VIEW ═══
+  if (view3d) {
+    return <Universe3D puzzle={view3d} onClose={function() { setView3d(null); }} catO={CATS.find(function(c) { return c.id === view3d.cat; })} />;
+  }
+
+  // ═══ PUZZLE VIEW ═══
+  if (aid && pz) {
+    return (
+      <div style={{ width: "100vw", height: "100vh", background: "#060610", position: "fixed", top: 0, left: 0, overflow: "hidden", zIndex: 100 }}>
+        <Bg3D puzzleId={pz.id} catId={pz.cat} />
+        <canvas ref={cvRef} style={{ display: "block", touchAction: "none", position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 2, background: "transparent" }}
+          onPointerDown={onPtrDown} onPointerMove={onPtrMove} onPointerUp={onPtrUp} onPointerLeave={onPtrLeave} />
+
+        {/* Ghost preview follows mouse — drawn on canvas */}
+
+        {/* Tutorial */}
+        {showTut && (
+          <div onClick={function() { setShowTut(false); }} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.65)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, padding: 16 }}>
+            <div style={{ background: "rgba(8,10,20,0.95)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "18px 22px", maxWidth: 300, textAlign: "center" }}>
+              <div style={{ fontSize: 11, color: "#fbbf24", fontWeight: 700, fontFamily: "system-ui", marginBottom: 8 }}>CUM SE JOACĂ</div>
+              <div style={{ fontSize: 12, color: "#ddd", lineHeight: 1.7, fontFamily: "system-ui", textAlign: "left" }}>
+                {"1. Cometa ☄ pleacă în direcția săgeții"}<br/>
+                {"2. Selectează un obiect din toolbox ↓"}<br/>
+                {"3. Apasă pe ecran unde vrei să-l pui"}<br/>
+                {"4. Gravitația va devia cometa"}<br/>
+                {"5. Apasă "}<span style={{ color: "#ffd54f", fontWeight: 700 }}>{"▶ PLAY"}</span><br/>
+                {"6. Cometa → 🎯 = Victorie!"}
+              </div>
+              <div style={{ fontSize: 9, color: "#666", marginTop: 8, fontFamily: "system-ui" }}>Mai puține obiecte = mai multe ⭐</div>
+              <div style={{ marginTop: 10, fontSize: 10, color: "#fbbf24" }}>Apasă pentru a închide</div>
+            </div>
+          </div>
+        )}
+
+        {/* Top HUD */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, background: "linear-gradient(to bottom,rgba(0,0,0,0.8),transparent)", padding: mob ? "8px 8px 14px" : "10px 14px 20px", pointerEvents: "none", zIndex: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 5, flexWrap: "wrap", pointerEvents: "auto" }}>
+            <button onClick={leavePz} style={btnS()}>{"←"}</button>
+            <span style={{ fontSize: 8, color: catO ? catO.c : "#888", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "system-ui" }}>{catO ? catO.i + " " + catO.l : ""} #{pz.id}</span>
+            <div style={{ marginLeft: "auto", display: "flex", gap: 3, alignItems: "center" }}>
+              {phase === "build" && <button onClick={undoLast} disabled={!undoStack.current.length} style={btnS(false, !undoStack.current.length)}>{"↩"}</button>}
+              {phase === "build" && <button onClick={function() { stRef.current.running = true; setPhase("play"); }} style={btnS(true)}>{"▶ PLAY"}</button>}
+              {phase === "play" && [0.5, 1, 2, 4].map(function(s) { return <button key={s} onClick={function() { setSimSpeed(s); }} style={btnS(simSpeed === s)}>{s + "×"}</button>; })}
+              <button onClick={resetPz} style={btnS()}>{"↻"}</button>
+              <button onClick={function() { setView3d(pz); }} style={Object.assign({}, btnS(), { background: "rgba(167,139,250,0.2)", border: "1px solid rgba(167,139,250,0.4)", color: "#c4b5fd" })}>{"🌌 3D"}</button>
+              <button onClick={function() { setShowTut(true); }} style={btnS()}>{"?"}</button>
+            </div>
+          </div>
+          <div style={{ fontSize: mob ? 13 : 16, fontWeight: 800, color: "#fff", fontFamily: "Georgia,serif", marginTop: 2 }}>{pz.n}</div>
+          <div style={{ fontSize: 9, color: "#999", fontFamily: "system-ui" }}>{pz.goal}</div>
+          {phase === "build" && <div style={{ fontSize: 8, color: selT ? hs(TYPES[selT].hue, 70, 65) : "#555", fontFamily: "system-ui", marginTop: 1 }}>
+            {selT ? ICONS[selT] + " " + TYPES[selT].name + " — apasă pe ecran!" : "Selectează de mai jos ↓"}{" · " + placed + " plasate · ⭐⭐⭐=" + pz.stars[2]}</div>}
+        </div>
+
+        {/* Toolbox */}
+        {phase === "build" && (
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "rgba(5,5,15,0.93)", backdropFilter: "blur(8px)", borderTop: "1px solid rgba(255,255,255,0.06)", padding: mob ? "5px 5px 10px" : "6px 12px 10px", zIndex: 10 }}>
+            <div style={{ display: "flex", gap: 4, overflowX: "auto", paddingBottom: 2 }}>
+              {pz.tools.map(function(t) {
+                var tp = TYPES[t.t]; var cnt = tc[t.t] || 0; var isA = selT === t.t && cnt > 0;
+                return (
+                  <button key={t.t} onClick={function() { if (cnt > 0) setSelT(isA ? null : t.t); }}
+                    style={{ background: isA ? hs(tp.hue, 35, 20, 0.6) : "rgba(255,255,255,0.04)",
+                      border: isA ? "2px solid " + hs(tp.hue, 70, 55) : "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: 10, padding: mob ? "6px 8px" : "7px 12px", cursor: cnt > 0 ? "pointer" : "default",
+                      opacity: cnt > 0 ? 1 : 0.25, display: "flex", flexDirection: "column", alignItems: "center", gap: 1,
+                      minWidth: mob ? 50 : 58, flexShrink: 0 }}>
+                    <span style={{ fontSize: mob ? 18 : 22 }}>{ICONS[t.t] || "●"}</span>
+                    <span style={{ fontSize: 7, color: "#aaa", fontFamily: "system-ui" }}>{tp.name}</span>
+                    <span style={{ fontSize: 10, color: isA ? hs(tp.hue, 80, 65) : "#555", fontWeight: 700, fontFamily: "system-ui" }}>{"×" + cnt}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
+              <span style={{ fontSize: 7, color: "#444", fontFamily: "system-ui" }}>{"Linia punctată = traiectoria cometei"}</span>
+              <div style={{ display: "flex", gap: 6 }}>
+                <a href="https://alexio.tf" target="_blank" rel="noopener noreferrer" style={{ fontSize: 7, color: "#444", textDecoration: "none" }}>alexio.tf</a>
+                <a href="https://www.patreon.com/c/alexio_tf" target="_blank" rel="noopener noreferrer" style={{ fontSize: 7, color: "#f96854", textDecoration: "none", fontWeight: 700 }}>{"☕ Susține"}</a>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Post-play nav */}
+        {(phase === "win" || phase === "lose") && (
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(to top,rgba(0,0,0,0.8),transparent)", padding: "10px 14px 14px", display: "flex", justifyContent: "space-between" }}>
+            <button onClick={function() { leavePz(); var p = PZ.find(function(pp) { return pp.id === aid - 1; }); if (p) setTimeout(function() { setAid(p.id); }, 50); }} disabled={aid <= 1} style={btnS(false, aid <= 1)}>{"◂"}</button>
+            <button onClick={resetPz} style={btnS(true)}>{"↻ Reîncearcă"}</button>
+            <button onClick={function() { leavePz(); var n = PZ.find(function(pp) { return pp.id === aid + 1; }); if (n) setTimeout(function() { setAid(n.id); }, 50); }} disabled={aid >= 108} style={btnS(false, aid >= 108)}>{"▸"}</button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ═══ GALLERY ═══
+  var filtered = PZ.filter(function(p) { if (aCat && p.cat !== aCat) return false; if (srch && p.n.toLowerCase().indexOf(srch.toLowerCase()) === -1) return false; return true; });
+  var tSt = 0, exp = 0; Object.keys(prog).forEach(function(k) { exp++; tSt += (prog[k].st || 0); });
+
+  return (
+    <div style={{ width: "100vw", minHeight: "100vh", background: "#08080f", fontFamily: "Georgia,serif", color: "#e0e0e0" }}>
+      <div style={{ padding: mob ? "14px 10px" : "24px 20px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+        <div style={{ fontSize: 7, letterSpacing: "0.2em", textTransform: "uppercase", color: "#444", fontFamily: "system-ui" }}>The Incredible Cosmos · Printre inteligențe</div>
+        <h1 style={{ fontSize: mob ? 19 : 26, fontWeight: 800, margin: "2px 0", color: "#fff" }}>108 Puzzle-uri Cosmice</h1>
+        <p style={{ fontSize: 9, color: "#666", margin: "3px 0 0", fontFamily: "system-ui", maxWidth: 360, lineHeight: 1.5 }}>Plasează planete și stele. Apasă Play. Gravitația ghidează cometa la țintă.</p>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 5 }}>
+          <div style={{ flex: 1, height: 4, background: "rgba(255,255,255,0.05)", borderRadius: 2, overflow: "hidden" }}>
+            <div style={{ width: (exp / 108 * 100) + "%", height: "100%", background: "linear-gradient(90deg,#fbbf24,#f59e0b)", borderRadius: 2 }} /></div>
+          <span style={{ fontSize: 8, color: "#777", fontFamily: "system-ui" }}>{exp + "/108"}</span>
+          <span style={{ fontSize: 10, color: "#fbbf24" }}>{"⭐" + tSt}</span>
+        </div>
+        <input value={srch} onChange={function(e) { setSrch(e.target.value); }} placeholder="Caută..." style={{ marginTop: 6, padding: "5px 9px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.03)", color: "#ccc", fontSize: 10, width: mob ? "100%" : 180, outline: "none", fontFamily: "system-ui" }} />
+      </div>
+      <div style={{ display: "flex", gap: 3, padding: mob ? "5px 4px" : "8px 20px", overflowX: "auto", borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
+        <CTab a={!aCat} o={function() { setACat(null); }} c="#888">Toate</CTab>
+        {CATS.map(function(c) { return <CTab key={c.id} a={aCat === c.id} o={function() { setACat(aCat === c.id ? null : c.id); }} c={c.c}>{c.i + (mob ? "" : " " + c.l)}</CTab>; })}
+      </div>
+      <style>{"@keyframes orbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}@keyframes glow{0%,100%{opacity:.4}50%{opacity:.9}}.pz-card{transition:all .3s cubic-bezier(.2,.9,.3,1.3);position:relative;overflow:hidden}.pz-card:hover{transform:translateY(-4px) scale(1.02);background:rgba(255,255,255,.06)!important;border-color:var(--cat-color)!important;box-shadow:0 10px 30px -10px var(--cat-glow),0 0 0 1px var(--cat-color)}.pz-card:hover .pz-preview{opacity:1}.pz-preview{position:absolute;inset:0;opacity:.55;pointer-events:none}.pz-orbit{position:absolute;top:50%;left:50%;border-radius:50%;border:1px dashed rgba(255,255,255,.08);animation:orbit 20s linear infinite}.pz-planet{position:absolute;top:50%;left:50%;width:8px;height:8px;border-radius:50%;box-shadow:0 0 12px currentColor;animation:orbit 12s linear infinite}.pz-sun{position:absolute;top:50%;left:50%;width:14px;height:14px;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 20px 4px currentColor;animation:glow 3s ease-in-out infinite}.pz-3dbtn{transition:all .2s}.pz-3dbtn:hover{background:rgba(167,139,250,.35)!important;transform:scale(1.15)}.pz-stars-bg{position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 60% 70%,rgba(255,255,255,.3),transparent),radial-gradient(1px 1px at 80% 20%,rgba(255,255,255,.4),transparent),radial-gradient(1px 1px at 30% 80%,rgba(255,255,255,.25),transparent);opacity:.5}"}</style>
+      <div style={{ display: "grid", gridTemplateColumns: mob ? "repeat(2,1fr)" : "repeat(auto-fill,minmax(220px,1fr))", gap: mob ? 8 : 14, padding: mob ? "12px 10px 80px" : "20px 24px 80px" }}>
+        {filtered.map(function(p) { var cat = CATS.find(function(c) { return c.id === p.cat; }); var pr = prog[p.id];
+          var dc = p.diff === 1 ? "#4ade80" : p.diff === 2 ? "#fbbf24" : "#f87171";
+          var catColor = cat ? cat.c : "#888";
+          return (
+            <button key={p.id} onClick={function() { setAid(p.id); }} className="pz-card" style={{ "--cat-color": catColor, "--cat-glow": catColor + "40", background: pr ? "linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.02))" : "linear-gradient(135deg,rgba(255,255,255,.025),rgba(255,255,255,.008))", border: "1px solid " + (pr ? catColor + "33" : "rgba(255,255,255,.05)"), borderRadius: 14, padding: mob ? "12px 10px" : "16px 14px", cursor: "pointer", textAlign: "left", display: "flex", flexDirection: "column", gap: 6, minHeight: mob ? 125 : 155 }}>
+              <div className="pz-stars-bg" />
+              <div className="pz-preview">
+                <div className="pz-sun" style={{ color: catColor, background: catColor }} />
+                <div className="pz-orbit" style={{ width: 50, height: 50, marginLeft: -25, marginTop: -25 }} />
+                <div className="pz-orbit" style={{ width: 80, height: 80, marginLeft: -40, marginTop: -40, animationDuration: "28s", animationDirection: "reverse" }} />
+                <div className="pz-planet" style={{ color: "hsl(" + ((p.id * 47) % 360) + ",70%,60%)", marginLeft: 25 - 4, marginTop: -4, animationDuration: (8 + (p.id % 5)) + "s" }} />
+                <div className="pz-planet" style={{ color: "hsl(" + ((p.id * 89) % 360) + ",60%,55%)", marginLeft: 40 - 4, marginTop: -4, animationDuration: (14 + (p.id % 7)) + "s", animationDirection: "reverse", width: 6, height: 6 }} />
+              </div>
+              <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 4, height: "100%" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontSize: 8, color: catColor, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "system-ui" }}>{cat ? cat.i + " " + cat.l : ""}</span>
+                  <span onClick={function(e) { e.stopPropagation(); setView3d(p); }} className="pz-3dbtn" style={{ fontSize: 14, cursor: "pointer", padding: "4px 7px", borderRadius: 6, background: "rgba(167,139,250,.18)", border: "1px solid rgba(167,139,250,.4)" }} title="Univers 3D">🌌</span>
+                </div>
+                <div style={{ fontSize: mob ? 14 : 16, fontWeight: 800, color: "#fff", lineHeight: 1.2, fontFamily: "Georgia,serif", marginTop: 2, textShadow: "0 2px 8px rgba(0,0,0,.6)" }}>{p.n}</div>
+                <div style={{ fontSize: 9, color: "#888", fontFamily: "system-ui", fontStyle: "italic" }}>{p.s}</div>
+                <div style={{ fontSize: 9, color: "#aaa", fontFamily: "system-ui", marginTop: "auto", lineHeight: 1.4 }}>{p.goal}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4, paddingTop: 6, borderTop: "1px solid rgba(255,255,255,.04)" }}>
+                  <span style={{ fontSize: 9, color: dc, fontWeight: 700, padding: "2px 7px", borderRadius: 10, background: dc + "15", border: "1px solid " + dc + "30" }}>{p.diff === 1 ? "Ușor" : p.diff === 2 ? "Mediu" : "Greu"}</span>
+                  <span style={{ fontSize: 11, color: "#666", marginLeft: "auto" }}>{p.tools.map(function(t) { return (ICONS[t.t] || ""); }).join("")}</span>
+                  {pr && <span style={{ fontSize: 11 }}>{"⭐".repeat(pr.st || 0)}</span>}
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "5px 8px", background: "rgba(8,8,15,0.93)", backdropFilter: "blur(8px)", borderTop: "1px solid rgba(255,255,255,0.04)", display: "flex", justifyContent: "center", gap: 8, alignItems: "center" }}>
+        <a href="https://alexio.tf" target="_blank" rel="noopener noreferrer" style={{ fontSize: 7, color: "#555", textDecoration: "none" }}>{"📖 Cartea"}</a>
+        <a href="https://www.patreon.com/c/alexio_tf" target="_blank" rel="noopener noreferrer" style={{ fontSize: 7, color: "#f96854", textDecoration: "none", fontWeight: 700 }}>{"☕ Patreon"}</a>
+        <span style={{ fontSize: 6, color: "#333", fontFamily: "system-ui" }}>{exp + "/108 · " + tSt + "⭐"}</span>
+      </div>
+    </div>
+  );
+}
+
+function CTab(props) { return <button onClick={props.o} style={{ padding: "3px 7px", borderRadius: 5, border: "none", cursor: "pointer", background: props.a ? props.c + "22" : "rgba(255,255,255,0.02)", color: props.a ? props.c : "#555", fontSize: 8, fontWeight: props.a ? 700 : 400, whiteSpace: "nowrap", fontFamily: "system-ui" }}>{props.children}</button>; }
+
+// ═══════════ 3D UNIVERSE COMPONENT ═══════════
+function Universe3D(props) {
+  var mountRef = useRef(null);
+  var pz = props.puzzle;
+  var catO = props.catO;
+
+  useEffect(function() {
+    if (!mountRef.current || typeof THREE === "undefined") return;
+    var mount = mountRef.current;
+    var W = mount.clientWidth, H = mount.clientHeight;
+    var scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000008, 0.0015);
+    var camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 5000);
+    camera.position.set(80, 40, 120);
+    var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setSize(W, H); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000005);
+    mount.appendChild(renderer.domElement);
+
+    // Seeded PRNG
+    var sd = pz.id * 7919 + 131;
+    var rng = function() { sd |= 0; sd = sd + 0x6D2B79F5 | 0; var t = Math.imul(sd ^ sd >>> 15, 1 | sd); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    var rr = function(a, b) { return rng() * (b - a) + a; };
+
+    // Background starfield (3000 stars)
+    var starGeo = new THREE.BufferGeometry();
+    var starPos = [];
+    for (var si = 0; si < 3000; si++) {
+      var phi = rng() * Math.PI * 2, theta = Math.acos(2 * rng() - 1), rd = 1500 + rng() * 500;
+      starPos.push(Math.sin(theta) * Math.cos(phi) * rd, Math.sin(theta) * Math.sin(phi) * rd, Math.cos(theta) * rd);
+    }
+    starGeo.setAttribute("position", new THREE.Float32BufferAttribute(starPos, 3));
+    var starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.5, sizeAttenuation: false, transparent: true, opacity: 0.8 });
+    scene.add(new THREE.Points(starGeo, starMat));
+
+    // Nebula cloud (3 colored point clouds)
+    var nebulaColors = catO ? [catO.c] : ["#a78bfa"];
+    for (var nci = 0; nci < 3; nci++) {
+      var ng = new THREE.BufferGeometry();
+      var np = [];
+      for (var npi = 0; npi < 500; npi++) {
+        np.push(rr(-800, 800), rr(-400, 400), rr(-800, 800));
+      }
+      ng.setAttribute("position", new THREE.Float32BufferAttribute(np, 3));
+      var nm = new THREE.PointsMaterial({ color: new THREE.Color(nebulaColors[0]), size: 8, transparent: true, opacity: 0.04, blending: THREE.AdditiveBlending, depthWrite: false });
+      scene.add(new THREE.Points(ng, nm));
+    }
+
+    // Central star — color by category
+    var starHue = 45;
+    if (catO) {
+      if (catO.id === "nhi") starHue = 120;
+      else if (catO.id === "met") starHue = 25;
+      else if (catO.id === "ext") starHue = 280;
+      else if (catO.id === "mul") starHue = 270;
+      else if (catO.id === "ai") starHue = 200;
+      else if (catO.id === "fil") starHue = 260;
+    }
+    var starSize = 8 + rng() * 6;
+    var starGeo2 = new THREE.SphereGeometry(starSize, 48, 48);
+    var starColor = new THREE.Color("hsl(" + starHue + ", 90%, 65%)");
+    var starMat2 = new THREE.MeshBasicMaterial({ color: starColor });
+    var sun = new THREE.Mesh(starGeo2, starMat2);
+    scene.add(sun);
+
+    // Star glow sprite (outer halo)
+    var glowGeo = new THREE.SphereGeometry(starSize * 1.6, 32, 32);
+    var glowMat = new THREE.MeshBasicMaterial({ color: starColor, transparent: true, opacity: 0.2, side: THREE.BackSide });
+    scene.add(new THREE.Mesh(glowGeo, glowMat));
+
+    // Point light from star
+    var light = new THREE.PointLight(starColor, 2.5, 800, 1.5);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0x202040, 0.3));
+
+    // Generate 2-5 planets with procedural textures
+    var numPlanets = 2 + Math.floor(rng() * 4);
+    var planets = [];
+    for (var pi2 = 0; pi2 < numPlanets; pi2++) {
+      var orbitR = 25 + pi2 * (15 + rng() * 12);
+      var planetR = 1.8 + rng() * 3.5;
+      var pHue = Math.floor(rng() * 360);
+
+      // Procedural texture via canvas
+      var tcv = document.createElement("canvas");
+      tcv.width = 256; tcv.height = 128;
+      var tctx = tcv.getContext("2d");
+      // Base color
+      var grd = tctx.createLinearGradient(0, 0, 0, 128);
+      grd.addColorStop(0, "hsl(" + pHue + ",45%,25%)");
+      grd.addColorStop(0.5, "hsl(" + pHue + ",60%,50%)");
+      grd.addColorStop(1, "hsl(" + pHue + ",45%,25%)");
+      tctx.fillStyle = grd; tctx.fillRect(0, 0, 256, 128);
+      // Noise bands
+      for (var bi2 = 0; bi2 < 40; bi2++) {
+        var by2 = rng() * 128;
+        tctx.fillStyle = "hsla(" + (pHue + rr(-20, 20)) + "," + (50 + rng() * 30) + "%," + (30 + rng() * 40) + "%," + (0.2 + rng() * 0.3) + ")";
+        tctx.fillRect(0, by2, 256, 1 + rng() * 4);
+      }
+      // Spots
+      for (var spi = 0; spi < 20; spi++) {
+        tctx.fillStyle = "hsla(" + (pHue + rr(-40, 40)) + ",60%," + (20 + rng() * 50) + "%,0.4)";
+        tctx.beginPath(); tctx.arc(rng() * 256, rng() * 128, 3 + rng() * 12, 0, TAU); tctx.fill();
+      }
+      var tex = new THREE.CanvasTexture(tcv);
+      tex.wrapS = THREE.RepeatWrapping;
+
+      var pGeo = new THREE.SphereGeometry(planetR, 32, 32);
+      var pMat = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.8, metalness: 0.1 });
+      var planet = new THREE.Mesh(pGeo, pMat);
+      planet.userData = { orbit: orbitR, speed: 0.3 / Math.sqrt(orbitR) * 2, angle: rng() * TAU, tilt: rr(-0.3, 0.3) };
+      scene.add(planet);
+      planets.push(planet);
+
+      // Orbit ring (thin)
+      var ringGeo = new THREE.RingGeometry(orbitR - 0.08, orbitR + 0.08, 128);
+      var ringMat = new THREE.MeshBasicMaterial({ color: 0x444466, side: THREE.DoubleSide, transparent: true, opacity: 0.25 });
+      var ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI / 2;
+      scene.add(ring);
+
+      // Optional moon
+      if (rng() > 0.5) {
+        var mGeo = new THREE.SphereGeometry(planetR * 0.25, 16, 16);
+        var mMat = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 1 });
+        var moon = new THREE.Mesh(mGeo, mMat);
+        moon.userData = { parent: planet, dist: planetR * 3, speed: 0.05, angle: rng() * TAU };
+        scene.add(moon);
+        planet.userData.moon = moon;
+      }
+    }
+
+    // Simple orbit controls (mouse drag + wheel zoom)
+    var camAngleH = 0.6, camAngleV = 0.5, camDist = 150;
+    var dragging = false, lx = 0, ly = 0;
+    var onDown = function(e) { dragging = true; var t = e.touches ? e.touches[0] : e; lx = t.clientX; ly = t.clientY; };
+    var onMove = function(e) { if (!dragging) return; var t = e.touches ? e.touches[0] : e;
+      camAngleH += (t.clientX - lx) * 0.005; camAngleV += (t.clientY - ly) * 0.005;
+      camAngleV = Math.max(-1.4, Math.min(1.4, camAngleV));
+      lx = t.clientX; ly = t.clientY; };
+    var onUp = function() { dragging = false; };
+    var onWheel = function(e) { e.preventDefault(); camDist = Math.max(30, Math.min(500, camDist * (e.deltaY > 0 ? 1.1 : 0.9))); };
+    renderer.domElement.addEventListener("mousedown", onDown);
+    renderer.domElement.addEventListener("mousemove", onMove);
+    renderer.domElement.addEventListener("mouseup", onUp);
+    renderer.domElement.addEventListener("mouseleave", onUp);
+    renderer.domElement.addEventListener("touchstart", onDown);
+    renderer.domElement.addEventListener("touchmove", onMove);
+    renderer.domElement.addEventListener("touchend", onUp);
+    renderer.domElement.addEventListener("wheel", onWheel);
+
+    var onResize = function() { W = mount.clientWidth; H = mount.clientHeight; camera.aspect = W / H; camera.updateProjectionMatrix(); renderer.setSize(W, H); };
+    window.addEventListener("resize", onResize);
+
+    var reqId;
+    var animate = function() {
+      reqId = requestAnimationFrame(animate);
+      // Camera orbit
+      camera.position.x = Math.cos(camAngleH) * Math.cos(camAngleV) * camDist;
+      camera.position.y = Math.sin(camAngleV) * camDist;
+      camera.position.z = Math.sin(camAngleH) * Math.cos(camAngleV) * camDist;
+      camera.lookAt(0, 0, 0);
+      // Rotate planets
+      planets.forEach(function(p) {
+        p.userData.angle += p.userData.speed * 0.01;
+        p.position.x = Math.cos(p.userData.angle) * p.userData.orbit;
+        p.position.z = Math.sin(p.userData.angle) * p.userData.orbit;
+        p.position.y = Math.sin(p.userData.angle * 0.3) * 2;
+        p.rotation.y += 0.005;
+        if (p.userData.moon) {
+          var m = p.userData.moon;
+          m.userData.angle += m.userData.speed;
+          m.position.x = p.position.x + Math.cos(m.userData.angle) * m.userData.dist;
+          m.position.z = p.position.z + Math.sin(m.userData.angle) * m.userData.dist;
+          m.position.y = p.position.y;
+        }
+      });
+      sun.rotation.y += 0.002;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    return function() {
+      cancelAnimationFrame(reqId);
+      window.removeEventListener("resize", onResize);
+      renderer.domElement.removeEventListener("mousedown", onDown);
+      renderer.domElement.removeEventListener("mousemove", onMove);
+      renderer.domElement.removeEventListener("mouseup", onUp);
+      renderer.domElement.removeEventListener("wheel", onWheel);
+      if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
+      renderer.dispose();
+    };
+  }, [pz]);
+
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "#000", zIndex: 1000 }}>
+      <div ref={mountRef} style={{ width: "100%", height: "100%" }} />
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "16px 20px", background: "linear-gradient(to bottom, rgba(0,0,0,0.8), transparent)", pointerEvents: "none" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", pointerEvents: "auto" }}>
+          <div>
+            <div style={{ fontSize: 8, color: catO ? catO.c : "#888", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "system-ui" }}>{catO ? catO.i + " " + catO.l : ""} · #{pz.id}</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", fontFamily: "Georgia, serif", marginTop: 4 }}>{pz.n}</div>
+            <div style={{ fontSize: 11, color: "#888", fontFamily: "system-ui" }}>{pz.s} · Univers procedural 3D</div>
+          </div>
+          <button onClick={props.onClose} style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", color: "#fff", borderRadius: 8, padding: "8px 14px", fontSize: 12, cursor: "pointer", fontFamily: "system-ui" }}>✕ Închide</button>
+        </div>
+      </div>
+      <div style={{ position: "absolute", bottom: 16, left: "50%", transform: "translateX(-50%)", fontSize: 10, color: "#666", fontFamily: "system-ui", background: "rgba(0,0,0,0.6)", padding: "6px 14px", borderRadius: 20 }}>
+        Trage pentru a roti · Scroll pentru zoom
+      </div>
+    </div>
+  );
+}
+
+// ═══ CINEMATIC 3D BACKGROUND (behind 2D puzzle) ═══
+function Bg3D(props) {
+  var mountRef = useRef(null);
+  useEffect(function() {
+    if (!mountRef.current || typeof THREE === "undefined") return;
+    var mount = mountRef.current;
+    var W = mount.clientWidth || window.innerWidth, H = mount.clientHeight || window.innerHeight;
+    var scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000005, 0.0008);
+    var camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 5000);
+    var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setSize(W, H); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000005);
+    mount.appendChild(renderer.domElement);
+
+    var sd = props.puzzleId * 7919 + 131;
+    var rng = function() { sd |= 0; sd = sd + 0x6D2B79F5 | 0; var t = Math.imul(sd ^ sd >>> 15, 1 | sd); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    var rr = function(a, b) { return rng() * (b - a) + a; };
+
+    // Background starfield
+    var sg = new THREE.BufferGeometry();
+    var sp = [];
+    for (var si = 0; si < 2500; si++) {
+      var ph = rng() * Math.PI * 2, th = Math.acos(2 * rng() - 1), rd = 1500 + rng() * 500;
+      sp.push(Math.sin(th) * Math.cos(ph) * rd, Math.sin(th) * Math.sin(ph) * rd, Math.cos(th) * rd);
+    }
+    sg.setAttribute("position", new THREE.Float32BufferAttribute(sp, 3));
+    scene.add(new THREE.Points(sg, new THREE.PointsMaterial({ color: 0xffffff, size: 1.3, sizeAttenuation: false, transparent: true, opacity: 0.7 })));
+
+    // Nebula clouds by category
+    var catHue = { lit: 45, fil: 270, cri: 0, cit: 140, ai: 200, nhi: 120, mul: 285, ext: 320, ste: 50, hip: 170, met: 25, int: 215 };
+    var baseHue = catHue[props.catId] || 220;
+    for (var nci = 0; nci < 4; nci++) {
+      var ng = new THREE.BufferGeometry();
+      var np = [];
+      var cx = rr(-400, 400), cy = rr(-200, 200), cz = rr(-600, -200);
+      for (var npi = 0; npi < 400; npi++) {
+        np.push(cx + rr(-200, 200), cy + rr(-100, 100), cz + rr(-100, 100));
+      }
+      ng.setAttribute("position", new THREE.Float32BufferAttribute(np, 3));
+      scene.add(new THREE.Points(ng, new THREE.PointsMaterial({ color: new THREE.Color("hsl(" + (baseHue + rr(-30, 30)) + ",70%,55%)"), size: 12, transparent: true, opacity: 0.05, blending: THREE.AdditiveBlending, depthWrite: false })));
+    }
+
+    // Distant star (decorative sun)
+    var starGeo = new THREE.SphereGeometry(6, 32, 32);
+    var starMat = new THREE.MeshBasicMaterial({ color: new THREE.Color("hsl(" + baseHue + ",90%,70%)") });
+    var sun = new THREE.Mesh(starGeo, starMat);
+    sun.position.set(rr(-150, 150), rr(-80, 80), -300);
+    scene.add(sun);
+    var sunGlow = new THREE.Mesh(new THREE.SphereGeometry(18, 24, 24), new THREE.MeshBasicMaterial({ color: starMat.color, transparent: true, opacity: 0.12, side: THREE.BackSide }));
+    sunGlow.position.copy(sun.position);
+    scene.add(sunGlow);
+
+    // 2-3 distant planets as decoration
+    var planets = [];
+    var nP = 2 + Math.floor(rng() * 2);
+    for (var pi2 = 0; pi2 < nP; pi2++) {
+      var pGeo = new THREE.SphereGeometry(3 + rng() * 4, 24, 24);
+      var pHue = Math.floor(rng() * 360);
+      var pMat = new THREE.MeshBasicMaterial({ color: new THREE.Color("hsl(" + pHue + ",55%,45%)") });
+      var pl = new THREE.Mesh(pGeo, pMat);
+      pl.position.set(rr(-250, 250), rr(-120, 120), rr(-450, -150));
+      pl.userData = { rotSpeed: rr(0.001, 0.004), driftX: rr(-0.02, 0.02), driftY: rr(-0.01, 0.01) };
+      scene.add(pl);
+      planets.push(pl);
+    }
+
+    camera.position.set(0, 0, 50);
+    camera.lookAt(0, 0, -200);
+
+    var onResize = function() { W = mount.clientWidth; H = mount.clientHeight; camera.aspect = W / H; camera.updateProjectionMatrix(); renderer.setSize(W, H); };
+    window.addEventListener("resize", onResize);
+
+    var reqId;
+    var t0 = 0;
+    var animate = function() {
+      reqId = requestAnimationFrame(animate);
+      t0 += 0.008;
+      camera.position.x = Math.sin(t0 * 0.15) * 5;
+      camera.position.y = Math.cos(t0 * 0.12) * 3;
+      camera.lookAt(0, 0, -200);
+      planets.forEach(function(p) { p.rotation.y += p.userData.rotSpeed; p.position.x += p.userData.driftX; p.position.y += p.userData.driftY; });
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    return function() {
+      cancelAnimationFrame(reqId);
+      window.removeEventListener("resize", onResize);
+      if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
+      renderer.dispose();
+    };
+  }, [props.puzzleId]);
+
+  return <div ref={mountRef} style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script></body></html>
