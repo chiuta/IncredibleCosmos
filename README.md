@@ -43,6 +43,10 @@ Descarcă `index.html` (aprox. 0,8 MB) și deschide-l în browser; funcționeaz�
 
 CC0 1.0 Universal (domeniu public) — vezi fișierul LICENSE.
 
+## Audit
+
+Audit: 2026-10-10 — verificat în cod: singurele apariții de `fetch`/`XMLHttpRequest` sunt în încărcătoarele (loaders) nefolosite din Three.js r128; codul aplicației nu apelează nicio resursă externă. Corecturi de contrast și un bug de stil la butonul „Toate”.
+
 ## Autor
 
 Alexio — Alexandru-Ionuț Chiuță. Contact: alexio@trom.tf
