@@ -20,6 +20,8 @@ Un joc de puzzle bazat pe gravitație: plasezi planete, stele și alte obiecte a
 - Simulare cu butoane **▶ PLAY**, viteze 0,5×/1×/2×/4×, **↩** (anulare) și **↻** (reset); traiectoria cometei apare ca linie punctată.
 - Stele de evaluare: mai puține obiecte folosite înseamnă mai multe stele; cel mai bun rezultat per puzzle este salvat.
 - Butonul **Univers 3D** al fiecărui puzzle deschide o vedere 3D procedurală (Three.js), rotită cu mouse-ul sau degetul, cu zoom din rotița mouse-ului.
+- **Tastatură:** `Tab` pe ecranul de joc, săgeți (Shift = pas mare) mută un cursor, `Enter`/`Spațiu` plasează obiectul selectat, `1`–`8` aleg obiectul, `P` = Play, `U` = anulează, `R` = reset; rezultatele și acțiunile sunt anunțate pentru cititoarele de ecran (regiune `aria-live`).
+- Galeria: „▶ Continuă: următorul nerezolvat” și „Șterge progresul” (cu confirmare); stelele se salvează imediat ce rezolvi puzzle-ul.
 - Link „📖 Cartea” către alexio.tf și linkuri de sprijin (Patreon, Buy Me a Coffee).
 
 ## Manual de utilizare
@@ -35,7 +37,7 @@ Un joc de puzzle bazat pe gravitație: plasezi planete, stele și alte obiecte a
 ## Confidențialitate și rețea
 
 - **Stocare locală (localStorage):** o singură cheie, `cosmos108`, cu stelele câștigate la fiecare puzzle. Nu părăsește dispozitivul.
-- **Rețea:** React 18 și Three.js r128 sunt incluse în fișier (fără CDN). Aplicația nu face cereri către servere terțe și nu are analytics. Linkurile către alexio.tf, Patreon și Buy Me a Coffee se deschid doar la clic. Politica CSP a paginii restricționează conexiunile la `connect-src 'self'` (strâns în auditul din runda 2, după verificarea codului: nicio cerere către exterior); linkurile externe sunt simple ancore.
+- **Rețea:** React 18 și Three.js r128 sunt incluse în fișier (fără CDN). Aplicația nu face cereri către servere terțe și nu are analytics. Linkurile către alexio.tf, Patreon și Buy Me a Coffee se deschid doar la clic. Politica CSP a paginii permite scripturile doar pe bază de hash SHA-256 (fără `'unsafe-inline'` pentru script) și restricționează conexiunile la `connect-src 'self'` (strâns în auditul din runda 2, după verificarea codului: nicio cerere către exterior); linkurile externe sunt simple ancore.
 
 ## Rulare locală / offline
 
@@ -50,6 +52,11 @@ CC0 1.0 Universal (domeniu public) — vezi fișierul LICENSE.
 Audit: 2026-10-10 — verificat în cod: singurele apariții de `fetch`/`XMLHttpRequest` sunt în încărcătoarele (loaders) nefolosite din Three.js r128; codul aplicației nu apelează nicio resursă externă. Corecturi de contrast și un bug de stil la butonul „Toate”.
 
 ## Istoric / Changelog
+
+### 11 octombrie 2026 (runda 6)
+- Adăugat: joc de la tastatură (cursor cu săgeți, taste rapide), anunțuri `aria-live`, „Continuă” și „Șterge progresul” în galerie; progresul se salvează la câștig, nu doar la părăsirea puzzle-ului.
+- Securitate: CSP cu `script-src` pe hash (5 scripturi) în locul `'unsafe-inline'`.
+- Neschimbat: cele 108 puzzle-uri rămân variații pe aceleași mecanici (decizie de conținut a autorului).
 
 ### 11 octombrie 2026
 - Reparat: fundalul 3D nu mai afișează pătrate granulate; particulele (stele, nebuloase) folosesc acum un sprite circular moale generat local.

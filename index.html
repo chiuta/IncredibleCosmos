@@ -26,7 +26,7 @@
 /* Accesibilitate: inel de focus vizibil pentru navigare la tastatură. */
 :focus-visible{outline:2px solid #4a90d9;outline-offset:2px;border-radius:2px}
 </style>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; script-src 'self' 'unsafe-inline' blob:; connect-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Incredible Cosmos</title><style>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; script-src 'self' blob: 'sha256-ZOFLc0lAd79qelofwhNpkbrKvSsmJ8USXrQ/6auw2Po=' 'sha256-Q6M4enlkWNnw/gYyNhvQxfOCLzyhJkDqXTeBf3BySWw=' 'sha256-JNIyfYS8bOwUCGrqmslz9ykJlfjobv786OrrxMbOKgc=' 'sha256-TKvPfhZZ1qjsnftxDHkKW4lDyX5nY6e+GXPewp+Wo2s=' 'sha256-0OdRBjTvlRLcoHiFRaEKDmihFICKieERUl43/ALeH+A='; connect-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Incredible Cosmos</title><style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{width:100%;min-height:100%;background:#06060e;font-family:Georgia,serif;color:#e0e0e0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
 #root{width:100%;min-height:100vh}button{font-family:inherit;border:none}input{font-family:inherit}
@@ -355,6 +355,9 @@ const {
   useCallback
 } = React;
 var TAU = Math.PI * 2;
+var clamp = function (v, a, b) {
+  return Math.max(a, Math.min(b, v));
+};
 var dst = function (a, b) {
   return Math.hypot(a.x - b.x, a.y - b.y);
 };
@@ -1292,6 +1295,12 @@ function App() {
     y: 0,
     on: false
   });
+  var kbRef = useRef({
+    on: false
+  });
+  var _an = useState(""),
+    ann = _an[0],
+    setAnn = _an[1];
   selTRef.current = selT;
   tcRef.current = tc;
   var starsRef = useRef(0);
@@ -1602,6 +1611,20 @@ function App() {
         }
       }
 
+      // Cursor de tastatură (săgeți + Enter)
+      if (!S.running && kbRef.current.on && m.on) {
+        ctx.save();
+        ctx.strokeStyle = "rgba(255,213,79,0.9)";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(m.x - 10, m.y);
+        ctx.lineTo(m.x + 10, m.y);
+        ctx.moveTo(m.x, m.y - 10);
+        ctx.lineTo(m.x, m.y + 10);
+        ctx.stroke();
+        ctx.restore();
+      }
+
       // Tap ripples
       S.taps = S.taps.filter(function (tap) {
         tap.life -= 0.03;
@@ -1659,7 +1682,7 @@ function App() {
       window.removeEventListener("resize", rsz);
     };
   }, [aid, pz, setupPz, simSpeed]);
-  var onPtrDown = useCallback(function (e) {
+  var onPtrDown = useCallback(function (e, kb) {
     var cv = cvRef.current;
     if (!cv) return;
     var S = stRef.current;
@@ -1673,7 +1696,7 @@ function App() {
     // Drag check first
     for (var i = S.objs.length - 1; i >= 0; i--) {
       var o = S.objs[i];
-      if (o.placed && o.alive && dst({
+      if (!kb && o.placed && o.alive && dst({
         x: wx,
         y: wy
       }, o) < o.r + 12) {
@@ -1726,6 +1749,7 @@ function App() {
         id: nid,
         type: curSel
       });
+      setAnn(tp.name + " plasat (" + S.placed + " obiecte folosite, mai rămân " + nc[curSel] + ")");
     }
   }, []);
   var onPtrMove = useCallback(function (e) {
@@ -1809,6 +1833,119 @@ function App() {
     };
   };
 
+  // Tastatură: P = Play, R = reset, U = anulează, 1–8 = alege obiect, săgeți + Enter pe ecran
+  useEffect(function () {
+    if (!aid || !pz || view3d) return;
+    var kd = function (ev) {
+      var tg = ev.target;
+      if (tg && (tg.tagName === "INPUT" || tg.tagName === "TEXTAREA" || tg.tagName === "SELECT")) return;
+      if (ev.ctrlKey || ev.metaKey || ev.altKey) return;
+      var k = ev.key,
+        S = stRef.current,
+        cv = cvRef.current;
+      if (!cv) return;
+      if (k === "p" || k === "P") {
+        if (phase === "build") {
+          ev.preventDefault();
+          S.running = true;
+          setPhase("play");
+          setAnn("Simulare pornită");
+        }
+        return;
+      }
+      if (k === "r" || k === "R") {
+        ev.preventDefault();
+        resetPz();
+        setAnn("Puzzle resetat");
+        return;
+      }
+      if (k === "u" || k === "U") {
+        if (phase === "build") {
+          ev.preventDefault();
+          undoLast();
+          setAnn("Ultimul obiect anulat");
+        }
+        return;
+      }
+      if (/^[1-8]$/.test(k) && phase === "build") {
+        var tl = pz.tools[+k - 1];
+        if (tl && (tc[tl.t] || 0) > 0) {
+          ev.preventDefault();
+          var on = selT !== tl.t;
+          setSelT(on ? tl.t : null);
+          setAnn(on ? TYPES[tl.t].name + " selectat" : "Selecție anulată");
+        }
+        return;
+      }
+      if (k === "Escape") {
+        if (selT) setSelT(null);
+        return;
+      }
+      if (document.activeElement !== cv || phase !== "build") return;
+      var arrows = {
+        ArrowLeft: [-1, 0],
+        ArrowRight: [1, 0],
+        ArrowUp: [0, -1],
+        ArrowDown: [0, 1]
+      };
+      if (arrows[k]) {
+        ev.preventDefault();
+        var m = mouseRef.current,
+          stp = ev.shiftKey ? 40 : 10,
+          mx = m.on ? m.x : cv.clientWidth / 2,
+          my = m.on ? m.y : cv.clientHeight / 2;
+        mouseRef.current = {
+          x: clamp(mx + arrows[k][0] * stp, 0, cv.clientWidth),
+          y: clamp(my + arrows[k][1] * stp, 0, cv.clientHeight),
+          on: true
+        };
+        return;
+      }
+      if (k === "Enter" || k === " ") {
+        ev.preventDefault();
+        var mm = mouseRef.current;
+        if (!selT) {
+          setAnn("Alege mai întâi un obiect (tastele 1–8)");
+          return;
+        }
+        if (!mm.on) mm = {
+          x: cv.clientWidth / 2,
+          y: cv.clientHeight / 2,
+          on: true
+        };
+        mouseRef.current = mm;
+        var rc = cv.getBoundingClientRect();
+        onPtrDown({
+          clientX: rc.left + mm.x,
+          clientY: rc.top + mm.y
+        }, true);
+      }
+    };
+    window.addEventListener("keydown", kd);
+    return function () {
+      window.removeEventListener("keydown", kd);
+    };
+  }, [aid, pz, view3d, phase, selT, tc]);
+  // Rezultat: anunț pentru cititoarele de ecran și salvare imediată a progresului
+  useEffect(function () {
+    if (!pz) return;
+    if (phase === "win") {
+      setAnn("Rezolvat! " + stars + " din 3 stele, " + placed + " obiecte folosite.");
+      var p = Object.assign({}, prog);
+      if (!p[pz.id] || stars > (p[pz.id].st || 0)) {
+        p[pz.id] = {
+          st: stars
+        };
+        setProg(p);
+        try {
+          window.storage.set("cosmos108", JSON.stringify(p));
+        } catch (e) {}
+      }
+    } else if (phase === "lose") {
+      setAnn("Cometa a fost pierdută. Apasă R sau ↻ pentru a reîncerca.");
+    }
+  }, [phase, stars]);
+
   // ═══ 3D UNIVERSE VIEW ═══
   if (view3d) {
     return /*#__PURE__*/React.createElement(Universe3D, {
@@ -1850,7 +1987,18 @@ function App() {
         zIndex: 2,
         background: "transparent"
       },
-      onPointerDown: onPtrDown,
+      tabIndex: 0,
+      role: "application",
+      "aria-label": "Câmp de joc. Săgeți: mută cursorul (Shift = pas mare). Enter sau Spațiu: plasează obiectul selectat. Taste 1–8: alege obiectul. P: Play. U: anulează. R: reset.",
+      onFocus: function () {
+        kbRef.current.on = true;
+      },
+      onBlur: function () {
+        kbRef.current.on = false;
+      },
+      onPointerDown: function (e) {
+        onPtrDown(e);
+      },
       onPointerMove: onPtrMove,
       onPointerUp: onPtrUp,
       onPointerLeave: onPtrLeave
@@ -1898,7 +2046,11 @@ function App() {
         color: "#ffd54f",
         fontWeight: 700
       }
-    }, "▶ PLAY"), /*#__PURE__*/React.createElement("br", null), "6. Cometa → 🎯 = Victorie!"), /*#__PURE__*/React.createElement("div", {
+    }, "▶ PLAY"), /*#__PURE__*/React.createElement("br", null), "6. Cometa → 🎯 = Victorie!", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: "#9a9aa8"
+      }
+    }, "Tastatură: Tab pe ecran, săgeți + Enter, 1–8, P, U, R")), /*#__PURE__*/React.createElement("div", {
       style: {
         fontSize: 9,
         color: "#9a9aa8",
@@ -1912,6 +2064,17 @@ function App() {
         color: "#fbbf24"
       }
     }, "Apas\u0103 pentru a \xEEnchide"))), /*#__PURE__*/React.createElement("div", {
+      role: "status",
+      "aria-live": "polite",
+      style: {
+        position: "absolute",
+        width: 1,
+        height: 1,
+        overflow: "hidden",
+        clip: "rect(0 0 0 0)",
+        whiteSpace: "nowrap"
+      }
+    }, ann), /*#__PURE__*/React.createElement("div", {
       style: {
         position: "absolute",
         top: 0,
@@ -2242,7 +2405,34 @@ function App() {
       width: mob ? "100%" : 180,
       fontFamily: "system-ui"
     }
-  })), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      marginTop: 6,
+      flexWrap: "wrap"
+    }
+  }, PZ.some(function (p) {
+    return !prog[p.id];
+  }) && /*#__PURE__*/React.createElement("button", {
+    onClick: function () {
+      var nx = PZ.find(function (p) {
+        return !prog[p.id];
+      });
+      if (nx) setAid(nx.id);
+    },
+    style: btnS(true)
+  }, "▶ Continuă: următorul nerezolvat"), exp > 0 && /*#__PURE__*/React.createElement("button", {
+    onClick: function () {
+      if (window.confirm("Ștergi tot progresul (stelele câștigate) de pe acest dispozitiv?")) {
+        setProg({});
+        try {
+          window.storage.set("cosmos108", "{}");
+        } catch (e) {}
+      }
+    },
+    style: btnS()
+  }, "Șterge progresul"))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       gap: 3,
