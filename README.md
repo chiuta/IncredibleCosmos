@@ -6,6 +6,8 @@
 
 ![Captura de ecran](screenshot.png)
 
+**Ultima actualizare:** 11 octombrie 2026
+
 ## Ce este
 
 Un joc de puzzle bazat pe gravitație: plasezi planete, stele și alte obiecte astfel încât gravitația lor să ghideze o cometă către țintă. Aplicația conține 108 puzzle-uri în 12 categorii tematice, cu trei niveluri de dificultate (Ușor, Mediu, Greu) și evaluare de la una la trei stele. Interfața este în limba română; titlul afișat este „The Incredible Cosmos · 108 Puzzle-uri Cosmice”.
@@ -46,6 +48,13 @@ CC0 1.0 Universal (domeniu public) — vezi fișierul LICENSE.
 ## Audit
 
 Audit: 2026-10-10 — verificat în cod: singurele apariții de `fetch`/`XMLHttpRequest` sunt în încărcătoarele (loaders) nefolosite din Three.js r128; codul aplicației nu apelează nicio resursă externă. Corecturi de contrast și un bug de stil la butonul „Toate”.
+
+## Istoric / Changelog
+
+### 11 octombrie 2026
+- Reparat: fundalul 3D nu mai afișează pătrate granulate; particulele (stele, nebuloase) folosesc acum un sprite circular moale generat local.
+- Reparat: panoul „Cum se joacă” apare automat doar la prima deschidere (cheie localStorage `cosmos108:tut`), se închide singur după 8 secunde sau cu Escape și rămâne disponibil din butonul „?”.
+- Reparat: structură cu repere (`<main>`, `<aside>` pentru sprijin); 0 violări axe-core la 1280 și 360 px.
 
 ## Autor
 
