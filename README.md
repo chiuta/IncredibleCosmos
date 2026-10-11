@@ -33,7 +33,7 @@ Un joc de puzzle bazat pe gravitație: plasezi planete, stele și alte obiecte a
 ## Confidențialitate și rețea
 
 - **Stocare locală (localStorage):** o singură cheie, `cosmos108`, cu stelele câștigate la fiecare puzzle. Nu părăsește dispozitivul.
-- **Rețea:** React 18 și Three.js r128 sunt incluse în fișier (fără CDN). Aplicația nu face cereri către servere terțe și nu are analytics. Linkurile către alexio.tf, Patreon și Buy Me a Coffee se deschid doar la clic. (Politica CSP a paginii permite tehnic conexiuni `https:`, dar codul aplicației nu folosește `fetch` către exterior.)
+- **Rețea:** React 18 și Three.js r128 sunt incluse în fișier (fără CDN). Aplicația nu face cereri către servere terțe și nu are analytics. Linkurile către alexio.tf, Patreon și Buy Me a Coffee se deschid doar la clic. Politica CSP a paginii restricționează conexiunile la `connect-src 'self'` (strâns în auditul din runda 2, după verificarea codului: nicio cerere către exterior); linkurile externe sunt simple ancore.
 
 ## Rulare locală / offline
 
