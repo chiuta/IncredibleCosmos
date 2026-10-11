@@ -26,7 +26,7 @@
 /* Accesibilitate: inel de focus vizibil pentru navigare la tastatură. */
 :focus-visible{outline:2px solid #4a90d9;outline-offset:2px;border-radius:2px}
 </style>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; script-src 'self' blob: 'sha256-ZOFLc0lAd79qelofwhNpkbrKvSsmJ8USXrQ/6auw2Po=' 'sha256-Q6M4enlkWNnw/gYyNhvQxfOCLzyhJkDqXTeBf3BySWw=' 'sha256-JNIyfYS8bOwUCGrqmslz9ykJlfjobv786OrrxMbOKgc=' 'sha256-TKvPfhZZ1qjsnftxDHkKW4lDyX5nY6e+GXPewp+Wo2s=' 'sha256-0OdRBjTvlRLcoHiFRaEKDmihFICKieERUl43/ALeH+A='; connect-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Incredible Cosmos</title><style>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; script-src 'self' blob: 'sha256-ZOFLc0lAd79qelofwhNpkbrKvSsmJ8USXrQ/6auw2Po=' 'sha256-Q6M4enlkWNnw/gYyNhvQxfOCLzyhJkDqXTeBf3BySWw=' 'sha256-JNIyfYS8bOwUCGrqmslz9ykJlfjobv786OrrxMbOKgc=' 'sha256-TKvPfhZZ1qjsnftxDHkKW4lDyX5nY6e+GXPewp+Wo2s=' 'sha256-u0tw5X6O3dVLIQ2JrvuAIuAFPC0DkiJj+yj9IKbK14M='; connect-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Incredible Cosmos</title><style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{width:100%;min-height:100%;background:#06060e;font-family:Georgia,serif;color:#e0e0e0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
 #root{width:100%;min-height:100vh}button{font-family:inherit;border:none}input{font-family:inherit}
@@ -672,6 +672,22 @@ function mkPz(id, cat, name, sub, diff) {
   };
 }
 var PZ = [mkPz(1, "lit", "Vector", "SF speculativ", 1), mkPz(2, "lit", "Revista Orbital", "Orbite", 2), mkPz(3, "lit", "Mind & Machine", "Mintea", 1), mkPz(4, "lit", "Lunar Quarterly", "Lunar", 2), mkPz(5, "lit", "Orbital Dispatch", "Depeșe", 1), mkPz(6, "lit", "Distant Signals", "Semnale", 2), mkPz(7, "lit", "Dilema Lunară", "Lumină", 3), mkPz(8, "lit", "Constellation", "Constelații", 2), mkPz(9, "lit", "Ficțiune Speculativă", "Heliopolis", 3), mkPz(10, "fil", "Caietele Minții", "Filosofie", 1), mkPz(11, "fil", "Métaphysique", "Postumanistă", 2), mkPz(12, "fil", "Etica Informației", "Etică", 1), mkPz(13, "fil", "Episteme Lunaris", "Cunoaștere", 2), mkPz(14, "fil", "Techné Astralis", "Tehnică", 2), mkPz(15, "fil", "Conștiințe Multiple", "Conștiințe", 3), mkPz(16, "fil", "Narrative Horizons", "Orizonturi", 2), mkPz(17, "fil", "Filosofie Morală", "Echilibru", 3), mkPz(18, "fil", "Synthesis Cosmica", "Sinteză", 3), mkPz(19, "cri", "Northern Review", "Nordică", 1), mkPz(20, "cri", "Albion Review", "Britanică", 1), mkPz(21, "cri", "Foundation", "SF int.", 2), mkPz(22, "cri", "Revista Carpatică", "Carpatică", 2), mkPz(23, "cri", "Cultura Astrală", "Cultura Vie", 2), mkPz(24, "cri", "Quarterly Dialogue", "Dialog", 1), mkPz(25, "cri", "Editorial", "Perspective", 3), mkPz(26, "cri", "Cosmos & Culture", "Carte", 3), mkPz(27, "cri", "Cahiers Imaginaire", "Imaginar", 2), mkPz(28, "cit", "Mircea T., 67", "Timișoara", 1), mkPz(29, "cit", "Andreea M., 24", "București", 1), mkPz(30, "cit", "Radu P., 22", "Iași", 2), mkPz(31, "cit", "Carmen D., 45", "Cluj", 2), mkPz(32, "cit", "Alex S., 17", "Craiova", 2), mkPz(33, "cit", "Elena V., 71", "Brașov", 1), mkPz(34, "cit", "Bogdan C., 38", "București", 2), mkPz(35, "cit", "Ioana R., 33", "Constanța", 3), mkPz(36, "cit", "Ion P., 73", "Sibiu", 3), mkPz(37, "ai", "CLAUDE-7", "Anthropic 2030", 1), mkPz(38, "ai", "ARTEMIS-AI", "NASA 2031", 2), mkPz(39, "ai", "MUSE-4", "DeepMind 2035", 2), mkPz(40, "ai", "SENTINEL", "Siguranță 2038", 2), mkPz(41, "ai", "ANIMA", "Conștiință 2042", 3), mkPz(42, "ai", "ARCHIVE", "Biblioteca 2047", 1), mkPz(43, "ai", "SOCRATES-9", "Filosofie 2055", 2), mkPz(44, "ai", "MEMORIAL", "Shackleton 2071", 3), mkPz(45, "ai", "Omega", "2089", 3), mkPz(46, "nhi", "CORALUL", "Europa", 1), mkPz(47, "nhi", "STRUCTURA 7.7.1", "Titan", 2), mkPz(48, "nhi", "FLUX", "Temporal", 2), mkPz(49, "nhi", "ROIUL", "Kepler-442b", 2), mkPz(50, "nhi", "CÂNTECUL DIN VID", "Laniakea", 3), mkPz(51, "nhi", "MICELIUL", "Amazonia", 2), mkPz(52, "nhi", "CORUL ADÂNCULUI", "Balene", 1), mkPz(53, "nhi", "COLONIA 0", "Shackleton", 3), mkPz(54, "nhi", "Textul", "—", 1), mkPz(55, "mul", "Tesseract", "4D", 2), mkPz(56, "mul", "Probabilitate", "Undă", 1), mkPz(57, "mul", "Calabi-Yau", "6D", 3), mkPz(58, "mul", "Brana Vecină", "Adiacentă", 2), mkPz(59, "mul", "Geometria Info", "Info", 2), mkPz(60, "mul", "Bucla", "Cauzalitate", 1), mkPz(61, "mul", "Materie Întunecată", "Invizibilă", 3), mkPz(62, "mul", "Arhivar Multivers", "Ramificații", 2), mkPz(63, "mul", "Interstițiul", "Între D", 3), mkPz(64, "ext", "Ecuația", "Formula", 1), mkPz(65, "ext", "Cel de Dinainte", "Pre-timp", 1), mkPz(66, "ext", "Operatorul", "Legile", 2), mkPz(67, "ext", "Gradientul Final", "Ultima", 2), mkPz(68, "ext", "Forma", "Geometrie", 2), mkPz(69, "ext", "Cel Care Visează", "Vis", 3), mkPz(70, "ext", "Paradoxul", "Auto-ref", 3), mkPz(71, "ext", "Cititorul Total", "Tot", 2), mkPz(72, "ext", "Tăcerea", "Sfârșit", 1), mkPz(73, "ste", "Proxima Centauri", "Pitică roșie", 1), mkPz(74, "ste", "Betelgeuse", "Supergigantă", 2), mkPz(75, "ste", "PSR B1919+21", "Pulsar", 2), mkPz(76, "ste", "POLARIS", "Polară", 1), mkPz(77, "ste", "Sagittarius A*", "Gaura neagră", 3), mkPz(78, "ste", "KIC 8462852", "Tabby", 2), mkPz(79, "ste", "Sirius B", "Pitica albă", 2), mkPz(80, "ste", "PRIMA STEA", "Pop. III", 3), mkPz(81, "ste", "Ultimul Foton", "Ultima lumină", 1), mkPz(82, "hip", "Constructorii", "Kepler-442", 2), mkPz(83, "hip", "Consensul", "NGC 4565", 2), mkPz(84, "hip", "Păzitorii", "Gardieni", 3), mkPz(85, "hip", "Arhitecții", "Galaxii", 2), mkPz(86, "hip", "Recoltatorii", "Energie", 1), mkPz(87, "hip", "COLECTIVUL", "Orion", 2), mkPz(88, "hip", "Cei Plecați", "Absenți", 3), mkPz(89, "hip", "Grădinarii", "Cultivatori", 2), mkPz(90, "hip", "Marea Tăcere", "Fermi", 1), mkPz(91, "met", "Interior GN", "Dincolo", 3), mkPz(92, "met", "Preoții Entropiei", "Dezordine", 2), mkPz(93, "met", "Civ. Inversă", "Invers", 2), mkPz(94, "met", "Boltzmann", "Fluctuații", 1), mkPz(95, "met", "Punctul Omega", "Convergență", 3), mkPz(96, "met", "Ultimul Matematician", "Teoremă", 2), mkPz(97, "met", "Arheologii", "Săpături", 2), mkPz(98, "met", "Universul Amintește", "Memorie", 2), mkPz(99, "met", "Următorul Început", "Big Bang", 3), mkPz(100, "int", "REID WISEMAN", "Comandantul", 1), mkPz(101, "int", "CHRISTINA KOCH", "LEO+", 2), mkPz(102, "int", "VICTOR GLOVER", "Pilotul", 2), mkPz(103, "int", "JEREMY HANSEN", "Canadianul", 1), mkPz(104, "int", "ARTEMIS-AI", "Simulatorul", 2), mkPz(105, "int", "NARATORUL-AI", "Stratul trei", 3), mkPz(106, "int", "Cartea", "Se citește", 2), mkPz(107, "int", "Cititorul", "Tu", 1), mkPz(108, "int", "ALEXIO", "Autorul", 3)];
+// Căutare: nume, subtitlu, scop, categorie, dificultate și obiectele disponibile; fără diacritice, toate cuvintele trebuie să se potrivească.
+function pzNorm(x) {
+  return String(x).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+var PZ_HAY = {};
+function pzHay(p) {
+  if (!PZ_HAY[p.id]) {
+    var cat = CATS.find(function (c) {
+      return c.id === p.cat;
+    });
+    PZ_HAY[p.id] = pzNorm([p.n, p.s, p.goal, cat ? cat.l : "", p.diff === 1 ? "Ușor" : p.diff === 2 ? "Mediu" : "Greu"].concat(p.tools.map(function (t) {
+      return TYPES[t.t] ? TYPES[t.t].name : t.t;
+    })).join(" "));
+  }
+  return PZ_HAY[p.id];
+}
 
 // ═══ PHYSICS ═══
 function stepPhys(objs) {
@@ -2308,7 +2324,11 @@ function App() {
   // ═══ GALLERY ═══
   var filtered = PZ.filter(function (p) {
     if (aCat && p.cat !== aCat) return false;
-    if (srch && p.n.toLowerCase().indexOf(srch.toLowerCase()) === -1) return false;
+    if (srch) {
+      var hay = pzHay(p);
+      var ws = pzNorm(srch).split(/\s+/).filter(Boolean);
+      for (var wi = 0; wi < ws.length; wi++) if (hay.indexOf(ws[wi]) === -1) return false;
+    }
     return true;
   });
   var tSt = 0,
@@ -2392,7 +2412,7 @@ function App() {
     onChange: function (e) {
       setSrch(e.target.value);
     },
-    placeholder: "Caut\u0103...",
+    placeholder: "Caut\u0103: nume, obiect, scop...",
     "aria-label": "Caut\u0103 puzzle",
     style: {
       marginTop: 6,
@@ -2405,7 +2425,15 @@ function App() {
       width: mob ? "100%" : 180,
       fontFamily: "system-ui"
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("span", {
+    role: "status",
+    style: {
+      marginLeft: 8,
+      fontSize: 10,
+      color: "#9a9aa8",
+      fontFamily: "system-ui"
+    }
+  }, srch || aCat ? filtered.length ? filtered.length + " puzzle-uri" : "Niciun puzzle nu se potrivește." : ""), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       gap: 6,

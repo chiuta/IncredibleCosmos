@@ -14,7 +14,7 @@ Un joc de puzzle bazat pe gravitație: plasezi planete, stele și alte obiecte a
 
 ## Funcții
 
-- 108 puzzle-uri, grupate în 12 categorii (Literare, Filosofice, Critice, Cititori, AI viitor, NHI, Multi-D, Extra-U, Stelare, Hiper-C, Meta-C, Interior), cu filtrare pe categorii („Toate”) și câmp **Caută puzzle**.
+- 108 puzzle-uri, grupate în 12 categorii (Literare, Filosofice, Critice, Cititori, AI viitor, NHI, Multi-D, Extra-U, Stelare, Hiper-C, Meta-C, Interior), cu filtrare pe categorii („Toate”) și câmp **Caută puzzle**: caută în nume, subtitlu, scop, categorie, dificultate și obiectele disponibile (de ex. „wormhole”, „teleportează”, „ușor”), fără diacritice și cu toate cuvintele potrivite; afișează numărul de rezultate.
 - Obiecte de plasat: Planetă, Stea, Gaură neagră, Booster, Bombă, Vortex, Wormhole A și Wormhole B.
 - Scop variabil pe puzzle, de exemplu „Ghidează cometa la țintă”, „Teleportează cometa prin wormhole” sau „Cât mai puține obiecte”.
 - Simulare cu butoane **▶ PLAY**, viteze 0,5×/1×/2×/4×, **↩** (anulare) și **↻** (reset); traiectoria cometei apare ca linie punctată.
@@ -52,6 +52,9 @@ CC0 1.0 Universal (domeniu public) — vezi fișierul LICENSE.
 Audit: 2026-10-10 — verificat în cod: singurele apariții de `fetch`/`XMLHttpRequest` sunt în încărcătoarele (loaders) nefolosite din Three.js r128; codul aplicației nu apelează nicio resursă externă. Corecturi de contrast și un bug de stil la butonul „Toate”.
 
 ## Istoric / Changelog
+
+### 11 octombrie 2026 (runda 7)
+- Reparat: „Caută puzzle” căuta doar în nume (de ex. „wormhole” dădea 0 rezultate); acum caută și în subtitlu, scop, categorie, dificultate și obiecte, fără diacritice, cu număr de rezultate anunțat și mesaj când nu există niciunul. Hash-ul CSP al scriptului JSX a fost recalculat.
 
 ### 11 octombrie 2026 (runda 6)
 - Adăugat: joc de la tastatură (cursor cu săgeți, taste rapide), anunțuri `aria-live`, „Continuă” și „Șterge progresul” în galerie; progresul se salvează la câștig, nu doar la părăsirea puzzle-ului.
