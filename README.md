@@ -6,7 +6,7 @@
 
 ![Captura de ecran](screenshot.png)
 
-**Ultima actualizare:** 11 octombrie 2026
+**Versiune:** 1.0.0 · **Ultima actualizare:** 12 octombrie 2026
 
 ## Ce este
 
@@ -52,6 +52,9 @@ CC0 1.0 Universal (domeniu public) — vezi fișierul LICENSE.
 Audit: 2026-10-10 — verificat în cod: singurele apariții de `fetch`/`XMLHttpRequest` sunt în încărcătoarele (loaders) nefolosite din Three.js r128; codul aplicației nu apelează nicio resursă externă. Corecturi de contrast și un bug de stil la butonul „Toate”.
 
 ## Istoric / Changelog
+
+### 1.0.0 — 2026-10-12
+- Versiunea și data ultimei actualizări sunt afișate în aplicație (subsolul galeriei).
 
 ### 11 octombrie 2026 (runda 7)
 - Reparat: „Caută puzzle” căuta doar în nume (de ex. „wormhole” dădea 0 rezultate); acum caută și în subtitlu, scop, categorie, dificultate și obiecte, fără diacritice, cu număr de rezultate anunțat și mesaj când nu există niciunul. Hash-ul CSP al scriptului JSX a fost recalculat.
