@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "slug": "incrediblecosmos",
+  "name": "The Incredible Cosmos",
+  "version": "1.1.0",
+  "updated": "2026-10-14",
+  "description": "",
+  "egress": [],
+  "permissions": [
+    "serviceWorker",
+    "localStorage",
+    "WebGL"
+  ],
+  "storageKeys": [
+    "cosmos108:tut"
+  ],
+  "sizeBytes": 935537,
+  "sha256": "4cb4a89a59b69c8450d42c6681992a75ec0da1ebbcebdec62a2f2bc34789f601",
+  "csp": {
+    "present": true,
+    "directives": {
+      "default-src": "'self'",
+      "img-src": "'self' data: blob:",
+      "style-src": "'self' 'unsafe-inline'",
+      "font-src": "'self' data:",
+      "media-src": "'self' blob: data:",
+      "object-src": "'none'",
+      "base-uri": "'self'",
+      "form-action": "'self'",
+      "worker-src": "'self' blob:",
+      "script-src": "'self' blob: sha256×7",
+      "connect-src": "'self'",
+      "manifest-src": "'self'"
+    },
+    "scriptInline": "hash",
+    "connect": "'self'"
+  },
+  "features": {
+    "export": true,
+    "import": true,
+    "i18n": [],
+    "pwa": {
+      "manifest": true,
+      "serviceWorker": true
+    },
+    "modules": [
+      "core",
+      "label",
+      "bundle"
+    ]
+  },
+  "kit": {
+    "version": "1.0.0",
+    "modules": [
+      "core",
+      "label",
+      "bundle"
+    ]
+  },
+  "selfSerializing": false
+}
