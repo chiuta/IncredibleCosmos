@@ -4,7 +4,7 @@
   "name": "The Incredible Cosmos",
   "version": "1.1.0",
   "updated": "2026-10-14",
-  "description": "",
+  "description": "108 puzzle-uri cosmice de gravitație, într-un singur fișier HTML, cu un univers 3D procedural pentru fiecare puzzle.",
   "egress": [],
   "permissions": [
     "serviceWorker",
@@ -14,8 +14,8 @@
   "storageKeys": [
     "cosmos108:tut"
   ],
-  "sizeBytes": 935537,
-  "sha256": "4cb4a89a59b69c8450d42c6681992a75ec0da1ebbcebdec62a2f2bc34789f601",
+  "sizeBytes": 935812,
+  "sha256": "9b4b0cbc91b8c88cbf8a644b19afcd8a68fdd5f6822a4cebee12fcf416e7543e",
   "csp": {
     "present": true,
     "directives": {
