@@ -45,7 +45,7 @@ Descarcă `index.html` (aprox. 0,8 MB) și deschide-l în browser; funcționeaz�
 
 ## Licență
 
-CC0 1.0 Universal (domeniu public) — vezi fișierul LICENSE.
+MIT — vezi fișierul LICENSE.
 
 ## Audit
 
@@ -78,4 +78,4 @@ Alexio — Alexandru-Ionuț Chiuță. Contact: alexio@trom.tf
 
 ## English summary
 
-The Incredible Cosmos is a single-file gravity puzzle game with 108 puzzles in 12 themed categories: place planets, stars, black holes, boosters, vortexes and wormholes so gravity steers a comet to its target, earning up to three stars. Each puzzle also offers a procedural 3D universe view. React and Three.js are bundled; progress is kept in localStorage (key cosmos108) and no third-party hosts are contacted. UI in Romanian. CC0 1.0.
+The Incredible Cosmos is a single-file gravity puzzle game with 108 puzzles in 12 themed categories: place planets, stars, black holes, boosters, vortexes and wormholes so gravity steers a comet to its target, earning up to three stars. Each puzzle also offers a procedural 3D universe view. React and Three.js are bundled; progress is kept in localStorage (key cosmos108) and no third-party hosts are contacted. UI in Romanian. MIT licence.
