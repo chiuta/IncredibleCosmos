@@ -14,8 +14,8 @@
   "storageKeys": [
     "cosmos108:tut"
   ],
-  "sizeBytes": 933829,
-  "sha256": "da24681bc92daf687aaf942436ff10f7b9fbcad4fc45a38797cb780bd51e9445",
+  "sizeBytes": 934465,
+  "sha256": "491a0392d599e5e843140f7d859fb6663f800d7e449a4c4e3768eaf7d7291b73",
   "csp": {
     "present": true,
     "directives": {
@@ -50,7 +50,7 @@
     ]
   },
   "kit": {
-    "version": "1.0.0",
+    "version": "1.1.1",
     "modules": [
       "core",
       "label",
