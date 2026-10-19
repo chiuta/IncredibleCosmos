@@ -1,81 +1,83 @@
 # The Incredible Cosmos
 
-108 puzzle-uri cosmice de gravitație, într-un singur fișier HTML, cu un univers 3D procedural pentru fiecare puzzle.
+**English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Live:** https://chiuta.github.io/IncredibleCosmos/
+**Version:** 1.1.0 · **Last updated:** 2026-10-14
 
-![Captura de ecran](screenshot.png)
+108 cosmic gravity puzzles in a single HTML file, with a procedural 3D universe for each puzzle.
 
-**Versiune:** 1.1.0 · **Ultima actualizare:** 14 octombrie 2026
+**Live app:** https://chiuta.github.io/IncredibleCosmos/
 
-## Ce este
+![Screenshot](screenshot.png)
 
-Un joc de puzzle bazat pe gravitație: plasezi planete, stele și alte obiecte astfel încât gravitația lor să ghideze o cometă către țintă. Aplicația conține 108 puzzle-uri în 12 categorii tematice, cu trei niveluri de dificultate (Ușor, Mediu, Greu) și evaluare de la una la trei stele. Interfața este în limba română; titlul afișat este „The Incredible Cosmos · 108 Puzzle-uri Cosmice”.
+## What it is
 
-## Funcții
+A gravity-based puzzle game: you place planets, stars and other objects so that their gravity guides a comet to the target. The app contains 108 puzzles in 12 thematic categories, with three difficulty levels (Easy, Medium, Hard) and a rating from one to three stars. The interface is in Romanian; the displayed title is "The Incredible Cosmos · 108 Puzzle-uri Cosmice".
 
-- 108 puzzle-uri, grupate în 12 categorii (Literare, Filosofice, Critice, Cititori, AI viitor, NHI, Multi-D, Extra-U, Stelare, Hiper-C, Meta-C, Interior), cu filtrare pe categorii („Toate”) și câmp **Caută puzzle**: caută în nume, subtitlu, scop, categorie, dificultate și obiectele disponibile (de ex. „wormhole”, „teleportează”, „ușor”), fără diacritice și cu toate cuvintele potrivite; afișează numărul de rezultate.
-- Obiecte de plasat: Planetă, Stea, Gaură neagră, Booster, Bombă, Vortex, Wormhole A și Wormhole B.
-- Scop variabil pe puzzle, de exemplu „Ghidează cometa la țintă”, „Teleportează cometa prin wormhole” sau „Cât mai puține obiecte”.
-- Simulare cu butoane **▶ PLAY**, viteze 0,5×/1×/2×/4×, **↩** (anulare) și **↻** (reset); traiectoria cometei apare ca linie punctată.
-- Stele de evaluare: mai puține obiecte folosite înseamnă mai multe stele; cel mai bun rezultat per puzzle este salvat.
-- Butonul **Univers 3D** al fiecărui puzzle deschide o vedere 3D procedurală (Three.js), rotită cu mouse-ul sau degetul, cu zoom din rotița mouse-ului.
-- **Tastatură:** `Tab` pe ecranul de joc, săgeți (Shift = pas mare) mută un cursor, `Enter`/`Spațiu` plasează obiectul selectat, `1`–`8` aleg obiectul, `P` = Play, `U` = anulează, `R` = reset; rezultatele și acțiunile sunt anunțate pentru cititoarele de ecran (regiune `aria-live`).
-- Galeria: „▶ Continuă: următorul nerezolvat” și „Șterge progresul” (cu confirmare); stelele se salvează imediat ce rezolvi puzzle-ul.
-- Link „📖 Cartea” către alexio.tf și linkuri de sprijin (Buy Me a Coffee).
+## Features
 
-## Manual de utilizare
+- 108 puzzles, grouped into 12 categories (Literary, Philosophical, Critical, Readers, Future AI, NHI, Multi-D, Extra-U, Stellar, Hyper-C, Meta-C, Interior), with category filtering ("All") and a **Search puzzle** field: it searches names, subtitles, goals, categories, difficulty and the available objects (e.g. "wormhole", "teleports", "easy"), ignoring diacritics and requiring all words to match; it shows the number of results.
+- Objects to place: Planet, Star, Black hole, Booster, Bomb, Vortex, Wormhole A and Wormhole B.
+- A goal that varies by puzzle, for example "Guide the comet to the target", "Teleport the comet through the wormhole" or "As few objects as possible".
+- Simulation with **▶ PLAY** buttons, speeds 0.5×/1×/2×/4×, **↩** (undo) and **↻** (reset); the comet's trajectory appears as a dotted line.
+- Star rating: fewer objects used means more stars; the best result per puzzle is saved.
+- Each puzzle's **3D Universe** button opens a procedural 3D view (Three.js), rotated with the mouse or a finger, with zoom from the mouse wheel.
+- **Keyboard:** `Tab` on the game screen, arrows (Shift = big step) move a cursor, `Enter`/`Space` places the selected object, `1`–`8` choose the object, `P` = Play, `U` = undo, `R` = reset; results and actions are announced to screen readers (`aria-live` region).
+- Gallery: "▶ Continue: next unsolved" and "Clear progress" (with confirmation); stars are saved as soon as you solve the puzzle.
+- A "📖 The Book" link to alexio.tf and support links (Buy Me a Coffee).
 
-1. Din lista de puzzle-uri, alege o categorie sau scrie în „Caută puzzle”, apoi apasă pe un card.
-2. Cometa pleacă în direcția săgeții. Selectează un obiect din bara de unelte de jos.
-3. Apasă pe ecran unde vrei să-l plasezi; poți trage un obiect deja plasat pentru a-l muta.
-4. Apasă **▶ PLAY**. Gravitația deviază cometa; dacă ajunge la țintă (🎯), ai câștigat. Dacă o pierzi, apasă **↻ Reîncearcă** sau **↻** (reset).
-5. Folosește **↩** pentru a anula ultimul obiect plasat și butoanele de viteză pentru a accelera simularea.
-6. La finalul puzzle-ului, închide și alege altul; progresul (stelele) se salvează automat.
-7. Pentru vederea 3D, apasă **Univers 3D** pe card; trage pentru a roti, folosește scroll pentru zoom, **✕ Închide** pentru ieșire.
+## User guide
 
-## Confidențialitate și rețea
+1. From the puzzle list, choose a category or type in "Search puzzle", then click a card.
+2. The comet leaves in the direction of the arrow. Select an object from the toolbar at the bottom.
+3. Click on the screen where you want to place it; you can drag an already placed object to move it.
+4. Press **▶ PLAY**. Gravity deflects the comet; if it reaches the target (🎯), you have won. If you miss it, press **↻ Retry** or **↻** (reset).
+5. Use **↩** to undo the last placed object and the speed buttons to speed up the simulation.
+6. At the end of the puzzle, close it and choose another; progress (the stars) is saved automatically.
+7. For the 3D view, press **3D Universe** on the card; drag to rotate, use scroll to zoom, **✕ Close** to exit.
 
-- **Stocare locală (localStorage):** o singură cheie, `cosmos108`, cu stelele câștigate la fiecare puzzle. Nu părăsește dispozitivul.
-- **Rețea:** React 18 și Three.js r128 sunt incluse în fișier (fără CDN). Aplicația nu face cereri către servere terțe și nu are analytics. Linkurile către alexio.tf, Buy Me a Coffee se deschid doar la clic. Politica CSP a paginii permite scripturile doar pe bază de hash SHA-256 (fără `'unsafe-inline'` pentru script) și restricționează conexiunile la `connect-src 'self'` (strâns în auditul din runda 2, după verificarea codului: nicio cerere către exterior); linkurile externe sunt simple ancore.
+## Privacy and network
 
-## Rulare locală / offline
+- **Local storage (localStorage):** a single key, `cosmos108`, with the stars earned in each puzzle. It never leaves the device.
+- **Network:** React 18 and Three.js r128 are included in the file (no CDN). The app makes no requests to third-party servers and has no analytics. The links to alexio.tf and Buy Me a Coffee open only on click. The page's CSP policy allows scripts only by SHA-256 hash (no `'unsafe-inline'` for scripts) and restricts connections to `connect-src 'self'` (tightened in the round-2 audit, after checking the code: no requests to the outside); external links are plain anchors.
 
-Descarcă `index.html` (aprox. 0,8 MB) și deschide-l în browser; funcționează fără internet. Pentru vederea 3D este nevoie de WebGL.
+## Running locally / offline
 
-## Licență
+Download `index.html` (approx. 0.8 MB) and open it in a browser; it works without internet. The 3D view needs WebGL.
 
-MIT — vezi fișierul LICENSE.
+## Licence
+
+MIT — see the LICENSE file.
 
 ## Audit
 
-Audit: 2026-10-10 — verificat în cod: singurele apariții de `fetch`/`XMLHttpRequest` sunt în încărcătoarele (loaders) nefolosite din Three.js r128; codul aplicației nu apelează nicio resursă externă. Corecturi de contrast și un bug de stil la butonul „Toate”.
+Audit: 2026-10-10 — verified in the code: the only occurrences of `fetch`/`XMLHttpRequest` are in the unused loaders of Three.js r128; the app's code calls no external resource. Contrast fixes and a styling bug on the "All" button.
 
-## Istoric / Changelog
+## History / Changelog
 
 ### 1.1.0 — 2026-10-14
-- Copie de rezervă și etichetare date (fff-kit).
+- Backup copy and data labelling (fff-kit).
 
 ### 1.0.0 — 2026-10-12
-- Versiunea și data ultimei actualizări sunt afișate în aplicație (subsolul galeriei).
+- The version and the date of the last update are shown in the app (gallery footer).
 
-### 11 octombrie 2026 (runda 7)
-- Reparat: „Caută puzzle” căuta doar în nume (de ex. „wormhole” dădea 0 rezultate); acum caută și în subtitlu, scop, categorie, dificultate și obiecte, fără diacritice, cu număr de rezultate anunțat și mesaj când nu există niciunul. Hash-ul CSP al scriptului JSX a fost recalculat.
+### 11 October 2026 (round 7)
+- Fixed: "Search puzzle" searched only names (e.g. "wormhole" gave 0 results); it now also searches subtitle, goal, category, difficulty and objects, ignoring diacritics, with the number of results announced and a message when there are none. The CSP hash of the JSX script was recalculated.
 
-### 11 octombrie 2026 (runda 6)
-- Adăugat: joc de la tastatură (cursor cu săgeți, taste rapide), anunțuri `aria-live`, „Continuă” și „Șterge progresul” în galerie; progresul se salvează la câștig, nu doar la părăsirea puzzle-ului.
-- Securitate: CSP cu `script-src` pe hash (5 scripturi) în locul `'unsafe-inline'`.
-- Neschimbat: cele 108 puzzle-uri rămân variații pe aceleași mecanici (decizie de conținut a autorului).
+### 11 October 2026 (round 6)
+- Added: keyboard play (cursor with arrows, hotkeys), `aria-live` announcements, "Continue" and "Clear progress" in the gallery; progress is saved on winning, not only when leaving the puzzle.
+- Security: CSP with `script-src` by hash (5 scripts) instead of `'unsafe-inline'`.
+- Unchanged: the 108 puzzles remain variations on the same mechanics (the author's content decision).
 
-### 11 octombrie 2026
-- Reparat: fundalul 3D nu mai afișează pătrate granulate; particulele (stele, nebuloase) folosesc acum un sprite circular moale generat local.
-- Reparat: panoul „Cum se joacă” apare automat doar la prima deschidere (cheie localStorage `cosmos108:tut`), se închide singur după 8 secunde sau cu Escape și rămâne disponibil din butonul „?”.
-- Reparat: structură cu repere (`<main>`, `<aside>` pentru sprijin); 0 violări axe-core la 1280 și 360 px.
+### 11 October 2026
+- Fixed: the 3D background no longer shows grainy squares; particles (stars, nebulae) now use a soft circular sprite generated locally.
+- Fixed: the "How to play" panel appears automatically only on first opening (localStorage key `cosmos108:tut`), closes by itself after 8 seconds or with Escape, and remains available from the "?" button.
+- Fixed: structure with landmarks (`<main>`, `<aside>` for support); 0 axe-core violations at 1280 and 360 px.
 
-## Autor
+## Author
 
 Alexio — Alexandru-Ionuț Chiuță. Contact: alexio@trom.tf
 
-## English summary
+## Summary
 
 The Incredible Cosmos is a single-file gravity puzzle game with 108 puzzles in 12 themed categories: place planets, stars, black holes, boosters, vortexes and wormholes so gravity steers a comet to its target, earning up to three stars. Each puzzle also offers a procedural 3D universe view. React and Three.js are bundled; progress is kept in localStorage (key cosmos108) and no third-party hosts are contacted. UI in Romanian. MIT licence.
