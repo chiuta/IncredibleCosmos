@@ -10,7 +10,7 @@ Langues de l'interface : **Română, English, Français, Italiano, Español, Por
 
 **Application en ligne :** https://chiuta.github.io/IncredibleCosmos/
 
-![Capture d'écran](screenshot.png)
+![Capture d'écran](screenshot.fr.png)
 
 ## Ce que c'est
 

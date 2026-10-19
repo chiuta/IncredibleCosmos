@@ -10,7 +10,7 @@ Limbile interfeței: **Română, English, Français, Italiano, Español, Portugu
 
 **Live:** https://chiuta.github.io/IncredibleCosmos/
 
-![Captura de ecran](screenshot.png)
+![Captura de ecran](screenshot.ro.png)
 
 ## Ce este
 

@@ -10,7 +10,7 @@ Oberflächensprachen: **Română, English, Français, Italiano, Español, Portug
 
 **Online-Anwendung:** https://chiuta.github.io/IncredibleCosmos/
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot.de.png)
 
 ## Was es ist
 

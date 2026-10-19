@@ -10,7 +10,7 @@ Lingue dell'interfaccia: **Română, English, Français, Italiano, Español, Por
 
 **Applicazione online:** https://chiuta.github.io/IncredibleCosmos/
 
-![Schermata](screenshot.png)
+![Schermata](screenshot.it.png)
 
 ## Che cos'è
 
