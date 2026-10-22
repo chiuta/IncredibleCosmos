@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · **Italiano** · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versione:** 1.2.0 · **Ultimo aggiornamento:** 2026-10-19
+**Versione:** 1.2.1 · **Ultimo aggiornamento:** 2026-10-22
 
 Lingue dell'interfaccia: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -56,6 +56,9 @@ MIT — vedi il file LICENSE.
 Audit: 2026-10-10 — verificato nel codice: le uniche occorrenze di `fetch`/`XMLHttpRequest` si trovano nei caricatori (loader) inutilizzati di Three.js r128; il codice dell'applicazione non richiama alcuna risorsa esterna. Correzioni di contrasto e un bug di stile nel pulsante «Tutte».
 
 ## Cronologia / Changelog
+
+### 1.2.1 — 2026-10-22
+- I sottotitoli dei puzzle (tipi di stelle, categorie, brevi descrizioni) sono tradotti in tutte e 8 le lingue; prima comparivano ovunque in rumeno.
 
 ### 1.1.0 — 2026-10-14
 - Copia di riserva ed etichettatura dei dati (fff-kit).

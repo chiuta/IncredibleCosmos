@@ -2,7 +2,7 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 1.2.0 · **Last updated:** 2026-10-19
+**Version:** 1.2.1 · **Last updated:** 2026-10-22
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -56,6 +56,9 @@ MIT — see the LICENSE file.
 Audit: 2026-10-10 — verified in the code: the only occurrences of `fetch`/`XMLHttpRequest` are in the unused loaders of Three.js r128; the app's code calls no external resource. Contrast fixes and a styling bug on the "All" button.
 
 ## History / Changelog
+
+### 1.2.1 — 2026-10-22
+- Puzzle subtitles (star types, categories, short descriptors) are now translated into all 8 languages; they were shown in Romanian everywhere.
 
 ### 1.1.0 — 2026-10-14
 - Backup copy and data labelling (fff-kit).

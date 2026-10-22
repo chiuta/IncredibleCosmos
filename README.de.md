@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · **Deutsch** · [Magyar](README.hu.md)
 
-**Version:** 1.2.0 · **Zuletzt aktualisiert:** 2026-10-19
+**Version:** 1.2.1 · **Zuletzt aktualisiert:** 2026-10-22
 
 Oberflächensprachen: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -56,6 +56,9 @@ MIT — siehe Datei LICENSE.
 Audit: 2026-10-10 — im Code geprüft: Die einzigen Vorkommen von `fetch`/`XMLHttpRequest` befinden sich in den ungenutzten Loadern von Three.js r128; der Code der Anwendung ruft keine externe Ressource auf. Kontrastkorrekturen und ein Stilfehler bei der Schaltfläche „Alle“.
 
 ## Verlauf / Changelog
+
+### 1.2.1 — 2026-10-22
+- Die Untertitel der Rätsel (Sterntypen, Kategorien, Kurzbeschreibungen) sind jetzt in alle 8 Sprachen übersetzt; zuvor erschienen sie überall auf Rumänisch.
 
 ### 1.1.0 — 2026-10-14
 - Sicherungskopie und Datenkennzeichnung (fff-kit).
