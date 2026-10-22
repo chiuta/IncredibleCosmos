@@ -2,7 +2,7 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 1.2.1 · **Last updated:** 2026-10-22
+**Version:** 1.2.2 · **Last updated:** 2026-10-22
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -56,6 +56,10 @@ MIT — see the LICENSE file.
 Audit: 2026-10-10 — verified in the code: the only occurrences of `fetch`/`XMLHttpRequest` are in the unused loaders of Three.js r128; the app's code calls no external resource. Contrast fixes and a styling bug on the "All" button.
 
 ## History / Changelog
+
+### 1.2.2 — 2026-10-22
+- The blocking browser confirmation when resetting progress is replaced by a translated modal dialog (8 languages).
+- Mobile: all UI text is at least 12 px (it was 6–11 px) and the category filter chips are larger touch targets.
 
 ### 1.2.1 — 2026-10-22
 - Puzzle subtitles (star types, categories, short descriptors) are now translated into all 8 languages; they were shown in Romanian everywhere.

@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · **Magyar**
 
-**Verzió:** 1.2.1 · **Utolsó frissítés:** 2026-10-22
+**Verzió:** 1.2.2 · **Utolsó frissítés:** 2026-10-22
 
 A felület nyelvei: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -56,6 +56,10 @@ MIT — lásd a LICENSE fájlt.
 Audit: 2026-10-10 — a kódban ellenőrizve: a `fetch`/`XMLHttpRequest` egyetlen előfordulása a Three.js r128 nem használt betöltőiben (loader) található; az alkalmazás kódja nem hív meg semmilyen külső erőforrást. Kontrasztjavítások és egy stílushiba a „Mind” gombnál.
 
 ## Előzmények / Változásnapló
+
+### 1.2.2 — 2026-10-22
+- A haladás visszaállításakor megjelenő blokkoló böngészőmegerősítést lefordított modális ablak váltja fel (8 nyelv).
+- Mobil: a felület összes szövege legalább 12 px (korábban 6–11 px), a kategóriaszűrő gombok érintési felülete pedig nagyobb.
 
 ### 1.2.1 — 2026-10-22
 - A rejtvények alcímei (csillagtípusok, kategóriák, rövid leírások) mind a 8 nyelvre le vannak fordítva; korábban mindenhol románul jelentek meg.

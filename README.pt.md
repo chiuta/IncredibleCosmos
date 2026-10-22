@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · **Português** · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versão:** 1.2.1 · **Última atualização:** 2026-10-22
+**Versão:** 1.2.2 · **Última atualização:** 2026-10-22
 
 Idiomas da interface: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -56,6 +56,10 @@ MIT — consulte o ficheiro LICENSE.
 Auditoria: 2026-10-10 — verificado no código: as únicas ocorrências de `fetch`/`XMLHttpRequest` estão nos carregadores (loaders) não utilizados do Three.js r128; o código da aplicação não chama nenhum recurso externo. Correções de contraste e um erro de estilo no botão «Todas».
 
 ## Histórico / Registo de alterações
+
+### 1.2.2 — 2026-10-22
+- A confirmação bloqueante do navegador ao repor o progresso é substituída por um diálogo modal traduzido (8 idiomas).
+- Móvel: todo o texto da interface tem pelo menos 12 px (antes 6–11 px) e os botões de filtro por categoria têm áreas táteis maiores.
 
 ### 1.2.1 — 2026-10-22
 - Os subtítulos dos puzzles (tipos de estrelas, categorias, descrições curtas) foram traduzidos para os 8 idiomas; antes apareciam sempre em romeno.

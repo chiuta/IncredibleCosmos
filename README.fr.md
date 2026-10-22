@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · **Français** · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version :** 1.2.1 · **Dernière mise à jour :** 2026-10-22
+**Version :** 1.2.2 · **Dernière mise à jour :** 2026-10-22
 
 Langues de l'interface : **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -56,6 +56,10 @@ MIT — voir le fichier LICENSE.
 Audit : 2026-10-10 — vérifié dans le code : les seules occurrences de `fetch`/`XMLHttpRequest` se trouvent dans les chargeurs (loaders) inutilisés de Three.js r128 ; le code de l'application n'appelle aucune ressource externe. Corrections de contraste et un bogue de style sur le bouton « Toutes ».
 
 ## Historique / Journal des modifications
+
+### 1.2.2 — 2026-10-22
+- La confirmation bloquante du navigateur lors de la réinitialisation de la progression est remplacée par un dialogue modal traduit (8 langues).
+- Mobile : tout le texte de l'interface fait au moins 12 px (il était de 6 à 11 px) et les boutons de filtre par catégorie ont des cibles tactiles plus grandes.
 
 ### 1.2.1 — 2026-10-22
 - Les sous-titres des énigmes (types d'étoiles, catégories, courtes descriptions) sont traduits dans les 8 langues ; ils s'affichaient auparavant en roumain partout.
