@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · **Magyar**
 
-**Verzió:** 1.2.3 · **Utolsó frissítés:** 2026-10-22
+**Verzió:** 1.2.4 · **Utolsó frissítés:** 2026-10-22
 
 A felület nyelvei: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -56,6 +56,10 @@ MIT — lásd a LICENSE fájlt.
 Audit: 2026-10-10 — a kódban ellenőrizve: a `fetch`/`XMLHttpRequest` egyetlen előfordulása a Three.js r128 nem használt betöltőiben (loader) található; az alkalmazás kódja nem hív meg semmilyen külső erőforrást. Kontrasztjavítások és egy stílushiba a „Mind” gombnál.
 
 ## Előzmények / Változásnapló
+
+### 1.2.4 — 2026-10-22
+
+fff-kit 1.1.4: érintési célok és minimális szövegméret. Érintési célok/szöveg javítva az alkalmazásban.
 
 ### 1.2.3 — 2026-10-22
 
