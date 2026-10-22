@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · **Italiano** · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versione:** 1.2.5 · **Ultimo aggiornamento:** 2026-10-23
+**Versione:** 1.2.6 · **Ultimo aggiornamento:** 2026-10-23
 
 Lingue dell'interfaccia: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,7 +40,7 @@ Un gioco di rompicapi basato sulla gravità: posizioni pianeti, stelle e altri o
 
 ## Riservatezza e rete
 
-- **Archiviazione locale (localStorage):** una sola chiave, `cosmos108`, con le stelle ottenute in ogni rompicapo. Non lascia il dispositivo.
+- **Archiviazione locale (localStorage):** una sola chiave, `incrediblecosmos.progress`, con le stelle ottenute in ogni rompicapo. Non lascia il dispositivo.
 - **Rete:** React 18 e Three.js r128 sono inclusi nel file (nessuna CDN). L'applicazione non invia richieste a server di terzi e non ha analisi statistica. I link verso alexio.tf e Buy Me a Coffee si aprono solo al clic. La politica CSP della pagina consente gli script solo tramite hash SHA-256 (senza `'unsafe-inline'` per gli script) e limita le connessioni a `connect-src 'self'` (rafforzata nell'audit del round 2, dopo la verifica del codice: nessuna richiesta verso l'esterno); i link esterni sono semplici ancore.
 
 ## Esecuzione locale / offline
@@ -56,6 +56,11 @@ MIT — vedi il file LICENSE.
 Audit: 2026-10-10 — verificato nel codice: le uniche occorrenze di `fetch`/`XMLHttpRequest` si trovano nei caricatori (loader) inutilizzati di Three.js r128; il codice dell'applicazione non richiama alcuna risorsa esterna. Correzioni di contrasto e un bug di stile nel pulsante «Tutte».
 
 ## Cronologia / Changelog
+
+### 1.2.6 — 2026-10-23
+
+- Archiviazione: le chiavi ora hanno il prefisso dell'app (`incrediblecosmos.progress`, `incrediblecosmos.lang`, `incrediblecosmos.tut`); i dati esistenti vengono migrati automaticamente all'avvio dalle vecchie chiavi (`cosmos108`, `cosmos108:lang`, `cosmos108:tut`) e i vecchi backup `.fff.json` si importano ancora (fff-kit 1.2.0).
+- Dialoghi: le finestre native `alert`/`confirm`/`prompt` sono state sostituite da dialoghi `FFF.dialog` accessibili e tradotti (tastiera, focus trap, Esc), con lo stesso comportamento (fff-kit 1.2.0).
 
 ### 1.2.4 — 2026-10-22
 

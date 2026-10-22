@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 1.2.5 · **Ultima actualizare:** 2026-10-23
+**Versiune:** 1.2.6 · **Ultima actualizare:** 2026-10-23
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,7 +40,7 @@ Un joc de puzzle bazat pe gravitație: plasezi planete, stele și alte obiecte a
 
 ## Confidențialitate și rețea
 
-- **Stocare locală (localStorage):** o singură cheie, `cosmos108`, cu stelele câștigate la fiecare puzzle. Nu părăsește dispozitivul.
+- **Stocare locală (localStorage):** o singură cheie, `incrediblecosmos.progress`, cu stelele câștigate la fiecare puzzle. Nu părăsește dispozitivul.
 - **Rețea:** React 18 și Three.js r128 sunt incluse în fișier (fără CDN). Aplicația nu face cereri către servere terțe și nu are analytics. Linkurile către alexio.tf, Buy Me a Coffee se deschid doar la clic. Politica CSP a paginii permite scripturile doar pe bază de hash SHA-256 (fără `'unsafe-inline'` pentru script) și restricționează conexiunile la `connect-src 'self'` (strâns în auditul din runda 2, după verificarea codului: nicio cerere către exterior); linkurile externe sunt simple ancore.
 
 ## Rulare locală / offline
@@ -56,6 +56,11 @@ MIT — vezi fișierul LICENSE.
 Audit: 2026-10-10 — verificat în cod: singurele apariții de `fetch`/`XMLHttpRequest` sunt în încărcătoarele (loaders) nefolosite din Three.js r128; codul aplicației nu apelează nicio resursă externă. Corecturi de contrast și un bug de stil la butonul „Toate”.
 
 ## Istoric / Changelog
+
+### 1.2.6 — 2026-10-23
+
+- Stocare: cheile poartă acum prefixul aplicației (`incrediblecosmos.progress`, `incrediblecosmos.lang`, `incrediblecosmos.tut`); datele existente se mută automat la pornire din cheile vechi (`cosmos108`, `cosmos108:lang`, `cosmos108:tut`), iar copiile `.fff.json` mai vechi se importă în continuare (fff-kit 1.2.0).
+- Dialoguri: casetele native `alert`/`confirm`/`prompt` au fost înlocuite cu dialoguri `FFF.dialog` accesibile și traduse (tastatură, capcană de focus, Escape), cu același comportament (fff-kit 1.2.0).
 
 ### 1.2.4 — 2026-10-22
 

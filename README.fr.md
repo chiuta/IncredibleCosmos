@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · **Français** · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version :** 1.2.5 · **Dernière mise à jour :** 2026-10-23
+**Version :** 1.2.6 · **Dernière mise à jour :** 2026-10-23
 
 Langues de l'interface : **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,7 +40,7 @@ Un jeu d'énigmes fondé sur la gravitation : vous placez des planètes, des ét
 
 ## Confidentialité et réseau
 
-- **Stockage local (localStorage) :** une seule clé, `cosmos108`, contenant les étoiles obtenues à chaque énigme. Elle ne quitte pas l'appareil.
+- **Stockage local (localStorage) :** une seule clé, `incrediblecosmos.progress`, contenant les étoiles obtenues à chaque énigme. Elle ne quitte pas l'appareil.
 - **Réseau :** React 18 et Three.js r128 sont inclus dans le fichier (pas de CDN). L'application n'envoie aucune requête à des serveurs tiers et n'a pas d'outil d'analyse. Les liens vers alexio.tf et Buy Me a Coffee ne s'ouvrent qu'au clic. La politique CSP de la page n'autorise les scripts que par empreinte SHA-256 (sans `'unsafe-inline'` pour les scripts) et restreint les connexions à `connect-src 'self'` (resserrée lors de l'audit du tour 2, après vérification du code : aucune requête vers l'extérieur) ; les liens externes sont de simples ancres.
 
 ## Exécution locale / hors ligne
@@ -56,6 +56,11 @@ MIT — voir le fichier LICENSE.
 Audit : 2026-10-10 — vérifié dans le code : les seules occurrences de `fetch`/`XMLHttpRequest` se trouvent dans les chargeurs (loaders) inutilisés de Three.js r128 ; le code de l'application n'appelle aucune ressource externe. Corrections de contraste et un bogue de style sur le bouton « Toutes ».
 
 ## Historique / Journal des modifications
+
+### 1.2.6 — 2026-10-23
+
+- Stockage : les clés portent désormais le préfixe de l'application (`incrediblecosmos.progress`, `incrediblecosmos.lang`, `incrediblecosmos.tut`) ; les données existantes sont migrées automatiquement au démarrage depuis les anciennes clés (`cosmos108`, `cosmos108:lang`, `cosmos108:tut`), et les anciennes sauvegardes `.fff.json` s'importent toujours (fff-kit 1.2.0).
+- Dialogues : les boîtes natives `alert`/`confirm`/`prompt` ont été remplacées par des dialogues `FFF.dialog` accessibles et traduits (clavier, piège de focus, Échap), au comportement identique (fff-kit 1.2.0).
 
 ### 1.2.4 — 2026-10-22
 

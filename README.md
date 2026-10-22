@@ -2,7 +2,7 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 1.2.5 · **Last updated:** 2026-10-23
+**Version:** 1.2.6 · **Last updated:** 2026-10-23
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,7 +40,7 @@ A gravity-based puzzle game: you place planets, stars and other objects so that 
 
 ## Privacy and network
 
-- **Local storage (localStorage):** a single key, `cosmos108`, with the stars earned in each puzzle. It never leaves the device.
+- **Local storage (localStorage):** a single key, `incrediblecosmos.progress`, with the stars earned in each puzzle. It never leaves the device.
 - **Network:** React 18 and Three.js r128 are included in the file (no CDN). The app makes no requests to third-party servers and has no analytics. The links to alexio.tf and Buy Me a Coffee open only on click. The page's CSP policy allows scripts only by SHA-256 hash (no `'unsafe-inline'` for scripts) and restricts connections to `connect-src 'self'` (tightened in the round-2 audit, after checking the code: no requests to the outside); external links are plain anchors.
 
 ## Running locally / offline
@@ -56,6 +56,11 @@ MIT — see the LICENSE file.
 Audit: 2026-10-10 — verified in the code: the only occurrences of `fetch`/`XMLHttpRequest` are in the unused loaders of Three.js r128; the app's code calls no external resource. Contrast fixes and a styling bug on the "All" button.
 
 ## History / Changelog
+
+### 1.2.6 — 2026-10-23
+
+- Storage: keys now carry the app prefix (`incrediblecosmos.progress`, `incrediblecosmos.lang`, `incrediblecosmos.tut`); existing data is migrated automatically at startup from the old key(s) (`cosmos108`, `cosmos108:lang`, `cosmos108:tut`), and older `.fff.json` backups still import (fff-kit 1.2.0).
+- Dialogs: the native `alert`/`confirm`/`prompt` boxes were replaced with accessible, translated `FFF.dialog` dialogs (keyboard, focus trap, Escape) with the same behavior (fff-kit 1.2.0).
 
 ### 1.2.4 — 2026-10-22
 

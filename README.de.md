@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · **Deutsch** · [Magyar](README.hu.md)
 
-**Version:** 1.2.5 · **Zuletzt aktualisiert:** 2026-10-23
+**Version:** 1.2.6 · **Zuletzt aktualisiert:** 2026-10-23
 
 Oberflächensprachen: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,7 +40,7 @@ Ein Rätselspiel auf Basis der Schwerkraft: Sie platzieren Planeten, Sterne und 
 
 ## Datenschutz und Netzwerk
 
-- **Lokaler Speicher (localStorage):** ein einziger Schlüssel, `cosmos108`, mit den bei jedem Rätsel gewonnenen Sternen. Er verlässt das Gerät nicht.
+- **Lokaler Speicher (localStorage):** ein einziger Schlüssel, `incrediblecosmos.progress`, mit den bei jedem Rätsel gewonnenen Sternen. Er verlässt das Gerät nicht.
 - **Netzwerk:** React 18 und Three.js r128 sind in der Datei enthalten (kein CDN). Die Anwendung sendet keine Anfragen an Server Dritter und hat keine Analyse. Die Links zu alexio.tf und Buy Me a Coffee öffnen sich nur per Klick. Die CSP-Richtlinie der Seite erlaubt Skripte nur per SHA-256-Hash (kein `'unsafe-inline'` für Skripte) und beschränkt Verbindungen auf `connect-src 'self'` (im Audit der Runde 2 nach Prüfung des Codes verschärft: keine Anfragen nach außen); externe Links sind einfache Anker.
 
 ## Lokale Ausführung / offline
@@ -56,6 +56,11 @@ MIT — siehe Datei LICENSE.
 Audit: 2026-10-10 — im Code geprüft: Die einzigen Vorkommen von `fetch`/`XMLHttpRequest` befinden sich in den ungenutzten Loadern von Three.js r128; der Code der Anwendung ruft keine externe Ressource auf. Kontrastkorrekturen und ein Stilfehler bei der Schaltfläche „Alle“.
 
 ## Verlauf / Changelog
+
+### 1.2.6 — 2026-10-23
+
+- Speicher: Die Schlüssel tragen jetzt das App-Präfix (`incrediblecosmos.progress`, `incrediblecosmos.lang`, `incrediblecosmos.tut`); vorhandene Daten werden beim Start automatisch von den alten Schlüsseln (`cosmos108`, `cosmos108:lang`, `cosmos108:tut`) übernommen, und ältere `.fff.json`-Sicherungen lassen sich weiterhin importieren (fff-kit 1.2.0).
+- Dialoge: Die nativen Boxen `alert`/`confirm`/`prompt` wurden durch barrierefreie, übersetzte `FFF.dialog`-Dialoge ersetzt (Tastatur, Fokusfalle, Esc) – mit unverändertem Verhalten (fff-kit 1.2.0).
 
 ### 1.2.4 — 2026-10-22
 

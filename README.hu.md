@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · **Magyar**
 
-**Verzió:** 1.2.5 · **Utolsó frissítés:** 2026-10-23
+**Verzió:** 1.2.6 · **Utolsó frissítés:** 2026-10-23
 
 A felület nyelvei: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -40,7 +40,7 @@ Gravitáción alapuló fejtörőjáték: bolygókat, csillagokat és más objekt
 
 ## Adatvédelem és hálózat
 
-- **Helyi tárolás (localStorage):** egyetlen kulcs, a `cosmos108`, az egyes fejtörőknél szerzett csillagokkal. Nem hagyja el az eszközt.
+- **Helyi tárolás (localStorage):** egyetlen kulcs, a `incrediblecosmos.progress`, az egyes fejtörőknél szerzett csillagokkal. Nem hagyja el az eszközt.
 - **Hálózat:** a React 18 és a Three.js r128 a fájlba van építve (CDN nélkül). Az alkalmazás nem küld kéréseket harmadik fél szervereinek, és nincs analitikája. Az alexio.tf és a Buy Me a Coffee hivatkozásai csak kattintásra nyílnak meg. Az oldal CSP-szabályzata a szkripteket csak SHA-256 ellenőrzőösszeg alapján engedélyezi (szkriptekhez nincs `'unsafe-inline'`), és a kapcsolatokat a `connect-src 'self'` irányelvre korlátozza (a 2. forduló auditján szigorítva, a kód ellenőrzése után: nincs kérés kifelé); a külső hivatkozások egyszerű horgonyok.
 
 ## Helyi futtatás / offline
@@ -56,6 +56,11 @@ MIT — lásd a LICENSE fájlt.
 Audit: 2026-10-10 — a kódban ellenőrizve: a `fetch`/`XMLHttpRequest` egyetlen előfordulása a Three.js r128 nem használt betöltőiben (loader) található; az alkalmazás kódja nem hív meg semmilyen külső erőforrást. Kontrasztjavítások és egy stílushiba a „Mind” gombnál.
 
 ## Előzmények / Változásnapló
+
+### 1.2.6 — 2026-10-23
+
+- Tárolás: a kulcsok mostantól az alkalmazás előtagját viselik (`incrediblecosmos.progress`, `incrediblecosmos.lang`, `incrediblecosmos.tut`); a meglévő adatok indításkor automatikusan átkerülnek a régi kulcsokból (`cosmos108`, `cosmos108:lang`, `cosmos108:tut`), a régebbi `.fff.json` mentések pedig továbbra is importálhatók (fff-kit 1.2.0).
+- Párbeszédablakok: a natív `alert`/`confirm`/`prompt` ablakokat akadálymentes, lefordított `FFF.dialog` ablakok váltották fel (billentyűzet, fókuszcsapda, Esc), változatlan viselkedéssel (fff-kit 1.2.0).
 
 ### 1.2.4 — 2026-10-22
 
