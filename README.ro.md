@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 1.2.6 · **Ultima actualizare:** 2026-10-23
+**Versiune:** 1.2.7 · **Ultima actualizare:** 2026-10-23
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -56,6 +56,10 @@ MIT — vezi fișierul LICENSE.
 Audit: 2026-10-10 — verificat în cod: singurele apariții de `fetch`/`XMLHttpRequest` sunt în încărcătoarele (loaders) nefolosite din Three.js r128; codul aplicației nu apelează nicio resursă externă. Corecturi de contrast și un bug de stil la butonul „Toate”.
 
 ## Istoric / Changelog
+
+### 1.2.7 — 2026-10-23
+
+- Reparat: o intrare de progres deteriorată (`null`, număr de stele negativ sau uriaș în `incrediblecosmos.progress`) dărâma tot ecranul la pornire; progresul este acum validat (0–3 stele per puzzle). `app.json` listează acum cheia `incrediblecosmos.progress`. Test de regresie nou.
 
 ### 1.2.6 — 2026-10-23
 

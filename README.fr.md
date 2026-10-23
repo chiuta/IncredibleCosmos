@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · **Français** · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version :** 1.2.6 · **Dernière mise à jour :** 2026-10-23
+**Version :** 1.2.7 · **Dernière mise à jour :** 2026-10-23
 
 Langues de l'interface : **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -56,6 +56,10 @@ MIT — voir le fichier LICENSE.
 Audit : 2026-10-10 — vérifié dans le code : les seules occurrences de `fetch`/`XMLHttpRequest` se trouvent dans les chargeurs (loaders) inutilisés de Three.js r128 ; le code de l'application n'appelle aucune ressource externe. Corrections de contraste et un bogue de style sur le bouton « Toutes ».
 
 ## Historique / Journal des modifications
+
+### 1.2.7 — 2026-10-23
+
+- Correction : une entrée de progression endommagée (`null`, nombre d’étoiles négatif ou énorme dans `incrediblecosmos.progress`) faisait planter tout l’écran au démarrage ; la progression est désormais validée (0 à 3 étoiles par puzzle). `app.json` liste désormais la clé `incrediblecosmos.progress`. Nouveau test de régression.
 
 ### 1.2.6 — 2026-10-23
 
