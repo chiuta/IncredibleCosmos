@@ -13,10 +13,11 @@
   ],
   "storageKeys": [
     "incrediblecosmos.lang",
+    "incrediblecosmos.progress",
     "incrediblecosmos.tut"
   ],
-  "sizeBytes": 1018872,
-  "sha256": "85fe28d5f0cdeb83ff1382545df14e9de467c8a5610b1dc78d19e8e150484183",
+  "sizeBytes": 1018900,
+  "sha256": "f4618cf1f3d2c103f5b191fbad8dccd1a1234f4a29c8c186fa316ff865822229",
   "csp": {
     "present": true,
     "directives": {

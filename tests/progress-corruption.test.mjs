@@ -14,7 +14,7 @@ const h = fs.readFileSync(path.join(R, 'index.html'), 'utf8'), app = JSON.parse(
 const S = app.sha256;
 ok(app.sizeBytes === Buffer.byteLength(h) && crypto.createHash('sha256').update(h.split(S).join('')).digest('hex') === S, 'app.json: sizeBytes și sha256 corecte');
 ok(app.storageKeys.includes('incrediblecosmos.progress'), 'app.json listează cheia de progres', app.storageKeys);
-const b = await chromium.launch({executablePath: process.env.CHROME || '/opt/pw-browsers/chromium', args: ['--no-sandbox', '--use-gl=swiftshader', '--enable-unsafe-swiftshader']});
+const b = await chromium.launch({executablePath: process.env.CHROMIUM_PATH || process.env.CHROME || undefined, args: ['--no-sandbox', '--use-gl=swiftshader', '--enable-unsafe-swiftshader']});
 const payloads = {
   'null în intrare': {1: 1, 2: null}, 'stele negative': {1: {st: -5}, 2: {st: 2}}, 'stele uriașe': {1: {st: 1e9}}, 'șir': {1: 'x', 2: [1], 3: {st: 'abc'}},
   'JSON invalid': 'not json{', 'tablou': [1, 2, 3], 'proto': '{"__proto__":{"polluted":1}}'
