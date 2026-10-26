@@ -2,13 +2,15 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 1.2.8 · **Last updated:** 2026-10-26
+**Version:** 2.0.0 · **Last updated:** 2026-10-26
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
 108 cosmic gravity puzzles in a single HTML file, with a procedural 3D universe for each puzzle.
 
 **Live app:** https://chiuta.github.io/IncredibleCosmos/
+
+**New in 2.0.0:** *Level editor* — the “✎ Level editor” button in the menu: place the target, the comet (drag it to give it velocity) and fixed bodies, choose the objects the player receives, and **automatic verification** deterministically searches for a solution using the same physics as the game (the level then gets a “Verified” badge). Share a level as a **short code**, a **link** or an offline-generated **QR code**; the receiver can play it and re-check the embedded solution locally. Custom levels never change earned stars; they can be saved to “My levels” (on this device only). The time-trial mode and ghost are not part of this version.
 
 ![Screenshot](screenshot.en.png)
 

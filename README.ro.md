@@ -2,13 +2,15 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 1.2.8 · **Ultima actualizare:** 2026-10-26
+**Versiune:** 2.0.0 · **Ultima actualizare:** 2026-10-26
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
 108 puzzle-uri cosmice de gravitație, într-un singur fișier HTML, cu un univers 3D procedural pentru fiecare puzzle.
 
 **Live:** https://chiuta.github.io/IncredibleCosmos/
+
+**Nou în 2.0.0:** *Editor de niveluri* — butonul „✎ Editor de niveluri” din meniu: pui ținta, cometa (o tragi ca să-i dai viteza) și corpuri fixe, alegi obiectele primite de jucător, iar **verificarea automată** caută deterministic o soluție cu aceeași fizică ca jocul (nivelul primește marcajul „Verificat”). Partajezi nivelul printr-un **cod scurt**, o **legătură** sau un **cod QR** (generat offline); cine îl primește îl poate juca și își poate verifica local soluția din cod. Nivelurile proprii nu modifică stelele câștigate; pot fi salvate în „Nivelurile mele” (doar pe dispozitiv). Modul „contra cronometru” și fantoma nu sunt incluse în această versiune.
 
 ![Captura de ecran](screenshot.ro.png)
 

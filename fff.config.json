@@ -1,6 +1,7 @@
 {
   "storageKeys": [
     "incrediblecosmos.lang",
+    "incrediblecosmos.levels",
     "incrediblecosmos.progress",
     "incrediblecosmos.tut"
   ]
