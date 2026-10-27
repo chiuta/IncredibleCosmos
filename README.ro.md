@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 2.0.1 · **Ultima actualizare:** 2026-10-27
+**Versiune:** 2.1.0 · **Ultima actualizare:** 2026-10-27
 
 **Stare:** stabil · **Offline:** complet
 
@@ -77,7 +77,17 @@ MIT — vezi fișierul LICENSE.
 
 Audit: 2026-10-10 — verificat în cod: singurele apariții de `fetch`/`XMLHttpRequest` sunt în încărcătoarele (loaders) nefolosite din Three.js r128; codul aplicației nu apelează nicio resursă externă. Corecturi de contrast și un bug de stil la butonul „Toate”.
 
+## Test de coerență README ↔ cod (2.1.0)
+
+`tests/readme-valori.test.mjs` verifică, fără browser, în toate cele 8 README-uri, că masele și razele din tabelul „Cum funcționează jocul” (planetă 80/75, lună 20/45, stea 400/130, gaură neagră 1200/170, vortex 150/85) coincid cu constantele din `index.html`. Nu s-a modificat jocul.
+
+**Neschimbat și motiv:** capturile de ecran (`screenshot.<limbă>.png`) nu au fost regenerate: nu am un browser cu WebGL stabil în sesiune; cele existente rămân.
+
 ## Istoric / Changelog
+
+### 2.1.0 — 2026-10-27
+- Test de coerență README ↔ cod pentru tabelul mecanicii jocului.
+
 
 ### 1.2.7 — 2026-10-23
 

@@ -2,6 +2,14 @@
 
 Format: SemVer (MAJOR.MINOR.PATCH). Intrările mai vechi sunt copiate din README (secțiunea „History / Changelog”), neschimbate.
 
+## 2.1.0 — 2026-10-27 (anterior: 2.0.1)
+
+- Test nou `tests/readme-valori.test.mjs`: masele și razele din tabelul „Cum funcționează jocul” (8 limbi) coincid cu `TYPES` și cu raza vortexului din `index.html` (9 verificări).
+- Jocul nu s-a modificat. Capturile de ecran nu au fost regenerate (fără browser WebGL stabil în sesiune).
+- `tests/editor-niveluri.test.mjs` rulat acum până la capăt: 72 ok, 0 eșuate (în 2.0.1 expirase în sandbox); `progress-corruption` 9 ok.
+
+---
+
 ## 2.0.1 — 2026-10-27 (anterior: 2.0.0)
 
 Recenzie (doar texte, fără modificări de logică):

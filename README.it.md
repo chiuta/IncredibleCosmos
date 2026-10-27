@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · **Italiano** · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versione:** 2.0.1 · **Ultimo aggiornamento:** 2026-10-27
+**Versione:** 2.1.0 · **Ultimo aggiornamento:** 2026-10-27
 
 **Stato:** stabile · **Offline:** completo
 
@@ -75,7 +75,19 @@ MIT — vedi il file LICENSE.
 
 Audit: 2026-10-10 — verificato nel codice: le uniche occorrenze di `fetch`/`XMLHttpRequest` si trovano nei caricatori (loader) inutilizzati di Three.js r128; il codice dell'applicazione non richiama alcuna risorsa esterna. Correzioni di contrasto e un bug di stile nel pulsante «Tutte».
 
+## README-to-code consistency test (2.1.0)
+
+_(English only; not yet translated into this language. Machine translation intentionally not added to avoid errors in technical statements.)_
+
+`tests/readme-valori.test.mjs` checks, without a browser and in all 8 READMEs, that the masses and ranges in the "How the game works" table (planet 80/75, moon 20/45, star 400/130, black hole 1200/170, vortex 150/85) match the constants in `index.html`. The game itself is unchanged.
+
+**Unchanged and why:** the screenshots (`screenshot.<lang>.png`) were not regenerated: there is no stable WebGL browser in this session; the existing ones stay.
+
 ## Cronologia / Changelog
+
+### 2.1.0 — 2026-10-27
+- README-to-code consistency test for the game mechanics table.
+
 
 ### 1.2.7 — 2026-10-23
 
