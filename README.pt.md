@@ -2,7 +2,9 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · **Português** · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versão:** 2.0.0 · **Última atualização:** 2026-10-26
+**Versão:** 2.0.1 · **Última atualização:** 2026-10-27
+
+**Estado:** estável · **Offline:** completo
 
 Idiomas da interface: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -16,10 +18,28 @@ Idiomas da interface: **Română, English, Français, Italiano, Español, Portug
 
 Um jogo de quebra-cabeças baseado na gravidade: colocam-se planetas, estrelas e outros objetos de modo a que a sua gravidade guie um cometa até ao alvo. A aplicação contém 108 quebra-cabeças em 12 categorias temáticas, com três níveis de dificuldade (Fácil, Médio, Difícil) e uma avaliação de uma a três estrelas. A interface está em romeno; o título apresentado é «The Incredible Cosmos · 108 Puzzle-uri Cosmice».
 
+## Como funciona o jogo
+
+Não conduzes o cometa. Ele parte na direção da seta e a gravidade faz o resto: a tua tarefa é dispor um canto do cosmos de modo que a sua atração dobre a trajetória até ao alvo. Carrega em **▶ PLAY**, observa, anula, recoloca e tenta de novo. Quantos menos objetos usares, mais estrelas ganhas.
+
+| Objeto | O que faz na simulação |
+|---|---|
+| 🪐 Planeta | Gravidade média (massa 80, alcance ≈ 75 px). |
+| 🌙 Lua | Gravidade fraca (massa 20, alcance ≈ 45 px): para ajustes finos. |
+| ⭐ Estrela | Gravidade forte (massa 400, alcance ≈ 130 px). |
+| 🕳️ Buraco negro | A gravidade mais forte (massa 1200, alcance ≈ 170 px) — e engole o cometa se este se aproximar demasiado. |
+| 🌀 Vórtice | Gravidade média (massa 150) que, além disso, empurra o cometa para o lado, em rotação, até ≈ 85 px. |
+| ⚡ Booster | Sem gravidade; acelera o cometa enquanto o atravessa. |
+| 💥 Bomba | De uso único: explode ao contacto e lança o cometa em sentido contrário. |
+| 🛡️ Escudo | Reflete o cometa como um espelho. |
+| 🌀 Wormhole A / B | Um par: o cometa que entra num sai pelo outro, mantendo a direção. |
+
+A tentativa falha se um buraco negro engolir o cometa ou se este sair da área de jogo. Nem todos os quebra-cabeças oferecem todos os objetos. *Os valores vêm do código do jogo (versão 2.0.1): são constantes de afinação, não unidades astrofísicas reais.* Nota honesta: os 108 quebra-cabeças são variações da mesma mecânica. O repositório contém uma captura de ecrã por idioma da interface (`screenshot.<idioma>.png`).
+
 ## Funcionalidades
 
 - 108 quebra-cabeças, agrupados em 12 categorias (Literárias, Filosóficas, Críticas, Leitores, IA do futuro, NHI, Multi-D, Extra-U, Estelares, Hiper-C, Meta-C, Interior), com filtragem por categoria («Todas») e um campo **Pesquisar quebra-cabeças**: pesquisa em nomes, subtítulos, objetivos, categorias, dificuldade e objetos disponíveis (p. ex. «wormhole», «teletransporta», «fácil»), sem ter em conta os sinais diacríticos e exigindo que todas as palavras correspondam; mostra o número de resultados.
-- Objetos a colocar: Planeta, Estrela, Buraco negro, Booster, Bomba, Vórtice, Wormhole A e Wormhole B.
+- Objetos a colocar: Planeta, Lua, Estrela, Buraco negro, Booster, Bomba, Escudo, Vórtice, Wormhole A e Wormhole B (ver «Como funciona o jogo»).
 - Um objetivo que varia consoante o quebra-cabeças, por exemplo «Guia o cometa até ao alvo», «Teletransporta o cometa através do wormhole» ou «O menor número possível de objetos».
 - Simulação com os botões **▶ PLAY**, velocidades 0,5×/1×/2×/4×, **↩** (anular) e **↻** (repor); a trajetória do cometa aparece como uma linha ponteada.
 - Estrelas de avaliação: menos objetos usados significa mais estrelas; o melhor resultado por quebra-cabeças é guardado.
@@ -45,7 +65,7 @@ Um jogo de quebra-cabeças baseado na gravidade: colocam-se planetas, estrelas e
 
 ## Execução local / offline
 
-Descarregue `index.html` (cerca de 0,8 MB) e abra-o num navegador; funciona sem internet. Para a vista 3D é necessário WebGL.
+Descarregue `index.html` (cerca de 1,1 MB) e abra-o num navegador; funciona sem internet. Para a vista 3D é necessário WebGL.
 
 ## Licença
 

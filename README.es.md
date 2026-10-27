@@ -2,7 +2,9 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · **Español** · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versión:** 2.0.0 · **Última actualización:** 2026-10-26
+**Versión:** 2.0.1 · **Última actualización:** 2026-10-27
+
+**Estado:** estable · **Sin conexión:** completo
 
 Idiomas de la interfaz: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -16,10 +18,28 @@ Idiomas de la interfaz: **Română, English, Français, Italiano, Español, Port
 
 Un juego de rompecabezas basado en la gravedad: colocas planetas, estrellas y otros objetos para que su gravedad guíe a un cometa hasta el objetivo. La aplicación contiene 108 rompecabezas en 12 categorías temáticas, con tres niveles de dificultad (Fácil, Medio, Difícil) y una valoración de una a tres estrellas. La interfaz está en rumano; el título que se muestra es «The Incredible Cosmos · 108 Puzzle-uri Cosmice».
 
+## Cómo funciona el juego
+
+No pilotas el cometa. Sale en la dirección de la flecha y la gravedad hace el resto: tu tarea es disponer un rincón del cosmos para que su atracción curve la trayectoria hacia la meta. Pulsa **▶ PLAY**, observa, deshaz, recoloca y vuelve a intentarlo. Cuantos menos objetos uses, más estrellas ganas.
+
+| Objeto | Qué hace en la simulación |
+|---|---|
+| 🪐 Planeta | Gravedad media (masa 80, alcance ≈ 75 px). |
+| 🌙 Luna | Gravedad débil (masa 20, alcance ≈ 45 px): para ajustes finos. |
+| ⭐ Estrella | Gravedad fuerte (masa 400, alcance ≈ 130 px). |
+| 🕳️ Agujero negro | La gravedad más fuerte (masa 1200, alcance ≈ 170 px) — y se traga el cometa si se acerca demasiado. |
+| 🌀 Vórtice | Gravedad media (masa 150) que además empuja el cometa de lado, en giro, dentro de ≈ 85 px. |
+| ⚡ Booster | Sin gravedad; acelera el cometa mientras lo atraviesa. |
+| 💥 Bomba | De un solo uso: explota al contacto y lanza el cometa en sentido contrario. |
+| 🛡️ Escudo | Refleja el cometa como un espejo. |
+| 🌀 Wormhole A / B | Una pareja: el cometa que entra por uno sale por el otro conservando su dirección. |
+
+El intento fracasa si un agujero negro se traga el cometa o si este sale de la zona de juego. No todos los rompecabezas ofrecen todos los objetos. *Los valores proceden del código del juego (versión 2.0.1): son constantes de ajuste, no unidades astrofísicas reales.* Nota honesta: los 108 rompecabezas son variaciones de la misma mecánica. El repositorio incluye una captura por idioma de la interfaz (`screenshot.<idioma>.png`).
+
 ## Funciones
 
 - 108 rompecabezas, agrupados en 12 categorías (Literarias, Filosóficas, Críticas, Lectores, IA del futuro, NHI, Multi-D, Extra-U, Estelares, Hiper-C, Meta-C, Interior), con filtrado por categoría («Todas») y un campo **Buscar rompecabezas**: busca en nombres, subtítulos, objetivos, categorías, dificultad y objetos disponibles (p. ej. «wormhole», «teletransporta», «fácil»), sin tener en cuenta los signos diacríticos y exigiendo que coincidan todas las palabras; muestra el número de resultados.
-- Objetos que se pueden colocar: Planeta, Estrella, Agujero negro, Booster, Bomba, Vórtice, Wormhole A y Wormhole B.
+- Objetos que se pueden colocar: Planeta, Luna, Estrella, Agujero negro, Booster, Bomba, Escudo, Vórtice, Wormhole A y Wormhole B (véase «Cómo funciona el juego»).
 - Un objetivo que varía según el rompecabezas, por ejemplo «Guía el cometa hasta el objetivo», «Teletransporta el cometa a través del wormhole» o «El menor número posible de objetos».
 - Simulación con los botones **▶ PLAY**, velocidades 0,5×/1×/2×/4×, **↩** (deshacer) y **↻** (reiniciar); la trayectoria del cometa aparece como una línea de puntos.
 - Estrellas de valoración: menos objetos usados significa más estrellas; se guarda el mejor resultado por rompecabezas.
@@ -45,7 +65,7 @@ Un juego de rompecabezas basado en la gravedad: colocas planetas, estrellas y ot
 
 ## Ejecución local / sin conexión
 
-Descarga `index.html` (aprox. 0,8 MB) y ábrelo en un navegador; funciona sin internet. Para la vista 3D se necesita WebGL.
+Descarga `index.html` (aprox. 1,1 MB) y ábrelo en un navegador; funciona sin internet. Para la vista 3D se necesita WebGL.
 
 ## Licencia
 

@@ -2,7 +2,9 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · **Magyar**
 
-**Verzió:** 2.0.0 · **Utolsó frissítés:** 2026-10-26
+**Verzió:** 2.0.1 · **Utolsó frissítés:** 2026-10-27
+
+**Állapot:** stabil · **Offline:** teljes
 
 A felület nyelvei: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -16,10 +18,28 @@ A felület nyelvei: **Română, English, Français, Italiano, Español, Portugu�
 
 Gravitáción alapuló fejtörőjáték: bolygókat, csillagokat és más objektumokat helyezel el úgy, hogy a gravitációjuk egy üstököst vezessen a célhoz. Az alkalmazás 108 fejtörőt tartalmaz 12 tematikus kategóriában, három nehézségi szinttel (Könnyű, Közepes, Nehéz) és egytől háromig terjedő csillagos értékeléssel. A felület román nyelvű; a megjelenített cím „The Incredible Cosmos · 108 Puzzle-uri Cosmice”.
 
+## Hogyan működik a játék
+
+Nem te irányítod az üstököst. A nyíl irányában indul, a gravitáció elvégzi a többit: a te dolgod a kozmosz egy kis szegletét úgy elrendezni, hogy vonzása a célba hajlítsa a pályát. Nyomd meg a **▶ PLAY** gombot, nézd, vond vissza, rendezd át, próbáld újra. Minél kevesebb objektumot használsz, annál több csillagot kapsz.
+
+| Objektum | Mit tesz a szimulációban |
+|---|---|
+| 🪐 Bolygó | Közepes gravitáció (tömeg 80, hatótávolság ≈ 75 px). |
+| 🌙 Hold | Gyenge gravitáció (tömeg 20, hatótávolság ≈ 45 px): finomhangoláshoz. |
+| ⭐ Csillag | Erős gravitáció (tömeg 400, hatótávolság ≈ 130 px). |
+| 🕳️ Fekete lyuk | A legerősebb gravitáció (tömeg 1200, hatótávolság ≈ 170 px) — és elnyeli az üstököst, ha túl közel kerül. |
+| 🌀 Örvény | Közepes gravitáció (tömeg 150), amely ráadásul oldalirányba, forgásban tolja az üstököst ≈ 85 px-en belül. |
+| ⚡ Booster | Nincs gravitációja; gyorsítja az üstököst, amíg áthalad rajta. |
+| 💥 Bomba | Egyszer használatos: érintésre felrobban, és az ellenkező irányba löki az üstököst. |
+| 🛡️ Pajzs | Tükörként visszaveri az üstököst. |
+| 🌀 Wormhole A / B | Egy pár: az egyikbe belépő üstökös a másikból lép ki, megtartva az irányát. |
+
+A kísérlet kudarcba fullad, ha egy fekete lyuk elnyeli az üstököst, vagy az elhagyja a játékteret. Nem minden fejtörő kínál minden objektumot. *Az értékek a játék kódjából származnak (2.0.1-es verzió): hangolási állandók, nem valódi asztrofizikai mértékegységek.* Őszinte megjegyzés: a 108 fejtörő ugyanannak a mechanikának a variációja. A tároló felületi nyelvenként egy képernyőképet tartalmaz (`screenshot.<nyelv>.png`).
+
 ## Funkciók
 
 - 108 fejtörő, 12 kategóriába csoportosítva (Irodalmi, Filozófiai, Kritikai, Olvasók, Jövő MI-je, NHI, Multi-D, Extra-U, Csillagászati, Hiper-C, Meta-C, Belső), kategóriaszűréssel („Mind”) és egy **Fejtörő keresése** mezővel: a nevek, alcímek, célok, kategóriák, nehézség és az elérhető objektumok között keres (pl. „wormhole”, „teleportál”, „könnyű”), a diakritikus jelek figyelmen kívül hagyásával, és minden szónak egyeznie kell; megjeleníti a találatok számát.
-- Elhelyezhető objektumok: Bolygó, Csillag, Fekete lyuk, Booster, Bomba, Örvény, Wormhole A és Wormhole B.
+- Elhelyezhető objektumok: Bolygó, Hold, Csillag, Fekete lyuk, Booster, Bomba, Pajzs, Örvény, Wormhole A és Wormhole B (lásd: „Hogyan működik a játék”).
 - Fejtörőnként változó cél, például „Vezesd az üstököst a célhoz”, „Teleportáld az üstököst a wormholeon át” vagy „Minél kevesebb objektum”.
 - Szimuláció **▶ PLAY** gombokkal, 0,5×/1×/2×/4× sebességgel, **↩** (visszavonás) és **↻** (visszaállítás); az üstökös pályája pontozott vonalként jelenik meg.
 - Csillagos értékelés: minél kevesebb objektumot használsz, annál több csillagot kapsz; fejtörőnként a legjobb eredmény kerül mentésre.
@@ -45,7 +65,7 @@ Gravitáción alapuló fejtörőjáték: bolygókat, csillagokat és más objekt
 
 ## Helyi futtatás / offline
 
-Töltsd le az `index.html` fájlt (kb. 0,8 MB), és nyisd meg böngészőben; internet nélkül is működik. A 3D nézethez WebGL szükséges.
+Töltsd le az `index.html` fájlt (kb. 1,1 MB), és nyisd meg böngészőben; internet nélkül is működik. A 3D nézethez WebGL szükséges.
 
 ## Licenc
 
