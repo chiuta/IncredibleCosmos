@@ -2,7 +2,9 @@
 
 [English](README.md) · [Română](README.ro.md) · **Français** · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version :** 2.0.0 · **Dernière mise à jour :** 2026-10-26
+**Version :** 2.0.1 · **Dernière mise à jour :** 2026-10-27
+
+**État :** stable · **Hors ligne :** complet
 
 Langues de l'interface : **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -16,10 +18,28 @@ Langues de l'interface : **Română, English, Français, Italiano, Español, Por
 
 Un jeu d'énigmes fondé sur la gravitation : vous placez des planètes, des étoiles et d'autres objets afin que leur gravité guide une comète vers la cible. L'application contient 108 énigmes réparties en 12 catégories thématiques, avec trois niveaux de difficulté (Facile, Moyen, Difficile) et une évaluation de une à trois étoiles. L'interface est en roumain ; le titre affiché est « The Incredible Cosmos · 108 Puzzle-uri Cosmice ».
 
+## Comment fonctionne le jeu
+
+Vous ne pilotez pas la comète. Elle part dans le sens de la flèche et la gravité fait le reste : votre tâche est d'arranger un petit coin de cosmos pour que son attraction courbe la trajectoire vers la cible. Appuyez sur **▶ PLAY**, observez, annulez, réarrangez, réessayez. Moins vous utilisez d'objets, plus vous gagnez d'étoiles.
+
+| Objet | Effet dans la simulation |
+|---|---|
+| 🪐 Planète | Gravité moyenne (masse 80, portée ≈ 75 px). |
+| 🌙 Lune | Gravité faible (masse 20, portée ≈ 45 px) : pour les réglages fins. |
+| ⭐ Étoile | Gravité forte (masse 400, portée ≈ 130 px). |
+| 🕳️ Trou noir | La gravité la plus forte (masse 1200, portée ≈ 170 px) — et il engloutit la comète si elle s'approche trop. |
+| 🌀 Vortex | Gravité moyenne (masse 150) qui, en plus, pousse la comète latéralement, en tournoyant, dans un rayon d'≈ 85 px. |
+| ⚡ Booster | Sans gravité ; accélère la comète tant qu'elle le traverse. |
+| 💥 Bombe | À usage unique : explose au contact et projette la comète dans le sens opposé. |
+| 🛡️ Bouclier | Réfléchit la comète comme un miroir. |
+| 🌀 Wormhole A / B | Une paire : la comète qui entre dans l'un ressort par l'autre en gardant sa direction. |
+
+L'essai échoue si un trou noir engloutit la comète ou si elle quitte la zone de jeu. Tous les puzzles ne proposent pas tous les objets. *Valeurs tirées du code du jeu (version 2.0.1) : ce sont des constantes de réglage, pas des unités astrophysiques réelles.* Remarque honnête : les 108 puzzles sont des variations sur la même mécanique. Le dépôt contient une capture d'écran par langue de l'interface (`screenshot.<langue>.png`).
+
 ## Fonctions
 
 - 108 énigmes, regroupées en 12 catégories (Littéraires, Philosophiques, Critiques, Lecteurs, IA du futur, NHI, Multi-D, Extra-U, Stellaires, Hyper-C, Méta-C, Intérieur), avec filtrage par catégorie (« Toutes ») et un champ **Rechercher une énigme** : il cherche dans les noms, sous-titres, objectifs, catégories, niveaux de difficulté et objets disponibles (p. ex. « wormhole », « téléporte », « facile »), sans tenir compte des signes diacritiques et en exigeant que tous les mots correspondent ; il affiche le nombre de résultats.
-- Objets à placer : Planète, Étoile, Trou noir, Booster, Bombe, Vortex, Wormhole A et Wormhole B.
+- Objets à placer : Planète, Lune, Étoile, Trou noir, Booster, Bombe, Bouclier, Vortex, Wormhole A et Wormhole B (voir « Comment fonctionne le jeu »).
 - Un objectif variable selon l'énigme, par exemple « Guider la comète vers la cible », « Téléporter la comète par le wormhole » ou « Le moins d'objets possible ».
 - Simulation avec les boutons **▶ PLAY**, vitesses 0,5×/1×/2×/4×, **↩** (annuler) et **↻** (réinitialiser) ; la trajectoire de la comète apparaît sous forme de ligne pointillée.
 - Étoiles d'évaluation : moins d'objets utilisés donne plus d'étoiles ; le meilleur résultat par énigme est enregistré.
@@ -45,7 +65,7 @@ Un jeu d'énigmes fondé sur la gravitation : vous placez des planètes, des ét
 
 ## Exécution locale / hors ligne
 
-Téléchargez `index.html` (environ 0,8 Mo) et ouvrez-le dans un navigateur ; il fonctionne sans internet. La vue 3D nécessite WebGL.
+Téléchargez `index.html` (environ 1,1 Mo) et ouvrez-le dans un navigateur ; il fonctionne sans internet. La vue 3D nécessite WebGL.
 
 ## Licence
 

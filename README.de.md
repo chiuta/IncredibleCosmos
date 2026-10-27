@@ -2,7 +2,9 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · **Deutsch** · [Magyar](README.hu.md)
 
-**Version:** 2.0.0 · **Zuletzt aktualisiert:** 2026-10-26
+**Version:** 2.0.1 · **Zuletzt aktualisiert:** 2026-10-27
+
+**Status:** stabil · **Offline:** vollständig
 
 Oberflächensprachen: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -16,10 +18,28 @@ Oberflächensprachen: **Română, English, Français, Italiano, Español, Portug
 
 Ein Rätselspiel auf Basis der Schwerkraft: Sie platzieren Planeten, Sterne und andere Objekte so, dass ihre Gravitation einen Kometen zum Ziel lenkt. Die Anwendung enthält 108 Rätsel in 12 thematischen Kategorien, mit drei Schwierigkeitsstufen (Leicht, Mittel, Schwer) und einer Bewertung von einem bis zu drei Sternen. Die Oberfläche ist auf Rumänisch; der angezeigte Titel lautet „The Incredible Cosmos · 108 Puzzle-uri Cosmice“.
 
+## So funktioniert das Spiel
+
+Du steuerst den Kometen nicht. Er startet in Pfeilrichtung, und die Schwerkraft erledigt den Rest: Deine Aufgabe ist es, einen kleinen Winkel des Kosmos so anzuordnen, dass seine Anziehung die Bahn zum Ziel biegt. Drücke **▶ PLAY**, schau zu, mach rückgängig, ordne neu an, versuche es erneut. Je weniger Objekte du brauchst, desto mehr Sterne verdienst du.
+
+| Objekt | Wirkung in der Simulation |
+|---|---|
+| 🪐 Planet | Mittlere Schwerkraft (Masse 80, Reichweite ≈ 75 px). |
+| 🌙 Mond | Schwache Schwerkraft (Masse 20, Reichweite ≈ 45 px): für die Feinjustierung. |
+| ⭐ Stern | Starke Schwerkraft (Masse 400, Reichweite ≈ 130 px). |
+| 🕳️ Schwarzes Loch | Die stärkste Schwerkraft (Masse 1200, Reichweite ≈ 170 px) — und es verschluckt den Kometen, wenn er zu nah kommt. |
+| 🌀 Wirbel | Mittlere Schwerkraft (Masse 150), die den Kometen zusätzlich seitlich, im Drehsinn, innerhalb von ≈ 85 px antreibt. |
+| ⚡ Booster | Keine Schwerkraft; beschleunigt den Kometen, solange er hindurchfliegt. |
+| 💥 Bombe | Einmalig: explodiert bei Berührung und schleudert den Kometen weg. |
+| 🛡️ Schild | Reflektiert den Kometen wie ein Spiegel. |
+| 🌀 Wormhole A / B | Ein Paar: Der Komet, der in das eine eintritt, kommt aus dem anderen heraus und behält seine Richtung. |
+
+Der Versuch scheitert, wenn ein Schwarzes Loch den Kometen verschluckt oder er das Spielfeld verlässt. Nicht jedes Rätsel bietet alle Objekte. *Die Werte stammen aus dem Spielcode (Version 2.0.1): Es sind Abstimmungskonstanten, keine realen astrophysikalischen Einheiten.* Ehrlicher Hinweis: Die 108 Rätsel sind Variationen derselben Mechanik. Das Repository enthält je einen Screenshot pro Oberflächensprache (`screenshot.<Sprache>.png`).
+
 ## Funktionen
 
 - 108 Rätsel, gruppiert in 12 Kategorien (Literarisch, Philosophisch, Kritisch, Leser, KI der Zukunft, NHI, Multi-D, Extra-U, Stellar, Hyper-C, Meta-C, Inneres), mit Kategoriefilter („Alle“) und dem Feld **Rätsel suchen**: Es durchsucht Namen, Untertitel, Ziele, Kategorien, Schwierigkeit und die verfügbaren Objekte (z. B. „wormhole“, „teleportiert“, „leicht“), ohne diakritische Zeichen zu berücksichtigen und wobei alle Wörter passen müssen; es zeigt die Anzahl der Ergebnisse an.
-- Platzierbare Objekte: Planet, Stern, Schwarzes Loch, Booster, Bombe, Wirbel, Wormhole A und Wormhole B.
+- Platzierbare Objekte: Planet, Mond, Stern, Schwarzes Loch, Booster, Bombe, Schild, Wirbel, Wormhole A und Wormhole B (siehe „So funktioniert das Spiel“).
 - Ein je nach Rätsel unterschiedliches Ziel, zum Beispiel „Lenke den Kometen zum Ziel“, „Teleportiere den Kometen durch das Wormhole“ oder „So wenige Objekte wie möglich“.
 - Simulation mit den Schaltflächen **▶ PLAY**, Geschwindigkeiten 0,5×/1×/2×/4×, **↩** (rückgängig) und **↻** (zurücksetzen); die Flugbahn des Kometen erscheint als gepunktete Linie.
 - Sternebewertung: Je weniger Objekte verwendet werden, desto mehr Sterne; das beste Ergebnis pro Rätsel wird gespeichert.
@@ -45,7 +65,7 @@ Ein Rätselspiel auf Basis der Schwerkraft: Sie platzieren Planeten, Sterne und 
 
 ## Lokale Ausführung / offline
 
-Laden Sie `index.html` (ca. 0,8 MB) herunter und öffnen Sie sie in einem Browser; sie funktioniert ohne Internet. Für die 3D-Ansicht wird WebGL benötigt.
+Laden Sie `index.html` (ca. 1,1 MB) herunter und öffnen Sie sie in einem Browser; sie funktioniert ohne Internet. Für die 3D-Ansicht wird WebGL benötigt.
 
 ## Lizenz
 

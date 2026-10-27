@@ -2,7 +2,9 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 2.0.0 · **Ultima actualizare:** 2026-10-26
+**Versiune:** 2.0.1 · **Ultima actualizare:** 2026-10-27
+
+**Stare:** stabil · **Offline:** complet
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -18,10 +20,28 @@ Limbile interfeței: **Română, English, Français, Italiano, Español, Portugu
 
 Un joc de puzzle bazat pe gravitație: plasezi planete, stele și alte obiecte astfel încât gravitația lor să ghideze o cometă către țintă. Aplicația conține 108 puzzle-uri în 12 categorii tematice, cu trei niveluri de dificultate (Ușor, Mediu, Greu) și evaluare de la una la trei stele. Interfața este în limba română; titlul afișat este „The Incredible Cosmos · 108 Puzzle-uri Cosmice”.
 
+## Cum funcționează jocul
+
+Nu conduci cometa. Ea pornește pe direcția săgeții, iar gravitația face restul — sarcina ta este să aranjezi un colț de cosmos astfel încât atracția lui să îndoaie traiectoria spre țintă. Apeși **▶ PLAY**, privești, anulezi, reașezi, încerci din nou. Cu cât folosești mai puține obiecte, cu atât câștigi mai multe stele.
+
+| Obiect | Ce face în simulare |
+|---|---|
+| 🪐 Planetă | Gravitație medie (masă 80, rază ≈ 75 px). |
+| 🌙 Lună | Gravitație slabă (masă 20, rază ≈ 45 px): pentru ajustări fine. |
+| ⭐ Stea | Gravitație puternică (masă 400, rază ≈ 130 px). |
+| 🕳️ Gaură neagră | Cea mai puternică gravitație (masă 1200, rază ≈ 170 px) — și înghite cometa dacă se apropie prea mult. |
+| 🌀 Vortex | Gravitație medie (masă 150) care, în plus, împinge cometa lateral, în rotație, pe o rază de ≈ 85 px. |
+| ⚡ Booster | Fără gravitație; accelerează cometa cât timp trece prin el. |
+| 💥 Bombă | De unică folosință: explodează la contact și aruncă cometa în sens opus. |
+| 🛡️ Scut | Reflectă cometa ca o oglindă. |
+| 🌀 Wormhole A / B | Pereche: cometa care intră într-unul iese din celălalt, păstrându-și direcția. |
+
+Încercarea eșuează dacă o gaură neagră înghite cometa sau dacă aceasta iese din zona de joc. Nu orice puzzle oferă toate obiectele. *Valorile provin din codul jocului (versiunea 2.0.1); sunt constante de reglaj, nu unități astrofizice reale.* Notă sinceră: cele 108 puzzle-uri sunt variații pe aceeași mecanică. Depozitul conține o captură de ecran pentru fiecare limbă a interfeței (`screenshot.<limbă>.png`).
+
 ## Funcții
 
 - 108 puzzle-uri, grupate în 12 categorii (Literare, Filosofice, Critice, Cititori, AI viitor, NHI, Multi-D, Extra-U, Stelare, Hiper-C, Meta-C, Interior), cu filtrare pe categorii („Toate”) și câmp **Caută puzzle**: caută în nume, subtitlu, scop, categorie, dificultate și obiectele disponibile (de ex. „wormhole”, „teleportează”, „ușor”), fără diacritice și cu toate cuvintele potrivite; afișează numărul de rezultate.
-- Obiecte de plasat: Planetă, Stea, Gaură neagră, Booster, Bombă, Vortex, Wormhole A și Wormhole B.
+- Obiecte de plasat: Planetă, Lună, Stea, Gaură neagră, Booster, Bombă, Scut, Vortex, Wormhole A și Wormhole B (vezi „Cum funcționează jocul”).
 - Scop variabil pe puzzle, de exemplu „Ghidează cometa la țintă”, „Teleportează cometa prin wormhole” sau „Cât mai puține obiecte”.
 - Simulare cu butoane **▶ PLAY**, viteze 0,5×/1×/2×/4×, **↩** (anulare) și **↻** (reset); traiectoria cometei apare ca linie punctată.
 - Stele de evaluare: mai puține obiecte folosite înseamnă mai multe stele; cel mai bun rezultat per puzzle este salvat.
@@ -47,7 +67,7 @@ Un joc de puzzle bazat pe gravitație: plasezi planete, stele și alte obiecte a
 
 ## Rulare locală / offline
 
-Descarcă `index.html` (aprox. 0,8 MB) și deschide-l în browser; funcționează fără internet. Pentru vederea 3D este nevoie de WebGL.
+Descarcă `index.html` (aprox. 1,1 MB) și deschide-l în browser; funcționează fără internet. Pentru vederea 3D este nevoie de WebGL.
 
 ## Licență
 

@@ -2,7 +2,9 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 2.0.0 · **Last updated:** 2026-10-26
+**Version:** 2.0.1 · **Last updated:** 2026-10-27
+
+**Status:** stable · **Offline:** fully offline
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -18,10 +20,28 @@ Interface languages: **Română, English, Français, Italiano, Español, Portugu
 
 A gravity-based puzzle game: you place planets, stars and other objects so that their gravity guides a comet to the target. The app contains 108 puzzles in 12 thematic categories, with three difficulty levels (Easy, Medium, Hard) and a rating from one to three stars. The interface is in Romanian; the displayed title is "The Incredible Cosmos · 108 Puzzle-uri Cosmice".
 
+## How the game works
+
+You never steer the comet. It leaves along the arrow and gravity does the rest — your job is to arrange a small corner of the cosmos so that its pull bends the path onto the target. Press **▶ PLAY**, watch, undo, rearrange, try again. The fewer objects you need, the more stars you earn.
+
+| Object | What it does in the simulation |
+|---|---|
+| 🪐 Planet | Medium gravity (mass 80, range ≈ 75 px). |
+| 🌙 Moon | Weak gravity (mass 20, range ≈ 45 px): for fine adjustments. |
+| ⭐ Star | Strong gravity (mass 400, range ≈ 130 px). |
+| 🕳️ Black hole | The strongest gravity (mass 1200, range ≈ 170 px) — and it swallows the comet if it gets too close. |
+| 🌀 Vortex | Medium gravity (mass 150) that also pushes the comet sideways, in a spin, within ≈ 85 px. |
+| ⚡ Booster | No gravity; speeds the comet up while it passes through. |
+| 💥 Bomb | Single use: explodes on contact and throws the comet away from it. |
+| 🛡️ Shield | Reflects the comet like a mirror. |
+| 🌀 Wormhole A / B | A pair: the comet that enters one comes out of the other, keeping its direction. |
+
+The attempt fails if a black hole swallows the comet or it leaves the play area. Not every puzzle offers every object. *The values come from the game code (version 2.0.1); they are tuning constants, not real astrophysical units.* Honest note: the 108 puzzles are variations on this same mechanic. The repository holds a screenshot per interface language (`screenshot.<lang>.png`).
+
 ## Features
 
 - 108 puzzles, grouped into 12 categories (Literary, Philosophical, Critical, Readers, Future AI, NHI, Multi-D, Extra-U, Stellar, Hyper-C, Meta-C, Interior), with category filtering ("All") and a **Search puzzle** field: it searches names, subtitles, goals, categories, difficulty and the available objects (e.g. "wormhole", "teleports", "easy"), ignoring diacritics and requiring all words to match; it shows the number of results.
-- Objects to place: Planet, Star, Black hole, Booster, Bomb, Vortex, Wormhole A and Wormhole B.
+- Objects to place: Planet, Moon, Star, Black hole, Booster, Bomb, Shield, Vortex, Wormhole A and Wormhole B (see “How the game works”).
 - A goal that varies by puzzle, for example "Guide the comet to the target", "Teleport the comet through the wormhole" or "As few objects as possible".
 - Simulation with **▶ PLAY** buttons, speeds 0.5×/1×/2×/4×, **↩** (undo) and **↻** (reset); the comet's trajectory appears as a dotted line.
 - Star rating: fewer objects used means more stars; the best result per puzzle is saved.
@@ -47,7 +67,7 @@ A gravity-based puzzle game: you place planets, stars and other objects so that 
 
 ## Running locally / offline
 
-Download `index.html` (approx. 0.8 MB) and open it in a browser; it works without internet. The 3D view needs WebGL.
+Download `index.html` (approx. 1.1 MB) and open it in a browser; it works without internet. The 3D view needs WebGL.
 
 ## Licence
 

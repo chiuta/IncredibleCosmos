@@ -2,7 +2,9 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · **Italiano** · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versione:** 2.0.0 · **Ultimo aggiornamento:** 2026-10-26
+**Versione:** 2.0.1 · **Ultimo aggiornamento:** 2026-10-27
+
+**Stato:** stabile · **Offline:** completo
 
 Lingue dell'interfaccia: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -16,10 +18,28 @@ Lingue dell'interfaccia: **Română, English, Français, Italiano, Español, Por
 
 Un gioco di rompicapi basato sulla gravità: posizioni pianeti, stelle e altri oggetti in modo che la loro gravità guidi una cometa verso il bersaglio. L'applicazione contiene 108 rompicapi in 12 categorie tematiche, con tre livelli di difficoltà (Facile, Medio, Difficile) e una valutazione da una a tre stelle. L'interfaccia è in rumeno; il titolo visualizzato è «The Incredible Cosmos · 108 Puzzle-uri Cosmice».
 
+## Come funziona il gioco
+
+Non guidi la cometa. Parte nella direzione della freccia e la gravità fa il resto: il tuo compito è disporre un angolo di cosmo in modo che la sua attrazione pieghi la traiettoria verso il bersaglio. Premi **▶ PLAY**, osserva, annulla, riposiziona, riprova. Meno oggetti usi, più stelle guadagni.
+
+| Oggetto | Cosa fa nella simulazione |
+|---|---|
+| 🪐 Pianeta | Gravità media (massa 80, raggio ≈ 75 px). |
+| 🌙 Luna | Gravità debole (massa 20, raggio ≈ 45 px): per le regolazioni fini. |
+| ⭐ Stella | Gravità forte (massa 400, raggio ≈ 130 px). |
+| 🕳️ Buco nero | La gravità più forte (massa 1200, raggio ≈ 170 px) — e inghiotte la cometa se si avvicina troppo. |
+| 🌀 Vortice | Gravità media (massa 150) che in più spinge la cometa di lato, in rotazione, entro ≈ 85 px. |
+| ⚡ Booster | Senza gravità; accelera la cometa mentre lo attraversa. |
+| 💥 Bomba | Monouso: esplode al contatto e scaglia la cometa in direzione opposta. |
+| 🛡️ Scudo | Riflette la cometa come uno specchio. |
+| 🌀 Wormhole A / B | Una coppia: la cometa che entra in uno esce dall'altro mantenendo la direzione. |
+
+Il tentativo fallisce se un buco nero inghiotte la cometa o se questa esce dall'area di gioco. Non tutti i rompicapi offrono tutti gli oggetti. *I valori provengono dal codice del gioco (versione 2.0.1): sono costanti di taratura, non unità astrofisiche reali.* Nota onesta: i 108 rompicapi sono variazioni sulla stessa meccanica. Il repository contiene una schermata per ogni lingua dell'interfaccia (`screenshot.<lingua>.png`).
+
 ## Funzioni
 
 - 108 rompicapi, raggruppati in 12 categorie (Letterarie, Filosofiche, Critiche, Lettori, IA del futuro, NHI, Multi-D, Extra-U, Stellari, Hiper-C, Meta-C, Interno), con filtro per categoria («Tutte») e un campo **Cerca rompicapo**: cerca in nomi, sottotitoli, obiettivi, categorie, difficoltà e oggetti disponibili (ad es. «wormhole», «teletrasporta», «facile»), senza tener conto dei segni diacritici e richiedendo che tutte le parole corrispondano; mostra il numero di risultati.
-- Oggetti da posizionare: Pianeta, Stella, Buco nero, Booster, Bomba, Vortice, Wormhole A e Wormhole B.
+- Oggetti da posizionare: Pianeta, Luna, Stella, Buco nero, Booster, Bomba, Scudo, Vortice, Wormhole A e Wormhole B (vedi «Come funziona il gioco»).
 - Un obiettivo variabile a seconda del rompicapo, ad esempio «Guida la cometa al bersaglio», «Teletrasporta la cometa attraverso il wormhole» o «Il minor numero possibile di oggetti».
 - Simulazione con i pulsanti **▶ PLAY**, velocità 0,5×/1×/2×/4×, **↩** (annulla) e **↻** (reimposta); la traiettoria della cometa appare come una linea punteggiata.
 - Stelle di valutazione: meno oggetti usati significa più stelle; il miglior risultato per rompicapo viene salvato.
@@ -45,7 +65,7 @@ Un gioco di rompicapi basato sulla gravità: posizioni pianeti, stelle e altri o
 
 ## Esecuzione locale / offline
 
-Scarica `index.html` (circa 0,8 MB) e aprilo in un browser; funziona senza internet. Per la vista 3D serve WebGL.
+Scarica `index.html` (circa 1,1 MB) e aprilo in un browser; funziona senza internet. Per la vista 3D serve WebGL.
 
 ## Licenza
 
