@@ -2,6 +2,12 @@
 
 Format: SemVer (MAJOR.MINOR.PATCH). Intrările mai vechi sunt copiate din README (secțiunea „History / Changelog”), neschimbate.
 
+## 2.1.0 — 2026-11-02 (reîmprospătare kit)
+
+- Nou (kit): **Sincronizare între dispozitive** (`FFF.sync`) — în dialogul «Transparență» (clic pe versiune → Copie de siguranță): conectezi două dispozitive direct (WebRTC, cod/QR, fără server și fără cont) și își schimbă datele aplicației; cea mai recentă valoare câștigă, secretele (chei API, parole) nu se trimit, ștergerile nu se propagă. Aplicarea trece prin importul kitului (confirmare, chei permise, rollback).
+- Nou (kit): **Istoric local — «mașina timpului»** (`FFF.history`) — instantanee automate ale datelor (IndexedDB, fără secrete), diferență față de starea curentă și restaurare reversibilă; «Șterge datele aplicației» șterge și istoricul.
+- Module adăugate: `qr`, `p2p`, `sync`, `history` (+~140 KB). Versiunea aplicației nu se schimbă.
+
 ## 2.1.0 — 2026-10-27 (anterior: 2.0.1)
 
 - Test nou `tests/readme-valori.test.mjs`: masele și razele din tabelul „Cum funcționează jocul” (8 limbi) coincid cu `TYPES` și cu raza vortexului din `index.html` (9 verificări).
