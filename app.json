@@ -18,8 +18,8 @@
     "incrediblecosmos.progress",
     "incrediblecosmos.tut"
   ],
-  "sizeBytes": 1120817,
-  "sha256": "3a6c87682ac53600e77c9d30bef757326285c78166d85b26df7a428a7ef3abbf",
+  "sizeBytes": 1217465,
+  "sha256": "7e900f20524b60f80cb2376f086aa480fe0489d32bce2b02a477bc3a93006f82",
   "csp": {
     "present": true,
     "directives": {
@@ -62,7 +62,10 @@
       "dialog",
       "label",
       "bundle",
-      "qr"
+      "qr",
+      "p2p",
+      "sync",
+      "history"
     ]
   },
   "kit": {
@@ -73,7 +76,10 @@
       "dialog",
       "label",
       "bundle",
-      "qr"
+      "qr",
+      "p2p",
+      "sync",
+      "history"
     ]
   },
   "selfSerializing": false
