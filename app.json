@@ -18,8 +18,8 @@
     "incrediblecosmos.progress",
     "incrediblecosmos.tut"
   ],
-  "sizeBytes": 1273429,
-  "sha256": "3bd3cc4a2ba180d94a15d53be815a5c22830b26bd96fc3c8c189e4e9ff18e845",
+  "sizeBytes": 1325061,
+  "sha256": "89c17b3dece5f5423c331497ca288e2fea885c3b060c45ae8343e5ece16cad88",
   "csp": {
     "present": true,
     "directives": {
@@ -32,7 +32,7 @@
       "base-uri": "'self'",
       "form-action": "'self'",
       "worker-src": "'self' blob:",
-      "script-src": "'self' blob: sha256×8",
+      "script-src": "'self' blob: sha256×9",
       "connect-src": "'self'",
       "manifest-src": "'self'"
     },
