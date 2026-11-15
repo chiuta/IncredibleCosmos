@@ -2,8 +2,8 @@
   "schema": 1,
   "slug": "incrediblecosmos",
   "name": "The Incredible Cosmos",
-  "version": "2.1.7",
-  "updated": "2026-11-13",
+  "version": "2.1.8",
+  "updated": "2026-11-15",
   "description": "Nu conduci cometa: o ghidezi cu gravitația. 108 puzzle-uri cosmice cu planete, stele, găuri negre și wormhole-uri, fiecare cu un univers 3D procedural. Un singur fișier HTML, complet offline.",
   "egress": [],
   "permissions": [
@@ -18,8 +18,8 @@
     "incrediblecosmos.progress",
     "incrediblecosmos.tut"
   ],
-  "sizeBytes": 1325061,
-  "sha256": "89c17b3dece5f5423c331497ca288e2fea885c3b060c45ae8343e5ece16cad88",
+  "sizeBytes": 1330349,
+  "sha256": "aed32095e09379872753b4aed17f1177e52fe25e855ce65bd9ecbc6086f0b582",
   "csp": {
     "present": true,
     "directives": {
