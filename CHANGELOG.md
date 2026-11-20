@@ -2,6 +2,10 @@
 
 Format: SemVer (MAJOR.MINOR.PATCH). Intrările mai vechi sunt copiate din README (secțiunea „History / Changelog”), neschimbate.
 
+## 2.2.5 — 2026-11-20
+
+- Cardurile de puzzle: butonul 3D «🌌» ieșea din card cu 15–25 px la lățimea de 320 px (în engleză și franceză, unde eticheta categoriei este mai lungă); eticheta se taie acum cu elipsă (textul complet rămâne în indiciul de la trecerea cursorului), spațierea literelor este mai mică pe ecrane înguste, iar butonul nu se mai micșorează (constatat cu bateria adversarială, 20 noiembrie 2026)
+
 ## 2.2.4 — 2026-11-20
 
 - Bara fixă de jos (linkul de credit) are acum `z-index: 10`: elemente din pagină cu strat propriu (carduri cu `opacity`/`position`) se desenau peste ea la derulare (constatat cu sonda de acoperire a bateriei adversariale, 20 noiembrie 2026)
