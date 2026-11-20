@@ -2,6 +2,11 @@
 
 Format: SemVer (MAJOR.MINOR.PATCH). Intrările mai vechi sunt copiate din README (secțiunea „History / Changelog”), neschimbate.
 
+## 2.2.4 — 2026-11-20
+
+- Bara fixă de jos (linkul de credit) are acum `z-index: 10`: elemente din pagină cu strat propriu (carduri cu `opacity`/`position`) se desenau peste ea la derulare (constatat cu sonda de acoperire a bateriei adversariale, 20 noiembrie 2026)
+- Butonul «Buy Me a Coffee» este ridicat deasupra barei fixe (clasa `tf-lift`): la sfârșitul paginii bara îl acoperea pe o înălțime de 17 px, atât la 320×640, cât și la 1280×800
+
 ## 2.2.3 — 2026-11-20
 
 - fff-kit 1.8.1: când `localStorage`/`sessionStorage` aruncă sau lipsesc (cookie-uri și date de site blocate, WebView fără stocare, `<iframe sandbox>`), kitul pune în loc o stocare în memorie, iar pagina pornește în loc să se oprească; datele nu se păstrează după închiderea paginii
